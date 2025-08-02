@@ -47,6 +47,7 @@ const Support = () => {
         message: "",
       });
     } catch (error) {
+      console.log(error)
       setResponseMessage("An error occurred. Please try again.");
     } finally {
       setLoading(false);
