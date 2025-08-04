@@ -116,7 +116,7 @@ function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen min-w-screen flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
+    <div className="min-h-screen w-full max-w-full flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
       <div className="flex items-center gap-x-4">
         <div className="w-20 h-20 mb-4">
           <img
@@ -131,7 +131,7 @@ function Onboarding() {
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="md:w-full w-[400px] max-w-md bg-white shadow-md border"
+        className="w-full max-w-full md:max-w-md bg-white shadow-md border"
       >
         <CardHeader>
           <CardTitle className="text-black">Getting Started</CardTitle>

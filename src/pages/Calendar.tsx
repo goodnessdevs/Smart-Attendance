@@ -48,24 +48,26 @@ export default function CalendarPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="text-base font-semibold">
-                  Activity
-                </TableHead>
-                <TableHead className="text-base font-semibold">Date</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sessionActivities.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell className="p-4">{item.activity}</TableCell>
-                  <TableCell className="p-4">{item.date}</TableCell>
+          <div className="max-w-md w-full mx-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-base font-semibold">
+                    Activity
+                  </TableHead>
+                  <TableHead className="text-base font-semibold">Date</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {sessionActivities.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="p-4">{item.activity}</TableCell>
+                    <TableCell className="p-4">{item.date}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </MotionCard>
     </div>
