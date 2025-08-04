@@ -1,30 +1,21 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { UserLock } from "lucide-react";
-import logo from "../assets/funaab.png";
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Separator } from "../components/ui/separator";
+import { useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button } from '../../components/ui/button'
+// import { Separator } from '@radix-ui/react-separator'
+import { motion } from 'framer-motion'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
+import { UserLock } from 'lucide-react'
+import logo from "../../assets/funaab.png";
 
 const MotionCard = motion.create(Card);
 
-function Login() {
+const AdminAuth = () => {
   const navigate = useNavigate();
-  const d = new Date();
-  const year = d.getFullYear();
 
   const handleGoogleAuth = () => {
     // Google auth logic
-    navigate("/onboarding");
+    navigate("/admin/lecturers-login/auth");
   };
 
   return (
@@ -34,7 +25,7 @@ function Login() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeInOut" }}
         viewport={{ once: false }}
-        className="flex items-center justify-start gap-x-2 mb-8"
+        className="flex flex-col items-center justify-start gap-x-2 mb-8"
       >
         <div className="w-24 h-24">
           <img
@@ -43,7 +34,7 @@ function Login() {
             className="object-contain w-full h-full"
           />
         </div>
-        <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
+        <h2 className="text-2xl text-black font-bold">Smart Attendance For Lecturers</h2>
       </motion.div>
 
       <MotionCard
@@ -82,7 +73,7 @@ function Login() {
             </Button>
           </motion.div>
 
-          <Separator />
+          {/* <Separator />
 
           <div className="text-center text-sm font-semibold">
             Don’t have an account?{" "}
@@ -92,16 +83,11 @@ function Login() {
             >
               Sign up
             </Link>
-          </div>
+          </div> */}
         </CardContent>
       </MotionCard>
-      
-      <p className="text-center text-black mt-4">
-        &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
-        reserved.
-      </p>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default AdminAuth

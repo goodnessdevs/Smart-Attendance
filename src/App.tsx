@@ -9,6 +9,9 @@ import CheckAttendance from "./pages/CheckAttendance";
 import CalendarPage from "./pages/Calendar";
 import InboxPage from "./pages/Inbox";
 import Support from "./pages/Support";
+import AdminAuth from "./pages/admin/AdminAuth";
+import AdminPanel from "./pages/admin/AdminPanel";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/admin/auth" element={<AdminLoginPage />} />
+        <Route path="/admin/lecturers-login/auth" element={<AdminAuth />} />
+        <Route path="/admin/lecturers" element={<AdminPanel />} />
       </Routes>
     </Layout>
   );
