@@ -34,7 +34,7 @@ const MotionCard = motion.create(Card);
 
 export default function CalendarPage() {
   return (
-    <div>
+    <div className="px-4">
       <MotionCard
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

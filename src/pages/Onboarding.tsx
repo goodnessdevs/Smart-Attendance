@@ -236,8 +236,8 @@ function Onboarding() {
         </CardContent>
       </MotionCard>
 
-      <div className="text-sm">
-        <p className="text-center">
+      <div className="mt-3">
+        <p className="text-center text-sm font-semibold">
           &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
           reserved.
         </p>
