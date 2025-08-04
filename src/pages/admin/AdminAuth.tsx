@@ -11,9 +11,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { motion } from "framer-motion";
 
 const formSchema = z.object({
   password: z
@@ -49,8 +51,25 @@ const AdminAuth = () => {
 
   return (
     <div className="bg-slate-100 min-h-screen w-full flex flex-col justify-center items-center px-2">
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut" }}
+        viewport={{ once: false }}
+        className="flex flex-col items-center justify-start gap-x-2 mb-8"
+      >
+        <div className="w-24 h-24">
+          <img
+            src={"/funaab.png"}
+            alt="funaab"
+            className="object-contain w-full h-full"
+          />
+        </div>
+        <h2 className="text-2xl text-black font-bold">
+          Smart Attendance For Lecturers
+        </h2>
+      </motion.div>
       <div className="w-full max-w-sm mx-auto p-4 md:p-10 space-y-6 bg-cyan-900 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-center">Lecturer Login</h2>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -78,6 +97,9 @@ const AdminAuth = () => {
                       </button>
                     </div>
                   </FormControl>
+                  <FormDescription className="font-semibold">
+                    Input the secret password for validation
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { UserLock } from 'lucide-react'
-import logo from "../../assets/funaab.png";
 
 const MotionCard = motion.create(Card);
 
@@ -15,7 +14,7 @@ const AdminAuth = () => {
 
   const handleGoogleAuth = () => {
     // Google auth logic
-    navigate("/admin/lecturers-login/auth");
+    navigate("/admin/lecturers/auth");
   };
 
   return (
@@ -29,7 +28,7 @@ const AdminAuth = () => {
       >
         <div className="w-24 h-24">
           <img
-            src={logo}
+            src="/funaab.png"
             alt="funaab"
             className="object-contain w-full h-full"
           />

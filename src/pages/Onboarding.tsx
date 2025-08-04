@@ -13,7 +13,6 @@ import {
   SelectContent,
   SelectItem,
 } from "../components/ui/select";
-import logo from "../assets/funaab.png";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -120,7 +119,7 @@ function Onboarding() {
       <div className="flex items-center gap-x-4">
         <div className="w-20 h-20 mb-4">
           <img
-            src={logo}
+            src="/funaab.png"
             alt="funaab"
             className="object-contain w-full h-full"
           />

@@ -3,7 +3,6 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserLock } from "lucide-react";
-import logo from "../assets/funaab.png";
 
 import {
   Card,
@@ -38,7 +37,7 @@ function Login() {
       >
         <div className="w-24 h-24">
           <img
-            src={logo}
+            src="/funaab.png"
             alt="funaab"
             className="object-contain w-full h-full"
           />

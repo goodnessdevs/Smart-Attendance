@@ -21,7 +21,6 @@ import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
-import logo from "../assets/funaab.png";
 
 // Menu items.
 const items = [
@@ -122,7 +121,7 @@ export const MobileNavbar = () => {
     <div className="md:hidden flex justify-between items-center p-2 border rounded m-2">
       <div className="flex gap-x-2 items-center">
         <div className="w-10">
-          <img src={logo} alt="funaab" className="object-cover w-full" />
+          <img src="/funaab.png" alt="funaab" className="object-cover w-full" />
         </div>
         <span className="text-2xs font-semibold">Smart Attendance</span>
       </div>

@@ -1,5 +1,3 @@
-import logo from "../assets/funaab.png"
-
 function Footer() {
   const d = new Date();
   const year = d.getFullYear();
@@ -8,7 +6,7 @@ function Footer() {
       <div className="space-y-4">
         <div className="md:ml-36 flex justify-center gap-x-4 items-center">
           <div className="w-14">
-            <img src={logo} alt="funaab" className="object-cover w-full" />
+            <img src="/funaab.png" alt="funaab" className="object-cover w-full" />
           </div>
           <h2 className="text-2xl font-semibold text-center">
             Smart Attendance

@@ -3,7 +3,6 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserPlus } from "lucide-react";
-import logo from "../assets/funaab.png";
 
 import {
   Card,
@@ -15,25 +14,46 @@ import {
 import { Button } from "../components/ui/button";
 import { Separator } from "../components/ui/separator";
 
-const MotionCard = motion.create(Card)
+const MotionCard = motion.create(Card);
 
 function Signup() {
+  const d = new Date();
+  const year = d.getFullYear();
+
   const handleGoogleAuth = () => {
     // Google sign-up logic
   };
 
   return (
     <div className="min-h-screen min-w-screen flex flex-col items-center justify-center bg-gradient-to-tl from-green-600 to-[#e0ffe7] px-4">
-      <motion.div initial={{opacity: 0, y: -50}} whileInView={{opacity: 1, y: 0}} transition={{duration: 0.7, ease: "easeInOut"}} viewport={{once: false}} className="flex items-center justify-start gap-x-2 mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+        viewport={{ once: false }}
+        className="flex items-center justify-start gap-x-2 mb-8"
+      >
         <div className="w-24 h-24">
-          <img src={logo} alt="funaab" className="object-contain w-full h-full" />
+          <img
+            src="/funaab.png"
+            alt="funaab"
+            className="object-contain w-full h-full"
+          />
         </div>
         <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
       </motion.div>
 
-      <MotionCard initial={{opacity: 0, y: 50}} whileInView={{opacity: 1, y: 0}} transition={{duration: 0.7, ease: "easeInOut"}} viewport={{once: false}} className="w-full max-w-md shadow-xl bg-white text-black">
+      <MotionCard
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+        viewport={{ once: false }}
+        className="w-full max-w-md shadow-xl bg-white text-black"
+      >
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Create an Account
+          </CardTitle>
           <CardDescription className="text-gray-500">
             Sign up to get started
           </CardDescription>
@@ -74,6 +94,11 @@ function Signup() {
           </div>
         </CardContent>
       </MotionCard>
+
+      <p className="text-center text-black mt-4">
+        &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        reserved.
+      </p>
     </div>
   );
 }

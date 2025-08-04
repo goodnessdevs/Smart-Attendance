@@ -17,45 +17,45 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "./ui/sidebar";
-import { ModeToggle } from "./ModeToggle";
-import { Separator } from "./ui/separator";
+} from "../../../components/ui/sidebar";
+import { ModeToggle } from "../../../components/ModeToggle";
+import { Separator } from "../../../components/ui/separator";
 
 // Menu items.
 const items = [
   {
     title: "Dashboard",
-    href: "/",
+    href: "/admin/lecturers",
     icon: LayoutDashboardIcon,
   },
   {
     title: "Inbox",
-    href: "/inbox",
+    href: "/admin/lecturers/inbox",
     icon: Inbox,
   },
   {
     title: "Session Calendar",
-    href: "/calendar",
+    href: "/admin/lecturers/calendar",
     icon: Calendar,
   },
   {
     title: "Account",
-    href: "/account",
+    href: "/admin/lecturers/account",
     icon: User,
   },
   {
-    title: "Support",
-    href: "/support",
+    title: "Students Support",
+    href: "/admin/lecturers/support",
     icon: Contact,
   },
   {
     title: "Log out",
-    href: "/login",
+    href: "/admin/lecturers/login",
     icon: LogOut,
   },
 ];
 
-export function AppSidebar() {
+export function AdminSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-sidebar flex flex-col h-full justify-between">
