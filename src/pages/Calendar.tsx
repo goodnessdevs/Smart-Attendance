@@ -30,7 +30,7 @@ const sessionActivities = [
   { activity: "Session Ends", date: "April 30, 2026" },
 ];
 
-const MotionCard = motion(Card);
+const MotionCard = motion.create(Card);
 
 export default function CalendarPage() {
   return (
@@ -40,7 +40,7 @@ export default function CalendarPage() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeInOut" }}
         viewport={{ once: false }}
-        className="md:w-4xl w-md mx-auto my-10 shadow-lg"
+        className="w-full max-w-full md:w-full mx-auto my-10 shadow-lg"
       >
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">

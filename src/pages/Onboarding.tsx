@@ -13,13 +13,14 @@ import {
   SelectContent,
   SelectItem,
 } from "../components/ui/select";
-
+import logo from "../assets/funaab.png";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Separator } from "../components/ui/separator";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const colleges = [
   {
@@ -64,14 +65,18 @@ const colleges = [
   },
 ];
 
+const MotionCard = motion.create(Card);
+
 function Onboarding() {
+  const d = new Date();
+  const year = d.getFullYear();
   const [formData, setFormData] = useState({
     matricNo: "",
     department: "",
     college: "",
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [location, setLocation] = useState<string | null>(null);
 
@@ -111,18 +116,36 @@ function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen min-w-screen flex items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
-      <Card className="md:w-full w-[400px] max-w-md bg-white shadow-2xl border">
+    <div className="min-h-screen min-w-screen flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
+      <div className="flex items-center gap-x-4">
+        <div className="w-20 h-20 mb-4">
+          <img
+            src={logo}
+            alt="funaab"
+            className="object-contain w-full h-full"
+          />
+        </div>
+        <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
+      </div>
+      <MotionCard
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="md:w-full w-[400px] max-w-md bg-white shadow-md border"
+      >
         <CardHeader>
           <CardTitle className="text-black">Getting Started</CardTitle>
-          <CardDescription className="text-gray-500">Fill in your details to continue.</CardDescription>
+          <CardDescription className="text-gray-500">
+            Fill in your details to continue.
+          </CardDescription>
         </CardHeader>
 
         <CardContent className="">
           <form onSubmit={handleSubmit} className="space-y-5 text-black">
-
             <div className="space-y-2">
-              <Label className="text-black" htmlFor="matricNo">Matric Number</Label>
+              <Label className="text-black" htmlFor="matricNo">
+                Matric Number
+              </Label>
               <Input
                 name="matricNo"
                 placeholder="e.g., 20184215"
@@ -142,7 +165,10 @@ function Onboarding() {
                 value={formData.department}
               >
                 <SelectTrigger id="department" className="border-black">
-                  <SelectValue placeholder="Select your department" className="text-black" />
+                  <SelectValue
+                    placeholder="Select your department"
+                    className="text-black"
+                  />
                 </SelectTrigger>
                 <SelectContent className="bg-white text-black">
                   <SelectItem value="computer-science">
@@ -171,7 +197,10 @@ function Onboarding() {
                 value={formData.college}
               >
                 <SelectTrigger id="college" className="border-black">
-                  <SelectValue placeholder="Select your college" className="text-black" />
+                  <SelectValue
+                    placeholder="Select your college"
+                    className="text-black"
+                  />
                 </SelectTrigger>
                 <SelectContent side="top" className="bg-white text-black">
                   {colleges.map((college, index) => (
@@ -187,20 +216,32 @@ function Onboarding() {
 
             <div className="space-y-2">
               <Label>Location Access</Label>
-              <Button type="button" className="text-white bg-black hover:bg-gray-800" onClick={handleLocationAccess}>
+              <Button
+                type="button"
+                className="text-white bg-black hover:bg-gray-800"
+                onClick={handleLocationAccess}
+              >
                 {location ? "Location Accessed ✅" : "Grant Location Access"}
               </Button>
-              {location && (
-                <p className="text-sm text-gray-800">{location}</p>
-              )}
+              {location && <p className="text-sm text-gray-800">{location}</p>}
             </div>
 
-            <Button type="submit" className="w-full text-white bg-black hover:bg-gray-800">
+            <Button
+              type="submit"
+              className="w-full text-white bg-black hover:bg-gray-800"
+            >
               Finish Setup
             </Button>
           </form>
         </CardContent>
-      </Card>
+      </MotionCard>
+
+      <div className="text-sm">
+        <p className="text-center">
+          &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+          reserved.
+        </p>
+      </div>
     </div>
   );
 }

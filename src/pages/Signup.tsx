@@ -15,7 +15,7 @@ import {
 import { Button } from "../components/ui/button";
 import { Separator } from "../components/ui/separator";
 
-const MotionCard = motion(Card)
+const MotionCard = motion.create(Card)
 
 function Signup() {
   const handleGoogleAuth = () => {
@@ -26,7 +26,7 @@ function Signup() {
     <div className="min-h-screen min-w-screen flex flex-col items-center justify-center bg-gradient-to-tl from-green-600 to-[#e0ffe7] px-4">
       <motion.div initial={{opacity: 0, y: -50}} whileInView={{opacity: 1, y: 0}} transition={{duration: 0.7, ease: "easeInOut"}} viewport={{once: false}} className="flex items-center justify-start gap-x-2 mb-8">
         <div className="w-24 h-24">
-          <img src={logo} alt="funaab" className="object-cover w-full h-full rounded-full" />
+          <img src={logo} alt="funaab" className="object-cover w-full h-full" />
         </div>
         <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
       </motion.div>

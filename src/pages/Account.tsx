@@ -15,19 +15,19 @@ import {
 } from "../components/ui/tabs";
 import { Link } from "react-router-dom";
 
-const MotionCard = motion(Card);
-const MotionTabsList = motion(TabsList);
-const MotionTabsContent = motion(TabsContent);
+const MotionCard = motion.create(Card);
+const MotionTabsList = motion.create(TabsList);
+const MotionTabsContent = motion.create(TabsContent);
 
 function Account() {
   return (
-    <div className="w-full p-4 md:max-w-6xl mx-auto mb-10">
+    <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10">
       <MotionCard
         initial={{ opacity: 1, x: 100 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9 }}
         viewport={{ once: false }}
-        className="w-sm md:w-3xl mb-6 mx-auto"
+        className="w-full max-w-full md:w-3xl mb-6 mx-auto"
       >
         <CardHeader className="flex flex-col items-center text-center">
           <Avatar className="w-20 h-20 mb-2">
@@ -41,13 +41,13 @@ function Account() {
         </CardHeader>
       </MotionCard>
 
-      <Tabs defaultValue="attendance" className="w-sm md:w-3xl mx-auto">
+      <Tabs defaultValue="attendance" className="w-full max-w-full md:w-3xl mx-auto">
         <MotionTabsList
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: false }}
-          className="w-sm md:w-3xl grid grid-cols-3 md:grid-cols-3"
+          className="w-full max-w-full md:w-3xl grid grid-cols-3"
         >
           <TabsTrigger value="attendance">Attendance</TabsTrigger>
           <TabsTrigger value="settings">Details</TabsTrigger>
