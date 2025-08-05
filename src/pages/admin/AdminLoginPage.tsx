@@ -1,11 +1,17 @@
-import { useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '../../components/ui/button'
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "../../components/ui/button";
 // import { Separator } from '@radix-ui/react-separator'
-import { motion } from 'framer-motion'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
-import { UserLock } from 'lucide-react'
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { UserLock } from "lucide-react";
 
 const MotionCard = motion.create(Card);
 
@@ -16,6 +22,9 @@ const AdminAuth = () => {
     // Google auth logic
     navigate("/admin/auth");
   };
+
+  const d = new Date();
+  const year = d.getFullYear();
 
   return (
     <div className="min-h-screen min-w-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-600 to-[#e0ffe7] px-4">
@@ -28,19 +37,20 @@ const AdminAuth = () => {
       >
         <div className="w-24 h-24">
           <img
-            src="/funaab.png"
+            src={"/funaab.png"}
             alt="funaab"
             className="object-contain w-full h-full"
           />
         </div>
-        <h2 className="text-2xl text-black font-bold">Smart Attendance For Lecturers</h2>
+        <h2 className="text-2xl text-black text-center font-bold">
+          Smart Attendance For Lecturers
+        </h2>
       </motion.div>
 
       <MotionCard
         initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeInOut" }}
-        viewport={{ once: false }}
         className="w-full max-w-md shadow-xl bg-white text-black"
       >
         <CardHeader className="text-center">
@@ -85,8 +95,13 @@ const AdminAuth = () => {
           </div> */}
         </CardContent>
       </MotionCard>
-    </div>
-  )
-}
 
-export default AdminAuth
+      <p className="text-center text-black mt-4">
+        &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        reserved.
+      </p>
+    </div>
+  );
+};
+
+export default AdminAuth;

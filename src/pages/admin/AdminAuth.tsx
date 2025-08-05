@@ -69,7 +69,13 @@ const AdminAuth = () => {
           Smart Attendance For Lecturers
         </h2>
       </motion.div>
-      <div className="w-full max-w-sm mx-auto p-4 md:p-10 space-y-6 bg-cyan-900 rounded-lg shadow">
+
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut" }}
+        className="w-full max-w-sm mx-auto p-4 md:p-10 space-y-6 bg-cyan-900 rounded-lg shadow"
+      >
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -110,7 +116,7 @@ const AdminAuth = () => {
             </Button>
           </form>
         </Form>
-      </div>
+      </motion.div>
       <p className="text-center text-black mt-4">
         &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
         reserved.
