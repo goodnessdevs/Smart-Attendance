@@ -14,7 +14,7 @@ const AdminAuth = () => {
 
   const handleGoogleAuth = () => {
     // Google auth logic
-    navigate("/admin/lecturers/auth");
+    navigate("/admin/auth");
   };
 
   return (

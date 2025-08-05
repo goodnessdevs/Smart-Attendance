@@ -9,10 +9,7 @@ import { AdminMobileNavbar } from "../pages/admin/components/AdminMobileNavbar";
 
 export default function AdminLayout() {
   const location = useLocation();
-  const hideNavAndFooterRoutes = [
-    "/admin/auth",
-    "/admin/lecturers/login",
-  ];
+  const hideNavAndFooterRoutes = ["/admin/auth", "/admin/lecturers/login"];
   const shouldHide = hideNavAndFooterRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
@@ -24,7 +21,7 @@ export default function AdminLayout() {
 
         <main className="w-full quicksand">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
-          <AdminMobileNavbar />
+          {!shouldHide && <AdminMobileNavbar />}
           <Outlet />
         </main>
 
