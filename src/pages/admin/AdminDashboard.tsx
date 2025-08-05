@@ -1,15 +1,26 @@
-import { useState } from "react"
-import { Button } from "../../components/ui/button"
-import { Command, CommandInput, CommandItem, CommandList } from "../../components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover"
-import { toast } from "sonner"
-import { X } from "lucide-react"
+import { useState } from "react";
+import { Button } from "../../components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../../components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../components/ui/popover";
+import { toast } from "sonner";
+import { X } from "lucide-react";
 
 type Course = {
-  id: number
-  code: string
-  title: string
-}
+  id: number;
+  code: string;
+  title: string;
+};
 
 const allCourses: Course[] = [
   { id: 1, code: "MTS101", title: "Introduction to Mathematics" },
@@ -21,26 +32,26 @@ const allCourses: Course[] = [
   { id: 7, code: "ABE204", title: "Workshop Practice" },
   { id: 8, code: "ELE202", title: "Applied Electricity" },
   { id: 9, code: "MTS205", title: "Calculus II" },
-]
+];
 
 const SelectCourse = () => {
-  const [selectedCourses, setSelectedCourses] = useState<Course[]>([])
-  const [open, setOpen] = useState(false)
+  const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+  const [open, setOpen] = useState(false);
 
   const handleSelect = (course: Course) => {
-    const alreadyAdded = selectedCourses.find((c) => c.id === course.id)
+    const alreadyAdded = selectedCourses.find((c) => c.id === course.id);
     if (alreadyAdded) {
-      toast.error("Course already selected")
-      return
+      toast.error("Course already selected");
+      return;
     }
-    setSelectedCourses((prev) => [...prev, course])
-    toast.success(`${course.code} added`)
-    setOpen(false)
-  }
+    setSelectedCourses((prev) => [...prev, course]);
+    toast.success(`${course.code} added`);
+    setOpen(false);
+  };
 
   const removeCourse = (id: number) => {
-    setSelectedCourses((prev) => prev.filter((c) => c.id !== id))
-  }
+    setSelectedCourses((prev) => prev.filter((c) => c.id !== id));
+  };
 
   return (
     <div className="max-w-2xl px-8 mx-auto py-10 space-y-8">
@@ -54,28 +65,31 @@ const SelectCourse = () => {
       {/* Dropdown Search */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-full justify-start">
-            Select a course...
+          <Button variant="default" className="w-full justify-start">
+            Select courses...
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
-          <Command>
+        <PopoverContent className="w-[300px] p-0">
+          <Command className="w-full dark:text-white">
             <CommandInput placeholder="Search courses..." />
             <CommandList>
-              {allCourses.map((course) => (
-                <CommandItem
-                  key={course.id}
-                  value={course.code + " " + course.title}
-                  onSelect={() => handleSelect(course)}
-                >
-                  <div>
-                    <p className="font-medium">{course.code}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {course.title}
-                    </p>
-                  </div>
-                </CommandItem>
-              ))}
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Courses">
+                {allCourses.map((course) => (
+                  <CommandItem
+                    key={course.id}
+                    value={course.code + " " + course.title}
+                    onSelect={() => handleSelect(course)}
+                  >
+                    <div>
+                      <p className="font-medium">{course.code}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.title}
+                      </p>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
             </CommandList>
           </Command>
         </PopoverContent>
@@ -112,7 +126,7 @@ const SelectCourse = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SelectCourse
+export default SelectCourse;
