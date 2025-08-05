@@ -43,7 +43,7 @@ const SelectCourse = () => {
   }
 
   return (
-    <div className="max-w-2xl px-4 mx-auto py-10 space-y-8">
+    <div className="max-w-2xl px-8 mx-auto py-10 space-y-8">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Add Courses for Attendance</h2>
         <p className="text-muted-foreground">

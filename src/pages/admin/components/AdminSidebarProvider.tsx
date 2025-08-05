@@ -1,8 +1,8 @@
 import React from "react"
-import { useIsMobile } from "../hooks/use-mobile"
-import { TooltipProvider } from "./ui/tooltip"
-import { cn } from "../lib/utils"
-import { Button } from "./ui/button"
+import { useIsMobile } from "../../../hooks/use-mobile"
+import { TooltipProvider } from "../../../components/ui/tooltip"
+import { cn } from "../../../lib/utils"
+import { Button } from "../../../components/ui/button"
 import { AlignLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

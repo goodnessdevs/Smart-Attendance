@@ -1,12 +1,11 @@
 import { ThemeProvider } from "../components/ui/theme-provider";
-// import { MobileNavbar } from '../components/MobileNavbar'
 import { Toaster } from "../components/ui/sonner";
 import Footer from "../components/Footer";
 import { AdminSidebar } from "../pages/admin/components/AdminSidebar";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
-// import { AdminSidebarProvider, AdminSidebarTrigger } from "../components/AdminSidebarProvider";
+import { AdminMobileNavbar } from "../pages/admin/components/AdminMobileNavbar";
 
 export default function AdminLayout() {
   const location = useLocation();
@@ -25,7 +24,7 @@ export default function AdminLayout() {
 
         <main className="w-full quicksand">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
-          {/* <MobileNavbar /> */}
+          <AdminMobileNavbar />
           <Outlet />
         </main>
 

@@ -13,7 +13,7 @@ export default function Layout() {
     "/admin/lecturers",];
   const shouldHide = hideNavAndFooterRoutes.includes(location.pathname);
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <SidebarProvider>
         {!shouldHide && <AppSidebar />}
 
