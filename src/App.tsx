@@ -13,6 +13,7 @@ import AdminAuth from "./pages/admin/AdminAuth";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminLayout from "./layouts/AdminLayout";
+import AttendanceViewer from "./pages/admin/AttendanceViewer";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/admin/lecturers/login" element={<AdminLoginPage />} />
           <Route path="/admin/auth" element={<AdminAuth />} />
           <Route path="/admin/lecturers" element={<AdminDashboard />} />
+          <Route path="/admin/lecturers/support" element={<AttendanceViewer />} />
         </Route>
       </Routes>
   );
