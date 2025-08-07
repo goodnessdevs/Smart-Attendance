@@ -5,6 +5,7 @@ import {
   Inbox,
   LogOut,
   Contact,
+  CheckIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -27,6 +28,11 @@ const items = [
     title: "Dashboard",
     href: "/admin/lecturers",
     icon: LayoutDashboardIcon,
+  },
+  {
+    title: "Attendance",
+    href: "/admin/lecturers/attendance",
+    icon: CheckIcon,
   },
   {
     title: "Inbox",
