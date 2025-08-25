@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -30,15 +31,10 @@ type Attendance = {
 };
 
 const courses: Course[] = [
-  { id: "mts101", code: "MTS101", title: "Introduction to Mathematics" },
   { id: "phs102", code: "PHS102", title: "General Physics" },
   { id: "chm103", code: "CHM103", title: "Inorganic Chemistry" },
   { id: "csc104", code: "CSC104", title: "Intro to Programming" },
-  { id: "bio105", code: "BIO105", title: "Cell Biology" },
-  { id: "gns106", code: "GNS106", title: "English & Communication Skills" },
-  { id: "abe204", code: "ABE204", title: "Workshop Practice" },
   { id: "ele202", code: "ELE202", title: "Applied Electricity" },
-  { id: "mts205", code: "MTS205", title: "Calculus II" },
 ];
 
 const mockAttendance: Record<string, Attendance[]> = {
@@ -81,72 +77,98 @@ export default function AttendanceViewer() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4 space-y-10">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">View Students Attendance</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-3">
-          {courses.map((course) => (
-            <Button
-              key={course.id}
-              variant={
-                selectedCourse?.id === course.id ? "default" : "outline"
-              }
-              onClick={() => handleCourseClick(course)}
-              className="text-sm"
-            >
-              {course.code} - {course.title}
-            </Button>
-          ))}
-        </CardContent>
-      </Card>
-
-      <Element name="attendance-table">
+    <motion.div
+      className="max-w-6xl mx-auto py-10 px-4 space-y-10"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }}>
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">
-              {selectedCourse
-                ? `Attendance for ${selectedCourse.code} - ${selectedCourse.title}`
-                : "Attendance Viewer"}
-            </CardTitle>
+            <CardTitle className="text-xl">View Students Attendance</CardTitle>
           </CardHeader>
-          <CardContent>
-            {selectedCourse ? (
-              mockAttendance[selectedCourse.id]?.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Matric No.</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Time</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {mockAttendance[selectedCourse.id].map((student, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{student.name}</TableCell>
-                        <TableCell>{student.matricNo}</TableCell>
-                        <TableCell>{student.date}</TableCell>
-                        <TableCell>{student.time}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-gray-500 text-sm">
-                  No attendance records yet for this course.
-                </p>
-              )
-            ) : (
-              <div className="border-2 border-dashed border-gray-300 p-6 rounded-md text-center text-gray-500 text-sm">
-                Select a course above to view student attendance.
-              </div>
-            )}
+          <CardContent className="flex flex-wrap gap-3">
+            {courses.map((course, index) => (
+              <motion.div
+                key={course.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Button
+                  variant={selectedCourse?.id === course.id ? "default" : "outline"}
+                  onClick={() => handleCourseClick(course)}
+                  className="text-sm"
+                >
+                  {course.code} - {course.title}
+                </Button>
+              </motion.div>
+            ))}
           </CardContent>
         </Card>
+      </motion.div>
+
+      <Element name="attendance-table">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">
+                {selectedCourse
+                  ? `Attendance for ${selectedCourse.code} - ${selectedCourse.title}`
+                  : "Attendance Viewer"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {selectedCourse ? (
+                mockAttendance[selectedCourse.id]?.length > 0 ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Matric No.</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Time</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {mockAttendance[selectedCourse.id].map((student, index) => (
+                        <motion.tr
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <TableCell>{student.name}</TableCell>
+                          <TableCell>{student.matricNo}</TableCell>
+                          <TableCell>{student.date}</TableCell>
+                          <TableCell>{student.time}</TableCell>
+                        </motion.tr>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-gray-500 text-sm"
+                  >
+                    No attendance records yet for this course.
+                  </motion.p>
+                )
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="border-2 border-dashed border-gray-300 p-6 rounded-md text-center text-gray-500 text-sm"
+                >
+                  Select a course above to view student attendance.
+                </motion.div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
       </Element>
-    </div>
+    </motion.div>
   );
 }

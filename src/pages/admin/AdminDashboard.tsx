@@ -131,20 +131,16 @@
 
 // export default SelectCourse;
 
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { toast } from 'sonner'
-import { X } from 'lucide-react'
+import { useState } from "react";
+import { toast } from "sonner";
+import { X } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-} from '../../components/ui/card'
-import {
-  Button,
-} from '../../components/ui/button'
+} from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -152,85 +148,151 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '../../components/ui/command'
+} from "../../components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '../../components/ui/popover'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../components/ui/table'
+} from "../../components/ui/popover";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "../../components/ui/table";
+import { motion } from "framer-motion";
 
 type Course = {
-  id: string
-  code: string
-  title: string
-}
+  id: string;
+  code: string;
+  title: string;
+};
 
-type Attendance = {
-  name: string
-  matricNo: string
-  date: string
-  time: string
-}
+// type Attendance = {
+//   name: string;
+//   matricNo: string;
+//   date: string;
+//   time: string;
+// };
 
 // Sample list of all available courses
 const allCourses: Course[] = [
-  { id: 'mts101', code: 'MTS101', title: 'Introduction to Mathematics' },
-  { id: 'phs102', code: 'PHS102', title: 'General Physics' },
-  { id: 'chm103', code: 'CHM103', title: 'Inorganic Chemistry' },
-  { id: 'csc104', code: 'CSC104', title: 'Intro to Programming' },
-  { id: 'bio105', code: 'BIO105', title: 'Cell Biology' },
-  { id: 'gns106', code: 'GNS106', title: 'English & Communication Skills' },
-  { id: 'abe204', code: 'ABE204', title: 'Workshop Practice' },
-  { id: 'ele202', code: 'ELE202', title: 'Applied Electricity' },
-  { id: 'mts205', code: 'MTS205', title: 'Calculus II' },
-]
+  { id: "mts101", code: "MTS101", title: "Introduction to Mathematics" },
+  { id: "phs102", code: "PHS102", title: "General Physics" },
+  { id: "chm103", code: "CHM103", title: "Inorganic Chemistry" },
+  { id: "csc104", code: "CSC104", title: "Intro to Programming" },
+  { id: "bio105", code: "BIO105", title: "Cell Biology" },
+  { id: "gns106", code: "GNS106", title: "English & Communication Skills" },
+  { id: "abe204", code: "ABE204", title: "Workshop Practice" },
+  { id: "ele202", code: "ELE202", title: "Applied Electricity" },
+  { id: "mts205", code: "MTS205", title: "Calculus II" },
+];
 
-// Simulated student attendance records
-const mockAttendance: Record<string, Attendance[]> = {
-  csc104: [
-    { name: 'John Doe', matricNo: 'CSC/20/001', date: '2025-08-07', time: '08:15 AM' },
-    { name: 'Jane Smith', matricNo: 'CSC/20/002', date: '2025-08-07', time: '08:17 AM' },
-  ],
-  mts101: [
-    { name: 'Alice Brown', matricNo: 'MTS/20/003', date: '2025-08-07', time: '09:05 AM' },
-  ],
-}
+// const mockAttendance: Record<string, Attendance[]> = {
+//   csc104: [
+//     {
+//       name: "John Doe",
+//       matricNo: "CSC/20/001",
+//       date: "2025-08-07",
+//       time: "08:15 AM",
+//     },
+//     {
+//       name: "Jane Smith",
+//       matricNo: "CSC/20/002",
+//       date: "2025-08-07",
+//       time: "08:17 AM",
+//     },
+//   ],
+//   mts101: [
+//     {
+//       name: "Alice Brown",
+//       matricNo: "MTS/20/003",
+//       date: "2025-08-07",
+//       time: "09:05 AM",
+//     },
+//   ],
+// };
 
 export default function AttendanceDashboard() {
-  const [selectedCourses, setSelectedCourses] = useState<Course[]>([])
-  const [selectedCourseToView, setSelectedCourseToView] = useState<Course | null>(null)
-  const [open, setOpen] = useState(false)
+  const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+  const [selectedCourseToView, setSelectedCourseToView] =
+    useState<Course | null>(null);
+  const [open, setOpen] = useState(false);
 
   const handleSelect = (course: Course) => {
-    const alreadyAdded = selectedCourses.find((c) => c.id === course.id)
+    const alreadyAdded = selectedCourses.find((c) => c.id === course.id);
     if (alreadyAdded) {
-      toast.error('Course already selected')
-      return
+      toast.error("Course already selected");
+      return;
     }
-    setSelectedCourses((prev) => [...prev, course])
-    toast.success(`${course.code} added`)
-    setOpen(false)
-  }
+    setSelectedCourses((prev) => [...prev, course]);
+    toast.success(`${course.code} added`);
+    setOpen(false);
+  };
 
   const removeCourse = (id: string) => {
-    setSelectedCourses((prev) => prev.filter((c) => c.id !== id))
+    setSelectedCourses((prev) => prev.filter((c) => c.id !== id));
     if (selectedCourseToView?.id === id) {
-      setSelectedCourseToView(null)
+      setSelectedCourseToView(null);
     }
-  }
+  };
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4 space-y-10">
+    <motion.div
+      className="max-w-5xl mx-auto py-10 px-4 space-y-10"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+    >
+      <motion.div
+        className="space-y-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, type: "spring" }}
+      >
+        <h2 className="text-3xl font-bold">Welcome, Lecturer</h2>
+        <p className="text-primary max-w-2xl">
+          This dashboard helps you manage student attendance efficiently. You
+          can add courses, view attendance records, and monitor student
+          participation in your classes.
+        </p>
+      </motion.div>
+
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, type: "spring" }}
+      >
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-muted-foreground">Courses Assigned</p>
+            <p className="text-2xl font-bold">3</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-muted-foreground">Total Students</p>
+            <p className="text-2xl font-bold">120</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-muted-foreground">Avg. Attendance</p>
+            <p className="text-2xl font-bold">87%</p>
+          </CardContent>
+        </Card>
+      </motion.div>
+
       {/* Course selection section */}
-      <div className="space-y-4">
+      <motion.div
+        className="space-y-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, type: "spring" }}
+      >
         <div>
           <h2 className="text-2xl font-bold">Add Courses for Attendance</h2>
           <p className="text-muted-foreground">
@@ -250,19 +312,25 @@ export default function AttendanceDashboard() {
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup heading="Courses">
-                  {allCourses.map((course) => (
-                    <CommandItem
+                  {allCourses.map((course, i) => (
+                    <motion.div
                       key={course.id}
-                      value={course.code + ' ' + course.title}
-                      onSelect={() => handleSelect(course)}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05, type: "spring" }}
                     >
-                      <div>
-                        <p className="font-medium">{course.code}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {course.title}
-                        </p>
-                      </div>
-                    </CommandItem>
+                      <CommandItem
+                        value={course.code + " " + course.title}
+                        onSelect={() => handleSelect(course)}
+                      >
+                        <div>
+                          <p className="font-medium">{course.code}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {course.title}
+                          </p>
+                        </div>
+                      </CommandItem>
+                    </motion.div>
                   ))}
                 </CommandGroup>
               </CommandList>
@@ -277,10 +345,14 @@ export default function AttendanceDashboard() {
             <p className="text-muted-foreground">No courses selected yet.</p>
           ) : (
             <div className="space-y-2">
-              {selectedCourses.map((course) => (
-                <div
+              {selectedCourses.map((course, i) => (
+                <motion.div
                   key={course.id}
                   className="flex items-center justify-between p-3 border rounded-md bg-accent shadow-sm"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05, type: "spring" }}
+                  whileHover={{ scale: 1.02 }}
                 >
                   <div>
                     <p className="font-medium">{course.code}</p>
@@ -289,12 +361,12 @@ export default function AttendanceDashboard() {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button
+                    {/* <Button
                       variant="outline"
                       onClick={() => setSelectedCourseToView(course)}
                     >
                       View
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="ghost"
                       size="icon"
@@ -303,51 +375,65 @@ export default function AttendanceDashboard() {
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Attendance Viewer Section */}
+      {/* Attendance Viewer Section
       {selectedCourseToView && (
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              Attendance for {selectedCourseToView.code} - {selectedCourseToView.title}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {mockAttendance[selectedCourseToView.id]?.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Matric No.</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Time</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockAttendance[selectedCourseToView.id].map((student, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{student.name}</TableCell>
-                      <TableCell>{student.matricNo}</TableCell>
-                      <TableCell>{student.date}</TableCell>
-                      <TableCell>{student.time}</TableCell>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, type: "spring" }}
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                Attendance for {selectedCourseToView.code} -{" "}
+                {selectedCourseToView.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {mockAttendance[selectedCourseToView.id]?.length > 0 ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Matric No.</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Time</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <p className="text-muted-foreground text-sm">
-                No attendance records yet for this course.
-              </p>
-            )}
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  )
+                  </TableHeader>
+                  <TableBody>
+                    {mockAttendance[selectedCourseToView.id].map(
+                      (student, index) => (
+                        <motion.tr
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05, type: "spring" }}
+                        >
+                          <TableCell>{student.name}</TableCell>
+                          <TableCell>{student.matricNo}</TableCell>
+                          <TableCell>{student.date}</TableCell>
+                          <TableCell>{student.time}</TableCell>
+                        </motion.tr>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  No attendance records yet for this course.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      )} */}
+    </motion.div>
+  );
 }

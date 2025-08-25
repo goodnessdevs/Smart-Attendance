@@ -22,6 +22,7 @@ import { Button } from "../../../components/ui/button";
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "../../../components/ModeToggle";
+import { Separator } from "../../../components/ui/separator";
 
 // Menu items.
 const items = [
@@ -89,16 +90,18 @@ function SheetNavbar() {
         </SheetTrigger>
 
         <SheetContent
-          side="right"
+          side="left"
           className="w-[350px] sm:w-[350px] md:hidden bg-card"
         >
           <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle className="text-2xl">Menu</SheetTitle>
             <SheetDescription>
               Access your students attendance list, check the session
               attendance, and view notifications.
             </SheetDescription>
+            <Separator />
           </SheetHeader>
+          
 
           <nav className="md:hidden flex flex-col mx-4 gap-4">
             {items.map((item, index) => (
@@ -125,7 +128,7 @@ function SheetNavbar() {
 
 export const AdminMobileNavbar = () => {
   return (
-    <div className="md:hidden flex justify-between items-center p-2 border rounded m-2">
+    <div className="md:hidden flex justify-between items-center p-4">
       <div className="flex gap-x-2 items-center">
         <div className="w-10">
           <img src="/funaab.png" alt="funaab" className="object-cover w-full" />

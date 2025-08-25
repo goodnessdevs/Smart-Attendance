@@ -6,6 +6,7 @@ import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { AdminMobileNavbar } from "../pages/admin/components/AdminMobileNavbar";
+import { Separator } from "../components/ui/separator";
 
 export default function AdminLayout() {
   const location = useLocation();
@@ -19,13 +20,14 @@ export default function AdminLayout() {
       <SidebarProvider>
         {!shouldHide && <AdminSidebar />}
 
-        <main className="w-full quicksand">
+        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <AdminMobileNavbar />}
+          <Separator className="md:hidden" />
           <Outlet />
         </main>
 
-        <Toaster position="top-center" />
+        <Toaster position="top-center" duration={1500} />
       </SidebarProvider>
 
       {!shouldHide && <Footer />}

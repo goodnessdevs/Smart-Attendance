@@ -5,6 +5,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { MobileNavbar } from "../components/MobileNavbar";
 import { Toaster } from "../components/ui/sonner";
 import Footer from "../components/Footer";
+import { Separator } from "../components/ui/separator";
 
 export default function Layout() {
   const location = useLocation();
@@ -17,9 +18,10 @@ export default function Layout() {
       <SidebarProvider>
         {!shouldHide && <AppSidebar />}
 
-        <main className="w-full quicksand">
+        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <MobileNavbar />}
+          <Separator className="md:hidden" />
           <Outlet />
         </main>
 

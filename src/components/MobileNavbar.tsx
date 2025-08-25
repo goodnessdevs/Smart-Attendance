@@ -21,6 +21,7 @@ import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
+import { Separator } from "./ui/separator";
 
 // Menu items.
 const items = [
@@ -83,14 +84,15 @@ function SheetNavbar() {
         </SheetTrigger>
 
         <SheetContent
-          side="right"
-          className="w-[350px] sm:w-[350px] md:hidden bg-card"
+          side="left"
+          className="w-[350px] sm:w-[350px] md:hidden bg-card afacad-flux"
         >
           <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle className="text-2xl">Menu</SheetTitle>
             <SheetDescription>
               Access your courses, mark your attendance, and view notifications.
             </SheetDescription>
+            <Separator />
           </SheetHeader>
 
           <nav className="md:hidden flex flex-col mx-4 gap-4">
@@ -118,7 +120,7 @@ function SheetNavbar() {
 
 export const MobileNavbar = () => {
   return (
-    <div className="md:hidden flex justify-between items-center p-2 border rounded m-2">
+    <div className="md:hidden flex justify-between items-center p-4">
       <div className="flex gap-x-2 items-center">
         <div className="w-10">
           <img src="/funaab.png" alt="funaab" className="object-cover w-full" />
