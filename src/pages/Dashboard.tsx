@@ -32,15 +32,16 @@ import { Badge } from "../components/ui/badge";
 type Course = {
   id: number;
   title: string;
+  code: string;
   status: "Marked" | "Pending";
   date: string;
 };
 
 const initialCourses: Course[] = [
-  { id: 1, title: "Introduction to Entrepreneurship", status: "Pending", date: "2025-08-02" },
-  { id: 2, title: "Applied Electricity II", status: "Marked", date: "2025-07-30" },
-  { id: 3, title: "Fluid Mechanics", status: "Pending", date: "2025-08-01" },
-  { id: 4, title: "Workshop Practice", status: "Marked", date: "2025-07-28" },
+  { id: 1, title: "Introduction to Entrepreneurship", code: "ETS 206", status: "Pending", date: "2025-08-02" },
+  { id: 2, title: "Applied Electricity II", code: "ELE 202", status: "Marked", date: "2025-07-30" },
+  { id: 3, title: "Fluid Mechanics", code: "MCE 205", status: "Pending", date: "2025-08-01" },
+  { id: 4, title: "Workshop Practice", code: "ABE 204", status: "Marked", date: "2025-07-28" },
 ];
 
 export default function Dashboard() {
@@ -67,13 +68,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="px-4 md:mx-4">
-      <div className="mt-14">
+    <div className="px-4 md:mx-4 mb-12 md:mb-0">
+      <div className="mt-14 mb-6">
         <motion.h1 
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", type:"spring", stiffness: 120 }}
-        className="text-5xl text-center font-bold">Welcome <span className="text-cyan-700 dark:text-cyan-200">20251234</span></motion.h1>
+        className="text-4xl text-center font-bold">Welcome, <span className="text-cyan-700 dark:text-cyan-200 text-5xl">20251234!</span></motion.h1>
       </div>
       <motion.h2
         initial={{ opacity: 0, x: -80 }}
@@ -103,7 +104,7 @@ export default function Dashboard() {
               <tbody>
                 {courses.map((course) => (
                   <tr key={course.id} className="border-b hover:bg-muted/50">
-                    <td className="p-4 font-medium">{course.title}</td>
+                    <td className="p-4 font-medium">{course.code}</td>
                     <td className="p-4">
                       <Badge
                         variant={course.status === "Marked" ? "success" : "warning"}

@@ -1,8 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserLock } from "lucide-react";
+import {
+  getOrCreateUUID,
+  getBrowserFingerprint,
+} from "../utils/browserfingerprint";
 
 import {
   Card,
@@ -12,22 +14,50 @@ import {
   CardDescription,
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { Separator } from "../components/ui/separator";
+// import { Separator } from "../components/ui/separator";
+import { useEffect, useState } from "react";
 
 const MotionCard = motion.create(Card);
 
 function Login() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const d = new Date();
   const year = d.getFullYear();
 
+  const [uuid, setUuid] = useState("");
+  const [fingerprint, setFingerprint] = useState("");
+
+  useEffect(() => {
+    async function initDevice() {
+      const deviceUUID = await getOrCreateUUID();
+      const browserFP = getBrowserFingerprint();
+
+      setUuid(deviceUUID);
+      setFingerprint(browserFP);
+
+      // Optionally send device info to backend for logging
+      fetch("http://localhost:4000/api/device-info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uuid: deviceUUID,
+          fingerprint: browserFP,
+        }),
+        credentials: "include",
+      });
+    }
+
+    initDevice();
+  }, []);
+
   const handleGoogleAuth = () => {
     // Google auth logic
-    navigate("/onboarding");
+    // navigate("/onboarding");
+    window.location.href = "http://localhost:4000/auth/google";
   };
 
   return (
-    <div className="min-h-screen min-w-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-600 to-[#e0ffe7] px-4">
+    <div className="h-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-600 to-[#e0ffe7] px-4">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -72,16 +102,25 @@ function Login() {
             }}
           >
             <Button
-              variant="default"
-              className="w-full flex gap-2 cursor-pointer justify-center text-white items-center bg-blue-600 hover:bg-blue-800"
               onClick={handleGoogleAuth}
+              className="w-full flex gap-2 cursor-pointer justify-center text-black items-center bg-slate-200 hover:bg-slate-300 transition-colors"
             >
-              <FontAwesomeIcon icon={faGoogle} className="w-4 h-4" />
+              <img
+                src="https://www.svgrepo.com/show/355037/google.svg"
+                alt="Google"
+                className="w-5 h-5"
+              />
               Sign in with Google
             </Button>
           </motion.div>
 
-          <Separator />
+          {/* Debug info */}
+          <div className="mt-6 text-xs text-gray-500">
+            <p>UUID: {uuid}</p>
+            <p>Fingerprint: {fingerprint}</p>
+          </div>
+
+          {/* <Separator /> */}
 
           <div className="text-center text-sm font-semibold">
             Don’t have an account?{" "}
@@ -94,7 +133,7 @@ function Login() {
           </div>
         </CardContent>
       </MotionCard>
-      
+
       <p className="text-center text-black mt-4">
         &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
         reserved.
