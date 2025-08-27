@@ -20,49 +20,7 @@ import { Separator } from "../components/ui/separator";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
-const colleges = [
-  {
-    title: "COLAMRUD",
-    value: "colamrud",
-  },
-  {
-    title: "COLANIM",
-    value: "colanim",
-  },
-  {
-    title: "COLBIOS",
-    value: "colbios",
-  },
-  {
-    title: "COLCOMS",
-    value: "colcoms",
-  },
-  {
-    title: "COLENDS",
-    value: "colends",
-  },
-  {
-    title: "COLENG",
-    value: "coleng",
-  },
-  {
-    title: "COLERM",
-    value: "colerm",
-  },
-  {
-    title: "COLPHYS",
-    value: "colphys",
-  },
-  {
-    title: "COLPLANT",
-    value: "colplant",
-  },
-  {
-    title: "COLVET",
-    value: "colvet",
-  },
-];
+import { colleges } from "../components/CollegeData";
 
 const MotionCard = motion.create(Card);
 
@@ -76,43 +34,48 @@ function Onboarding() {
   });
 
   const navigate = useNavigate();
-
-  const [location, setLocation] = useState<string | null>(null);
+  // const [location, setLocation] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLocationAccess = () => {
-    if (!navigator.geolocation) {
-      toast("Geolocation not supported", {
-        description: "Your browser does not support location access.",
-      });
-      return;
-    }
+  // const handleLocationAccess = () => {
+  //   if (!navigator.geolocation) {
+  //     toast("Geolocation not supported", {
+  //       description: "Your browser does not support location access.",
+  //     });
+  //     return;
+  //   }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        toast("Location Access Granted", {
-          description: `Lat: ${latitude}, Lng: ${longitude}`,
-        });
-      },
-      (error) => {
-        toast("Location Access Denied", {
-          description: error.message,
-        });
-      }
-    );
-  };
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       setLocation(`Latitude: ${latitude}, Longitude: ${longitude}`);
+  //       toast("Location Access Granted", {
+  //         description: `Lat: ${latitude}, Lng: ${longitude}`,
+  //       });
+  //     },
+  //     (error) => {
+  //       toast("Location Access Denied", {
+  //         description: error.message,
+  //       });
+  //     }
+  //   );
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ ...formData, location });
-    // send to API or handle onboarding logic
+    
+    toast.success("Registration Completed");
+
     navigate("/");
   };
+
+  // Get departments for selected college
+  const selectedCollege = colleges.find(
+    (college) => college.value === formData.college
+  );
 
   return (
     <div className="min-h-screen w-full max-w-full flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
@@ -126,6 +89,7 @@ function Onboarding() {
         </div>
         <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
       </div>
+
       <MotionCard
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -155,53 +119,26 @@ function Onboarding() {
               />
             </div>
 
+            {/* COLLEGE SELECT */}
             <div className="space-y-2">
-              <Label htmlFor="department">Department</Label>
+              <Label htmlFor="college">College</Label>
               <Select
                 onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, department: value }))
-                }
-                value={formData.department}
-              >
-                <SelectTrigger id="department" className="border-black">
-                  <SelectValue
-                    placeholder="Select your department"
-                    className="text-black"
-                  />
-                </SelectTrigger>
-                <SelectContent className="bg-white text-black">
-                  <SelectItem value="computer-science">
-                    Computer Science
-                  </SelectItem>
-                  <SelectItem value="electrical-engineering">
-                    Electrical Engineering
-                  </SelectItem>
-                  <SelectItem value="mechanical-engineering">
-                    Mechanical Engineering
-                  </SelectItem>
-                  <SelectItem value="biochemistry">Biochemistry</SelectItem>
-                  <SelectItem value="agricultural-economics">
-                    Agricultural Economics
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="department">College</Label>
-              <Select
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, college: value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    college: value,
+                    department: "", // reset department
+                  }))
                 }
                 value={formData.college}
               >
-                <SelectTrigger id="college" className="border-black">
+                <SelectTrigger id="college" className="border-black w-3/4">
                   <SelectValue
                     placeholder="Select your college"
                     className="text-black"
                   />
                 </SelectTrigger>
-                <SelectContent side="top" className="bg-white text-black">
+                <SelectContent side="bottom" className="bg-white text-black">
                   {colleges.map((college, index) => (
                     <SelectItem key={index} value={college.value}>
                       {college.title}
@@ -211,9 +148,39 @@ function Onboarding() {
               </Select>
             </div>
 
+            {/* DEPARTMENT SELECT */}
+            <div className="space-y-2">
+              <Label htmlFor="department">Department</Label>
+              <Select
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, department: value }))
+                }
+                value={formData.department}
+                disabled={!formData.college}
+              >
+                <SelectTrigger id="department" className="border-black">
+                  <SelectValue
+                    placeholder={
+                      formData.college
+                        ? "Select your department"
+                        : "Select a college first"
+                    }
+                    className="text-black"
+                  />
+                </SelectTrigger>
+                <SelectContent className="bg-white text-black">
+                  {selectedCollege?.departments.map((dept, index) => (
+                    <SelectItem key={index} value={dept.value}>
+                      {dept.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <Separator />
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label>Location Access</Label>
               <Button
                 type="button"
@@ -223,7 +190,7 @@ function Onboarding() {
                 {location ? "Location Accessed ✅" : "Grant Location Access"}
               </Button>
               {location && <p className="text-sm text-gray-800">{location}</p>}
-            </div>
+            </div> */}
 
             <Button
               type="submit"
