@@ -1,69 +1,94 @@
-# React + TypeScript + Vite
+ # Smart Attendance
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ Smart Attendance is a modern web application designed to streamline and digitize the process of tracking student attendance in academic institutions. Built with React, TypeScript, and Vite, it provides a seamless experience for both students and lecturers, supporting features like course selection, attendance marking, admin management, and responsive design for all devices.
 
-Currently, two official plugins are available:
+ ## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ - 📋 **Student Attendance Tracking**: Students can view their attendance records, see summaries, and mark attendance for their courses.
+ - 🧑‍🏫 **Lecturer/Admin Dashboard**: Admins can log in securely, select and manage courses, and track attendance for each course.
+ - 🔍 **Course Search & Selection**: Easily search and select courses to manage or mark attendance.
+ - ✅ **Mark Attendance**: Mark attendance with a single click, with visual feedback and confetti animation for success.
+ - 📅 **Academic Calendar**: View the academic session calendar with important dates and activities.
+ - 📱 **Mobile-First & Responsive**: Fully responsive UI for mobile, tablet, and desktop users.
+ - 🔒 **Secure Admin Access**: Admin authentication with password protection (for demo; use a secure backend in production).
+ - 🌐 **Location Access**: Optionally require location access for marking attendance (for added verification).
 
-## Expanding the ESLint configuration
+ ## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+ - **Frontend**: React, TypeScript, Vite
+ - **Styling**: Tailwind CSS
+ - **State Management**: React Hooks
+ - **UI Components**: Custom and reusable components (Card, Table, Badge, Checkbox, etc.)
+ - **Animation**: Framer Motion, Canvas Confetti
+ - **Notifications**: Sonner
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+ ## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+ ### Prerequisites
+ - Node.js (v18 or later recommended)
+ - pnpm (or npm/yarn)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+ ### Installation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+ ```bash
+ # Clone the repository
+ git clone https://github.com/goodnessdevs/Smart-Attendance.git
+ cd attendance-app
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+ # Install dependencies
+ pnpm install
+ # or
+ yarn install
+ # or
+ npm install
+ ```
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+ ### Running the App
+
+ ```bash
+ pnpm dev
+ # or
+ yarn dev
+ # or
+ npm run dev
+ ```
+
+ The app will be available at `http://localhost:5173` (or the port shown in your terminal).
+
+ ## Project Structure
+
+ ```
+ attendance-app/
+ ├── public/                # Static assets
+ ├── src/
+ │   ├── assets/            # Images and icons
+ │   ├── components/        # Reusable UI components
+ │   ├── hooks/             # Custom React hooks
+ │   ├── lib/               # Utility functions
+ │   ├── pages/             # Main app pages (Dashboard, Account, Calendar, etc.)
+ │   └── types/             # TypeScript type definitions
+ ├── package.json
+ ├── tsconfig.json
+ ├── vite.config.ts
+ └── ...
+ ```
+
+ ## Usage
+
+ - **Students**: Log in, view your attendance, and mark attendance for your courses.
+ - **Lecturers/Admins**: Log in via the admin portal, select courses, and manage attendance records.
+ - **Mobile Users**: Enjoy a fully responsive experience on your phone or tablet.
+
+ ## Customization
+ - Update course lists, authentication, and attendance logic as needed for your institution.
+ - For production, connect to a secure backend and database for persistent data.
+
+ ## Contributing
+ Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+ ## License
+ [MIT](LICENSE)
+
+ ---
+
+ > Made with ❤️ by GoodnessDevs

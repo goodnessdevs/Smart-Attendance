@@ -23,7 +23,7 @@ const formSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters" }),
 });
 
-const ADMIN_PASSWORD = "lecturer123"; // 🔒 In production, fetch from secure backend
+const ADMIN_PASSWORD = "lecturer123";
 
 const AdminAuth = () => {
   const [showPassword, setShowPassword] = useState(false);
