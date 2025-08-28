@@ -18,7 +18,7 @@ import { Calendar } from "../../components/ui/calendar";
 import { Input } from "../../components/ui/input";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "../../components/ui/card";
-import { toast } from "sonner"; // ✅ shadcn sonner
+import { toast } from "sonner";
 
 // --- Types ---
 type Course = {

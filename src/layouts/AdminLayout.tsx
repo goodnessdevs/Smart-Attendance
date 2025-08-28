@@ -1,11 +1,11 @@
 import { ThemeProvider } from "../components/ui/theme-provider";
 import { Toaster } from "../components/ui/sonner";
 import Footer from "../components/Footer";
-import { AdminSidebar } from "../pages/admin/components/AdminSidebar";
+import { AdminSidebar } from "../components/AdminSidebar";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
-import { AdminMobileNavbar } from "../pages/admin/components/AdminMobileNavbar";
+import { AdminMobileNavbar } from "../components/AdminMobileNavbar";
 import { Separator } from "../components/ui/separator";
 
 export default function AdminLayout() {
