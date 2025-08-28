@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../../components/ui/button";
 // import { Separator } from '@radix-ui/react-separator'
 import { motion } from "framer-motion";
@@ -10,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { UserLock } from "lucide-react";
 
 const MotionCard = motion.create(Card);
@@ -74,10 +72,14 @@ const AdminAuth = () => {
           >
             <Button
               variant="default"
-              className="w-full flex gap-2 cursor-pointer justify-center text-white items-center bg-blue-600 hover:bg-blue-800"
+              className="w-full flex gap-2 cursor-pointer justify-center text-black items-center bg-gray-200 hover:bg-gray-300"
               onClick={handleGoogleAuth}
             >
-              <FontAwesomeIcon icon={faGoogle} className="w-4 h-4" />
+              <img
+                src="https://www.svgrepo.com/show/355037/google.svg"
+                alt="Google"
+                className="w-5 h-5"
+              />
               Sign in with Google
             </Button>
           </motion.div>
