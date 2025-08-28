@@ -18,9 +18,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "../../../components/ui/sidebar";
-import { ModeToggle } from "../../../components/ModeToggle";
-import { Separator } from "../../../components/ui/separator";
+} from "../components/ui/sidebar";
+import { ModeToggle } from "../components/ModeToggle";
+import { Separator } from "../components/ui/separator";
 
 // Menu items.
 const items = [

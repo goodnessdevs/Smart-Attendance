@@ -17,12 +17,12 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "../../../components/ui/sheet";
-import { Button } from "../../../components/ui/button";
+} from "../components/ui/sheet";
+import { Button } from "../components/ui/button";
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ModeToggle } from "../../../components/ModeToggle";
-import { Separator } from "../../../components/ui/separator";
+import { ModeToggle } from "../components/ModeToggle";
+import { Separator } from "../components/ui/separator";
 
 // Menu items.
 const items = [
