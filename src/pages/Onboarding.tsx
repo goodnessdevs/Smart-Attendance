@@ -31,38 +31,14 @@ function Onboarding() {
     matricNo: "",
     department: "",
     college: "",
+    phoneNo: ""
   });
 
   const navigate = useNavigate();
-  // const [location, setLocation] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  // const handleLocationAccess = () => {
-  //   if (!navigator.geolocation) {
-  //     toast("Geolocation not supported", {
-  //       description: "Your browser does not support location access.",
-  //     });
-  //     return;
-  //   }
-
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const { latitude, longitude } = position.coords;
-  //       setLocation(`Latitude: ${latitude}, Longitude: ${longitude}`);
-  //       toast("Location Access Granted", {
-  //         description: `Lat: ${latitude}, Lng: ${longitude}`,
-  //       });
-  //     },
-  //     (error) => {
-  //       toast("Location Access Denied", {
-  //         description: error.message,
-  //       });
-  //     }
-  //   );
-  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -178,19 +154,21 @@ function Onboarding() {
               </Select>
             </div>
 
-            <Separator />
+            <div>
+              <Label className="text-black" htmlFor="matricNo">
+                Phone Number
+              </Label>
+              <Input
+                name="phoneNo"
+                placeholder="e.g., 08020184215"
+                value={formData.phoneNo}
+                onChange={handleChange}
+                className="border-black"
+                required
+              />
+            </div>
 
-            {/* <div className="space-y-2">
-              <Label>Location Access</Label>
-              <Button
-                type="button"
-                className="text-white bg-black hover:bg-gray-800"
-                onClick={handleLocationAccess}
-              >
-                {location ? "Location Accessed ✅" : "Grant Location Access"}
-              </Button>
-              {location && <p className="text-sm text-gray-800">{location}</p>}
-            </div> */}
+            <Separator />
 
             <Button
               type="submit"

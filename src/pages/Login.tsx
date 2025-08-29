@@ -366,15 +366,18 @@ function Login() {
       setUuid(deviceUUID);
       setFingerprint(browserFP);
 
+      // const { token } = localStorage.getItem("jwt_token");
+
       // Optionally send device info to backend for logging
       fetch(`${import.meta.env.VITE_BASE_URL}/api/device-info`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 
+          // Authorization: `Bearer ${token}`,
+         },
         body: JSON.stringify({
           uuid: deviceUUID,
           fingerprint: browserFP,
         }),
-        credentials: "include",
       });
     }
 
@@ -413,7 +416,7 @@ function Login() {
             console.error("Token validation failed:", err);
             localStorage.removeItem("jwt_token");
           });
-      }
+      } 
     };
 
     window.addEventListener("message", handleMessage);
