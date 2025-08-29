@@ -183,7 +183,7 @@ function Login() {
       setFingerprint(browserFP);
 
       // Optionally send device info to backend for logging
-      fetch("http://localhost:4000/api/device-info", {
+      fetch(`${import.meta.env.VITE_BASE_URL}/api/device-info`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -213,12 +213,11 @@ function Login() {
       localStorage.setItem("jwt_token", token);
 
       // Validate token immediately with backend
-      fetch("http://localhost:4000/dashboard", {
+      fetch(`${import.meta.env.VITE_BASE_URL}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => {
