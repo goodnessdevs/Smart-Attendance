@@ -393,7 +393,7 @@ function Login() {
         localStorage.setItem("jwt_token", token);
 
         // Validate token with backend
-        fetch(`${import.meta.env.VITE_BASE_URL}`, {
+        fetch("https://attendance-cpcr.onrender.com/dashboard", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
