@@ -172,6 +172,7 @@ import {
 import { Button } from "../components/ui/button";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/use-auth"; // ✅ Hook for AuthContext
+import { toast } from "sonner";
 
 const MotionCard = motion.create(Card);
 
@@ -216,8 +217,13 @@ function Login() {
           login(data.user, token); // or dispatch({ type: "LOGIN", payload: data.user })
 
           // Navigate depending on onboarding status
-          if (data.onboarded) {
+          if (res.ok) {
+            setLoading(false);
+            toast.success('Sign in successful');
             navigate("/onboarding");
+          } else {
+            setLoading(false);
+            toast.error('Something went wrong. Please try again');
           }
         } catch (err) {
           console.error("Token validation failed:", err);
