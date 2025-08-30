@@ -8,8 +8,15 @@ import {
 } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../components/ui/dialog";
 import { Inbox } from "lucide-react";
+import { RequireAuthDialog } from "../components/AuthDialog";
 
 const mockMessages = [
   {
@@ -43,7 +50,9 @@ const mockMessages = [
 
 function InboxPage() {
   const [messages, setMessages] = useState(mockMessages);
-  const [selectedMessage, setSelectedMessage] = useState<typeof mockMessages[0] | null>(null);
+  const [selectedMessage, setSelectedMessage] = useState<
+    (typeof mockMessages)[0] | null
+  >(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const markAsRead = (id: number) => {
@@ -52,11 +61,13 @@ function InboxPage() {
     );
   };
 
-  const handleSelect = (msg: typeof mockMessages[0]) => {
+  const handleSelect = (msg: (typeof mockMessages)[0]) => {
     setSelectedMessage(msg);
     setIsOpen(true);
     markAsRead(msg.id);
   };
+
+  RequireAuthDialog();
 
   return (
     <motion.div
