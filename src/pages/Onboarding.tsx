@@ -93,6 +93,9 @@ function Onboarding() {
         });
         toast.success("Registration Completed");
         navigate("/");
+      } else {
+        setLoading(false);
+        toast.error('Registration Failed. Please check your connection')
       }
     } catch (error) {
       setLoading(false);
