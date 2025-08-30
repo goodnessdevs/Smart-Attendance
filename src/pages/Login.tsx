@@ -218,11 +218,9 @@ function Login() {
 
           // Navigate depending on onboarding status
           if (res.ok) {
-            setLoading(false);
             toast.success('Sign in successful');
             navigate("/onboarding");
           } else {
-            setLoading(false);
             toast.error('Something went wrong. Please try again');
           }
         } catch (err) {

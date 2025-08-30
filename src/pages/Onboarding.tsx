@@ -40,6 +40,8 @@ function Onboarding() {
     college: "",
     level: "",
     phoneNo: "",
+    deviceUUID: "",
+    browserFP: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -84,8 +86,9 @@ function Onboarding() {
         }
       );
 
+      const data = await response.json();
+
       if (response.ok) {
-        setLoading(false);
         confetti({
           particleCount: 100,
           spread: 70,
@@ -94,13 +97,13 @@ function Onboarding() {
         toast.success("Registration Completed");
         navigate("/");
       } else {
-        setLoading(false);
-        toast.error('Registration Failed. Please check your connection')
+        toast.error(data.message || "Registration Failed");
       }
     } catch (error) {
-      setLoading(false);
       toast.error("An error ocurred, pls try again");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,11 +174,14 @@ function Onboarding() {
                   />
                 </SelectTrigger>
                 <SelectContent side="bottom" className="bg-white text-black">
-                  {colleges.map((college, index) => (
-                    <SelectItem key={index} value={college.value}>
-                      {college.title}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup>
+                    <SelectLabel>College</SelectLabel>
+                    {colleges.map((college, index) => (
+                      <SelectItem key={index} value={college.value}>
+                        {college.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
@@ -201,11 +207,14 @@ function Onboarding() {
                   />
                 </SelectTrigger>
                 <SelectContent className="bg-white text-black">
-                  {selectedCollege?.departments.map((dept, index) => (
-                    <SelectItem key={index} value={dept.value}>
-                      {dept.title}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup>
+                    <SelectLabel>Department</SelectLabel>
+                    {selectedCollege?.departments.map((dept, index) => (
+                      <SelectItem key={index} value={dept.value}>
+                        {dept.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
@@ -228,11 +237,12 @@ function Onboarding() {
                 <SelectContent className="bg-white text-black">
                   <SelectGroup>
                     <SelectLabel>Level</SelectLabel>
-                    <SelectItem value="apple">100</SelectItem>
-                    <SelectItem value="banana">200</SelectItem>
-                    <SelectItem value="blueberry">300</SelectItem>
-                    <SelectItem value="grapes">400</SelectItem>
-                    <SelectItem value="pineapple">500</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                    <SelectItem value="200">200</SelectItem>
+                    <SelectItem value="300">300</SelectItem>
+                    <SelectItem value="400">400</SelectItem>
+                    <SelectItem value="500">500</SelectItem>
+                    <SelectItem value="600">600</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
