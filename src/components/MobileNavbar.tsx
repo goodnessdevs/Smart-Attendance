@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   LayoutDashboardIcon,
@@ -7,6 +7,8 @@ import {
   Inbox,
   LogOut,
   Contact,
+  LogIn,
+  Loader2,
 } from "lucide-react";
 
 import {
@@ -19,9 +21,12 @@ import {
 } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 import { Separator } from "./ui/separator";
+import { useAuthContext } from "../hooks/use-auth";
+import { motion } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 // Menu items.
 const items = [
@@ -50,15 +55,25 @@ const items = [
     href: "/support",
     icon: Contact,
   },
-  {
-    title: "Log out",
-    href: "/login",
-    icon: LogOut,
-  },
 ];
 
 function SheetNavbar() {
   const [open, setOpen] = React.useState(false);
+  const { user, logout } = useAuthContext();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  // logout handler
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+      logout();
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleNavClick = () => {
     setOpen(false);
@@ -73,6 +88,17 @@ function SheetNavbar() {
     return () => media.removeEventListener("change", handler);
   }, []);
 
+  const getAvatarFallback = () => {
+    if (!user?.name) return "U";
+    const names = user.name.split(" ");
+    return names
+      .map((n) => n[0]?.toUpperCase())
+      .slice(0, 2)
+      .join(" ");
+  };
+
+  const MotionAvatar = motion.create(Avatar);
+
   return (
     <div>
       {/* Trigger Button */}
@@ -85,10 +111,23 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[350px] sm:w-[350px] md:hidden bg-card afacad-flux"
+          className="w-[310px] sm:w-[280px] md:hidden bg-card afacad-flux"
         >
           <SheetHeader>
-            <SheetTitle className="text-2xl">Menu</SheetTitle>
+            <SheetTitle className="text-md flex items-center gap-x-2">
+              <MotionAvatar
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.25 }}
+                transition={{
+                  ease: "easeOut",
+                }}
+                className="w-12 h-12"
+              >
+                <AvatarImage src={user?.profilePic} alt="User Avatar" />
+                <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
+              </MotionAvatar>
+              <span className="font-semibold">dfdjkskdmd bddjdjdkksks</span>
+            </SheetTitle>
             <SheetDescription>
               Access your courses, mark your attendance, and view notifications.
             </SheetDescription>
@@ -107,6 +146,31 @@ function SheetNavbar() {
                 {item.title}
               </Link>
             ))}
+
+            <>
+              {user ? (
+                <Button onClick={handleLogout} disabled={loading} asChild>
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin" />
+                      <span>Logging out...</span>
+                    </>
+                  ) : (
+                    <>
+                      <LogOut />
+                      <span>Logout</span>
+                    </>
+                  )}
+                </Button>
+              ) : (
+                <Button asChild>
+                  <Link to="/login">
+                    <LogIn />
+                    <span>Login</span>
+                  </Link>
+                </Button>
+              )}
+            </>
           </nav>
 
           <div className="mx-4 mt-2">

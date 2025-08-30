@@ -1,6 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { AppSidebar } from "../components/AppSidebar";
-import { ThemeProvider } from "../components/ui/theme-provider";
 import { Outlet, useLocation } from "react-router-dom";
 import { MobileNavbar } from "../components/MobileNavbar";
 import { Toaster } from "../components/ui/sonner";
@@ -9,12 +8,17 @@ import { Separator } from "../components/ui/separator";
 
 export default function Layout() {
   const location = useLocation();
-  const hideNavAndFooterRoutes = ["/login", "/signup", "/onboarding", "/admin/auth",
+  const hideNavAndFooterRoutes = [
+    "/login",
+    "/signup",
+    "/onboarding",
+    "/admin/auth",
     "/admin/lecturers/login",
-    "/admin/lecturers",];
+    "/admin/lecturers",
+  ];
   const shouldHide = hideNavAndFooterRoutes.includes(location.pathname);
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <>
       <SidebarProvider>
         {!shouldHide && <AppSidebar />}
 
@@ -28,6 +32,6 @@ export default function Layout() {
         <Toaster position="top-center" duration={1500} richColors />
       </SidebarProvider>
       {!shouldHide && <Footer />}
-    </ThemeProvider>
+    </>
   );
 }

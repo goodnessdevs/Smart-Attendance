@@ -22,6 +22,7 @@ import AdminAccount from "./pages/admin/AdminAccount";
 function App() {
   return (
       <Routes>
+        {/* Student routes */}
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/calendar" element={<CalendarPage />} />
@@ -34,15 +35,16 @@ function App() {
           <Route path="/onboarding" element={<Onboarding />} />
         </Route>
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/lecturers/login" element={<AdminLoginPage />} />
-          <Route path="/admin/auth" element={<AdminAuth />} />
-          <Route path="/admin/lecturers" element={<AdminDashboard />} />
-          <Route path="/admin/lecturers/attendance" element={<AttendanceViewer />} />
-          <Route path="/admin/lecturers/calendar" element={<Calendar />} />
-          <Route path="/admin/lecturers/inbox" element={<AdminInbox />} />
-          <Route path="/admin/lecturers/account" element={<AdminAccount />} />
-          <Route path="/admin/lecturers/support" element={<StudentSupportPage />} />
+        {/* Lecturer routes */}
+        <Route path="/" element={<AdminLayout />}>
+          <Route path="/lecturer/login" element={<AdminLoginPage />} />
+          <Route path="/lecturer/auth" element={<AdminAuth />} />
+          <Route path="/lecturer" element={<AdminDashboard />} />
+          <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
+          <Route path="/lecturer/calendar" element={<Calendar />} />
+          <Route path="/lecturer/inbox" element={<AdminInbox />} />
+          <Route path="/lecturer/account" element={<AdminAccount />} />
+          <Route path="/lecturer/support" element={<StudentSupportPage />} />
         </Route>
       </Routes>
   );

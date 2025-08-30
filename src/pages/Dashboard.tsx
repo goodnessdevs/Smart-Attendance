@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import MarkAttendance from "../components/MarkAttendance";
 import { Card, CardContent } from "../components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
-import { toast } from "sonner"; // ✅ import Sonner toast
+import { toast } from "sonner";
+import { useAuthContext } from "../hooks/use-auth";
 
 // Enhanced Venue type with additional metadata
 type Venue = {
@@ -131,6 +133,7 @@ const availableVenues: Venue[] = [
 ];
 
 export default function Dashboard() {
+  const { user } = useAuthContext();
   const [locationGranted, setLocationGranted] = useState(false);
   const [userLocation, setUserLocation] = useState<{
     lat: number;
@@ -224,44 +227,44 @@ export default function Dashboard() {
     }
   };
 
-  // User details type (customize as needed)
-  type UserDetails = {
-    name?: string;
-    email?: string;
-    matricNo?: string;
-    // add more fields as needed
+  const getAvatarFallback = () => {
+    if (!user?.name) return "U";
+    const names = user.name.split(" ");
+    return names
+      .map((n) => n[0]?.toUpperCase())
+      .slice(0, 2)
+      .join(" ");
   };
 
-  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
-  // Fetch user details on mount
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = localStorage.getItem("jwt_token");
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/user-details`,
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setUserDetails(data);
-        } else {
-          toast.error("Failed to fetch user details");
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("An error occurred fetching user details");
-      }
-    };
-    fetchUserDetails();
-  }, []);
+  const MotionAvatar = motion.create(Avatar);
 
   return (
     <div className="px-4 md:mx-4 mb-12 overflow-x-hidden">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, y: -20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{
+          duration: 0.4,
+          ease: "easeOut",
+          type: "spring",
+          stiffness: 150,
+        }}
+        className="absolute md:top-8 md:left-[1200px] hidden md:flex items-center gap-x-2"
+      >
+        <span className="font-semibold">{user?.name}</span>
+        <MotionAvatar
+          initial={{ scale: 1 }}
+          whileHover={{ scale: 1.25 }}
+          transition={{
+            ease: "easeOut",
+          }}
+          className="w-12 h-12"
+        >
+
+          <AvatarImage src={user?.profilePic} alt="User Avatar" />
+          <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
+        </MotionAvatar>
+      </motion.div>
       <div className="mt-10 mb-6">
         <motion.h1
           initial={{ opacity: 0, scale: 0.8 }}
@@ -276,7 +279,7 @@ export default function Dashboard() {
         >
           Welcome,{" "}
           <span className="text-cyan-700 dark:text-cyan-200 text-5xl">
-            {userDetails?.matricNo}!
+            {user?.matricNo}!
           </span>
         </motion.h1>
       </div>

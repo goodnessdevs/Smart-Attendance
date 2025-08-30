@@ -1,4 +1,3 @@
-import { ThemeProvider } from "../components/ui/theme-provider";
 import { Toaster } from "../components/ui/sonner";
 import Footer from "../components/Footer";
 import { AdminSidebar } from "../components/AdminSidebar";
@@ -16,7 +15,7 @@ export default function AdminLayout() {
   );
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <>
       <SidebarProvider>
         {!shouldHide && <AdminSidebar />}
 
@@ -31,6 +30,6 @@ export default function AdminLayout() {
       </SidebarProvider>
 
       {!shouldHide && <Footer />}
-    </ThemeProvider>
+    </>
   );
 }

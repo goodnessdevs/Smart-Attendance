@@ -5,8 +5,10 @@ import {
   Inbox,
   LogOut,
   Contact,
+  LogIn,
+  Loader2,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Sidebar,
@@ -20,6 +22,8 @@ import {
 } from "./ui/sidebar";
 import { ModeToggle } from "./ModeToggle";
 import { Separator } from "./ui/separator";
+import { useAuthContext } from "../hooks/use-auth";
+import { useState } from "react";
 
 // Menu items.
 const items = [
@@ -48,14 +52,25 @@ const items = [
     href: "/support",
     icon: Contact,
   },
-  {
-    title: "Log out",
-    href: "/login",
-    icon: LogOut,
-  },
 ];
 
 export function AppSidebar() {
+  const { user, logout } = useAuthContext();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  // logout handler
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+      logout();
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-sidebar flex flex-col h-full justify-between">
@@ -79,6 +94,31 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              <SidebarMenuItem>
+                {user ? (
+                  <SidebarMenuButton onClick={handleLogout} disabled={loading}>
+                    {loading ? (
+                      <>
+                        <Loader2 className="animate-spin" />
+                        <span>Logging out...</span>
+                      </>
+                    ) : (
+                      <>
+                        <LogOut />
+                        <span>Logout</span>
+                      </>
+                    )}
+                  </SidebarMenuButton>
+                ) : (
+                  <SidebarMenuButton asChild>
+                    <Link to="/login">
+                      <LogIn />
+                      <span>Login</span>
+                    </Link>
+                  </SidebarMenuButton>
+                )}
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

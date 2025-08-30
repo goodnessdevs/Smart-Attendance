@@ -103,7 +103,7 @@ export const colleges = [
     //   { title: "Accounting", value: "accounting" },
     //   { title: "Banking & Finance", value: "banking-finance" },
     //   { title: "Business Administration", value: "business-admin" },
-    //   { title: "Economics", value: "economics" },
+      { title: "Economics", value: "economics" },
       { title: "Entrepreneurial Studies", value: "entrepreneurship" },
       { title: "Library and Information Science", value: "library-info-science" },
     ],

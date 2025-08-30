@@ -28,6 +28,7 @@ import {
   getOrCreateUUID,
   getBrowserFingerprint,
 } from "../utils/browserfingerprint";
+import confetti from "canvas-confetti";
 
 const MotionCard = motion.create(Card);
 
@@ -85,6 +86,11 @@ function Onboarding() {
 
       if (response.ok) {
         setLoading(false);
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
         toast.success("Registration Completed");
         navigate("/");
       }

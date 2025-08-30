@@ -26,37 +26,37 @@ import { Separator } from "../components/ui/separator";
 const items = [
   {
     title: "Dashboard",
-    href: "/admin/lecturers",
+    href: "/lecturer",
     icon: LayoutDashboardIcon,
   },
   {
     title: "Attendance",
-    href: "/admin/lecturers/attendance",
+    href: "lecturer/attendance",
     icon: CheckIcon,
   },
   {
     title: "Inbox",
-    href: "/admin/lecturers/inbox",
+    href: "/lecturer/inbox",
     icon: Inbox,
   },
   {
     title: "Session Calendar",
-    href: "/admin/lecturers/calendar",
+    href: "/lecturer/calendar",
     icon: Calendar,
   },
   {
     title: "Account",
-    href: "/admin/lecturers/account",
+    href: "/lecturer/account",
     icon: User,
   },
   {
     title: "Students Support",
-    href: "/admin/lecturers/support",
+    href: "/lecturer/support",
     icon: Contact,
   },
   {
     title: "Log out",
-    href: "/admin/lecturers/login",
+    href: "/lecturer/login",
     icon: LogOut,
   },
 ];
