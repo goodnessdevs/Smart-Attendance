@@ -46,10 +46,15 @@ function Onboarding() {
     e.preventDefault();
     setLoading(true);
 
+    const token = localStorage.getItem("jwt_token");
+
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/update-profile`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
         body: JSON.stringify(formData),
       });
 
