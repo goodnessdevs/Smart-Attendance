@@ -165,7 +165,9 @@ export default function Dashboard() {
 
       const withinVenues = venuesWithDistance.filter((v) => v.isWithin);
       if (withinVenues.length > 0) {
-        toast.success(`You are within range of ${withinVenues.length} venue(s)`);
+        toast.success(
+          `You are within range of ${withinVenues.length} venue(s)`
+        );
       }
     }
   }, [userLocation]);
@@ -190,7 +192,9 @@ export default function Dashboard() {
       setLocationStatus("granted");
 
       toast.success(
-        `Location verified! (±${Math.round(position.coords.accuracy)}m accuracy)`
+        `Location verified! (±${Math.round(
+          position.coords.accuracy
+        )}m accuracy)`
       );
     } catch (error) {
       setLocationStatus("denied");
@@ -220,6 +224,42 @@ export default function Dashboard() {
     }
   };
 
+  // User details type (customize as needed)
+  type UserDetails = {
+    name?: string;
+    email?: string;
+    matricNo?: string;
+    // add more fields as needed
+  };
+
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  // Fetch user details on mount
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = localStorage.getItem("jwt_token");
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/user-details`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setUserDetails(data);
+        } else {
+          toast.error("Failed to fetch user details");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("An error occurred fetching user details");
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
   return (
     <div className="px-4 md:mx-4 mb-12 overflow-x-hidden">
       <div className="mt-10 mb-6">
@@ -236,7 +276,7 @@ export default function Dashboard() {
         >
           Welcome,{" "}
           <span className="text-cyan-700 dark:text-cyan-200 text-5xl">
-            20251234!
+            {userDetails?.matricNo}!
           </span>
         </motion.h1>
       </div>

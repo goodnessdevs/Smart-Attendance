@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -12,6 +12,8 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
+  SelectGroup,
+  SelectLabel,
 } from "../components/ui/select";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
@@ -22,21 +24,41 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { colleges } from "../components/CollegeData";
 import { Loader2 } from "lucide-react";
+import {
+  getOrCreateUUID,
+  getBrowserFingerprint,
+} from "../utils/browserfingerprint";
 
 const MotionCard = motion.create(Card);
 
 function Onboarding() {
-  const d = new Date();
-  const year = d.getFullYear();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     matricNo: "",
     department: "",
     college: "",
+    level: "",
     phoneNo: "",
   });
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
+  const d = new Date();
+  const year = d.getFullYear();
+
+  useEffect(() => {
+    async function initDevice() {
+      const deviceUUID = await getOrCreateUUID();
+      const browserFP = getBrowserFingerprint();
+
+      setFormData((prev) => ({
+        ...prev,
+        deviceUUID,
+        browserFP,
+      }));
+    }
+
+    initDevice();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,14 +71,17 @@ function Onboarding() {
     const token = localStorage.getItem("jwt_token");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/update-profile`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/update-profile`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         setLoading(false);
@@ -176,6 +201,35 @@ function Onboarding() {
               </Select>
             </div>
 
+            {/* LEVEL SELECT */}
+            <div className="space-y-2">
+              <Label htmlFor="level">Level</Label>
+              <Select
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, level: value }))
+                }
+                value={formData.level}
+              >
+                <SelectTrigger id="level" className="border-black">
+                  <SelectValue
+                    placeholder={"Select your level"}
+                    className="text-black"
+                  />
+                </SelectTrigger>
+                <SelectContent className="bg-white text-black">
+                  <SelectGroup>
+                    <SelectLabel>Level</SelectLabel>
+                    <SelectItem value="apple">100</SelectItem>
+                    <SelectItem value="banana">200</SelectItem>
+                    <SelectItem value="blueberry">300</SelectItem>
+                    <SelectItem value="grapes">400</SelectItem>
+                    <SelectItem value="pineapple">500</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Phone number */}
             <div className="space-y-2">
               <Label className="text-black" htmlFor="matricNo">
                 Phone Number
