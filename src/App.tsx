@@ -18,35 +18,74 @@ import Calendar from "./pages/admin/Calendar";
 import AdminInbox from "./pages/admin/AdminInbox";
 import StudentSupportPage from "./pages/admin/StudentSupportPage";
 import AdminAccount from "./pages/admin/AdminAccount";
+import { RequireAuthDialog } from "./components/AuthDialog";
 
 function App() {
   return (
-      <Routes>
-        {/* Student routes */}
-        <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/inbox" element={<InboxPage />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/courses/:courseId" element={<CheckAttendance />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-        </Route>
+    <Routes>
+      {/* Student routes */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        {/* Protected routes */}
+        <Route
+          path="/calendar"
+          element={
+            <RequireAuthDialog>
+              <CalendarPage />
+            </RequireAuthDialog>
+          }
+        />
+        <Route
+          path="/inbox"
+          element={
+            <RequireAuthDialog>
+              <InboxPage />
+            </RequireAuthDialog>
+          }
+        />
+        <Route
+          path="/account"
+          element={
+            <RequireAuthDialog>
+              <Account />
+            </RequireAuthDialog>
+          }
+        />
+        <Route
+          path="/support"
+          element={
+            <RequireAuthDialog>
+              <Support />
+            </RequireAuthDialog>
+          }
+        />
+        <Route
+          path="/courses/:courseId"
+          element={
+            <RequireAuthDialog>
+              <CheckAttendance />
+            </RequireAuthDialog>
+          }
+        />
 
-        {/* Lecturer routes */}
-        <Route path="/" element={<AdminLayout />}>
-          <Route path="/lecturer/login" element={<AdminLoginPage />} />
-          <Route path="/lecturer/auth" element={<AdminAuth />} />
-          <Route path="/lecturer" element={<AdminDashboard />} />
-          <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
-          <Route path="/lecturer/calendar" element={<Calendar />} />
-          <Route path="/lecturer/inbox" element={<AdminInbox />} />
-          <Route path="/lecturer/account" element={<AdminAccount />} />
-          <Route path="/lecturer/support" element={<StudentSupportPage />} />
-        </Route>
-      </Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+      </Route>
+
+      {/* Lecturer routes */}
+      <Route path="/" element={<AdminLayout />}>
+        <Route path="/lecturer/login" element={<AdminLoginPage />} />
+        <Route path="/lecturer/auth" element={<AdminAuth />} />
+        <Route path="/lecturer" element={<AdminDashboard />} />
+        <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
+        <Route path="/lecturer/calendar" element={<Calendar />} />
+        <Route path="/lecturer/inbox" element={<AdminInbox />} />
+        <Route path="/lecturer/account" element={<AdminAccount />} />
+        <Route path="/lecturer/support" element={<StudentSupportPage />} />
+      </Route>
+    </Routes>
   );
 }
 

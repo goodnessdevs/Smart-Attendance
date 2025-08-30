@@ -159,7 +159,7 @@
 
 // export default Login;
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserLock, Loader2 } from "lucide-react";
 import {
@@ -253,7 +253,7 @@ function Login() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-600 to-[#e0ffe7] px-4">
+    <div className="h-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-900 to-gray-900 px-4">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -268,7 +268,7 @@ function Login() {
             className="object-contain w-full h-full"
           />
         </div>
-        <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
+        <h2 className="text-2xl text-white font-bold">Smart Attendance</h2>
       </motion.div>
 
       <MotionCard
@@ -320,7 +320,7 @@ function Login() {
             </Button>
           </motion.div>
 
-          <div className="text-center text-sm font-semibold">
+          {/* <div className="text-center text-sm font-semibold">
             Don’t have an account?{" "}
             <Link
               to="/signup"
@@ -328,11 +328,11 @@ function Login() {
             >
               Sign up
             </Link>
-          </div>
+          </div> */}
         </CardContent>
       </MotionCard>
 
-      <p className="text-center text-black mt-4">
+      <p className="text-center text-white mt-4">
         &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
         reserved.
       </p>

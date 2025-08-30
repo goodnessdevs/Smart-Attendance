@@ -8,15 +8,27 @@ import {
 } from "../components/ui/dialog";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
-// import { useAuthContext } from "../hooks/use-auth";
+import { useAuthContext } from "../hooks/use-auth";
+import type { ReactNode } from "react";
 
-export function RequireAuthDialog() {
+type RequireAuthDialogProps = {
+  children: ReactNode;
+};
+
+export function RequireAuthDialog({ children }: RequireAuthDialogProps) {
   const navigate = useNavigate();
-//   const { user } = useAuthContext();
+  const { user } = useAuthContext();
 
-//   if (!user)
+  if (!user) {
     return (
-      <Dialog open>
+      <Dialog
+        defaultOpen
+        onOpenChange={(open) => {
+          if (!open) {
+            navigate("/");
+          }
+        }}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Sign in required</DialogTitle>
@@ -36,6 +48,7 @@ export function RequireAuthDialog() {
         </DialogContent>
       </Dialog>
     );
+  }
 
-  return null;
+  return <>{children}</>;
 }
