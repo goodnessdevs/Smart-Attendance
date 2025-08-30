@@ -8,13 +8,13 @@ import {
 } from "../components/ui/dialog";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/use-auth";
+// import { useAuthContext } from "../hooks/use-auth";
 
 export function RequireAuthDialog() {
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+//   const { user } = useAuthContext();
 
-  if (!user)
+//   if (!user)
     return (
       <Dialog open>
         <DialogContent className="sm:max-w-md">

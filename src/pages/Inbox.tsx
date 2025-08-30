@@ -16,6 +16,7 @@ import {
   DialogDescription,
 } from "../components/ui/dialog";
 import { Inbox } from "lucide-react";
+import { useAuthContext } from "../hooks/use-auth";
 import { RequireAuthDialog } from "../components/AuthDialog";
 
 const mockMessages = [
@@ -54,6 +55,7 @@ function InboxPage() {
     (typeof mockMessages)[0] | null
   >(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuthContext();
 
   const markAsRead = (id: number) => {
     setMessages((prev) =>
@@ -67,7 +69,9 @@ function InboxPage() {
     markAsRead(msg.id);
   };
 
-  RequireAuthDialog();
+  if (!user) {
+    RequireAuthDialog()
+  }
 
   return (
     <motion.div
