@@ -27,7 +27,7 @@ export default function AdminLayout() {
           <Outlet />
         </main>
 
-        <Toaster position="top-center" duration={1500} />
+        <Toaster position="top-center" richColors duration={1500} />
       </SidebarProvider>
 
       {!shouldHide && <Footer />}

@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { colleges } from "../components/CollegeData";
+import { Loader2 } from "lucide-react";
 
 const MotionCard = motion.create(Card);
 
@@ -31,8 +32,9 @@ function Onboarding() {
     matricNo: "",
     department: "",
     college: "",
-    phoneNo: ""
+    phoneNo: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -40,12 +42,27 @@ function Onboarding() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    toast.success("Registration Completed");
+    setLoading(true);
 
-    navigate("/");
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/update-profile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setLoading(false);
+        toast.success("Registration Completed");
+        navigate("/");
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("An error ocurred, pls try again");
+      console.error(error);
+    }
   };
 
   // Get departments for selected college
@@ -154,7 +171,7 @@ function Onboarding() {
               </Select>
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label className="text-black" htmlFor="matricNo">
                 Phone Number
               </Label>
@@ -174,7 +191,13 @@ function Onboarding() {
               type="submit"
               className="w-full text-white bg-black hover:bg-gray-800"
             >
-              Finish Setup
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin w-4 h-4" /> Setting up...
+                </>
+              ) : (
+                <>Finish Setup</>
+              )}
             </Button>
           </form>
         </CardContent>

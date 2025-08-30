@@ -25,7 +25,7 @@ export default function Layout() {
           <Outlet />
         </main>
 
-        <Toaster position="top-center" />
+        <Toaster position="top-center" duration={1500} richColors />
       </SidebarProvider>
       {!shouldHide && <Footer />}
     </ThemeProvider>

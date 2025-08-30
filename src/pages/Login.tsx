@@ -369,7 +369,7 @@ function Login() {
       // const { token } = localStorage.getItem("jwt_token");
 
       // Optionally send device info to backend for logging
-      fetch(`${import.meta.env.VITE_BASE_URL}/api/device-info`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/device-info`, {
         method: "POST",
         headers: { "Content-Type": "application/json", 
           // Authorization: `Bearer ${token}`,
@@ -388,7 +388,7 @@ function Login() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // Only trust messages from your backend
-      if (event.origin !== "https://attendance-cpcr.onrender.com") return;
+      if (event.origin !== import.meta.env.VITE_API_URL) return;
 
       const { token } = event.data as { token?: string };
 
@@ -396,7 +396,7 @@ function Login() {
         localStorage.setItem("jwt_token", token);
 
         // Validate token with backend
-        fetch("https://attendance-cpcr.onrender.com/dashboard", {
+        fetch(`${import.meta.env.VITE_API_URL}/dashboard`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -431,7 +431,7 @@ function Login() {
     const top = window.screen.height / 2 - height / 2;
 
     window.open(
-      "https://attendance-cpcr.onrender.com/auth/google",
+      import.meta.env.VITE_API_AUTH_URL,
       "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
