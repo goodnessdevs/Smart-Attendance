@@ -7,6 +7,7 @@ import { LecturerMobileNavbar } from "../components/LecturerMobileNavbar";
 import { Separator } from "../components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { UserAvatar } from "../components/UserAvatar";
+import { useAuthContext } from "../hooks/use-auth";
 
 export default function LecturerLayout() {
   const location = useLocation();
@@ -14,6 +15,8 @@ export default function LecturerLayout() {
   const shouldHide = hideNavAndFooterRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
+
+  const { user } = useAuthContext();
 
   return (
     <>
@@ -24,8 +27,8 @@ export default function LecturerLayout() {
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <LecturerMobileNavbar />}
           <Separator className="md:hidden" />
+          {!shouldHide && user && <UserAvatar />}
           <Outlet />
-          {!shouldHide && <UserAvatar />}
         </main>
 
         <Toaster position="top-center" richColors duration={1500} />

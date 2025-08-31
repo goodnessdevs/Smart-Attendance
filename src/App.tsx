@@ -25,6 +25,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminAccount from "./admin/Account";
 import AdminDashboard from "./admin/page";
 import CreatedCourses from "./admin/CreatedCourses";
+import AdminLogin from "./admin/Login";
 
 function App() {
   return (
@@ -96,6 +97,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/created-courses" element={<CreatedCourses />} />
         <Route path="/admin/account-profile" element={<AdminAccount />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
       </Route>
     </Routes>
   );

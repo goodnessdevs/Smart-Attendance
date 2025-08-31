@@ -15,9 +15,6 @@ export default function Layout() {
     "/login",
     "/signup",
     "/onboarding",
-    "/admin/auth",
-    "/admin/lecturers/login",
-    "/admin/lecturers",
   ];
   const shouldHide = hideNavAndFooterRoutes.includes(location.pathname);
 

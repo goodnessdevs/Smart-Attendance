@@ -6,7 +6,6 @@ import { MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthContext } from "../hooks/use-auth";
 
-// Enhanced Venue type with additional metadata
 type Venue = {
   id: string;
   name: string;
@@ -242,7 +241,7 @@ export default function Dashboard() {
         >
           Welcome,{" "}
           <span className="text-cyan-700 dark:text-cyan-200 text-5xl">
-            {user?.matricNo}!
+            {user ? user?.matricNo : "@student"}!
           </span>
         </motion.h1>
       </div>

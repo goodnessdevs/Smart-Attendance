@@ -7,12 +7,15 @@ import { Toaster } from "../components/ui/sonner";
 import { AdminMobileNav } from "../components/AdminMobileNav";
 import { AdminSidebar } from "../components/AdminSidebar";
 import Footer from "../components/Footer";
+import { useAuthContext } from "../hooks/use-auth";
 
 export default function AdminLayout() {
   const location = useLocation();
 
   const hideNavRoutes = ["/admin/login", "/admin/auth"];
   const shouldHide = hideNavRoutes.includes(location.pathname);
+
+  const { user } = useAuthContext();
 
   return (
     <>
@@ -23,7 +26,7 @@ export default function AdminLayout() {
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <AdminMobileNav />}
           <Separator className="md:hidden" />
-          <UserAvatar />
+          {!shouldHide && user && <UserAvatar />}
           <Outlet />
         </main>
 
@@ -34,4 +37,3 @@ export default function AdminLayout() {
     </>
   );
 }
-
