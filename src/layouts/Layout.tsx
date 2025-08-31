@@ -29,7 +29,7 @@ export default function Layout() {
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <MobileNavbar />}
           <Separator className="md:hidden" />
-          <UserAvatar />
+          {!shouldHide && <UserAvatar />}
           <Outlet />
         </main>
 

@@ -141,11 +141,11 @@ function Onboarding() {
         <CardContent className="">
           <form onSubmit={handleSubmit} className="space-y-5 text-black">
             <div className="space-y-2">
-              <Label className="text-black" htmlFor="matricNo">
+              <Label className="text-black" htmlFor="matricNumber">
                 Matric Number
               </Label>
               <Input
-                name="matricNo"
+                name="matricNumber"
                 placeholder="e.g., 20184215"
                 value={formData.matricNumber}
                 onChange={handleChange}
@@ -250,11 +250,11 @@ function Onboarding() {
 
             {/* Phone number */}
             <div className="space-y-2">
-              <Label className="text-black" htmlFor="matricNo">
+              <Label className="text-black" htmlFor="phoneNumber">
                 Phone Number
               </Label>
               <Input
-                name="phoneNo"
+                name="phoneNumber"
                 placeholder="e.g., 08020184215"
                 value={formData.phoneNumber}
                 onChange={handleChange}
