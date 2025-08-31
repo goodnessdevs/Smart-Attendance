@@ -1,7 +1,7 @@
-const AdminInbox = () => {
+const LecturerInbox = () => {
   return (
     <div>Admin Inbox</div>
   )
 }
 
-export default AdminInbox
+export default LecturerInbox

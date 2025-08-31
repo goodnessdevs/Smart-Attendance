@@ -45,7 +45,7 @@ const items = [
 //   },
   {
     title: "Account",
-    href: "/account",
+    href: "/account-profile",
     icon: User,
   },
 //   {

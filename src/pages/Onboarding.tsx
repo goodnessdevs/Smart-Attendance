@@ -35,13 +35,13 @@ const MotionCard = motion.create(Card);
 function Onboarding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    matricNo: "",
+    matricNumber: "",
     department: "",
     college: "",
     level: "",
-    phoneNo: "",
-    deviceUUID: "",
-    browserFP: "",
+    phoneNumber: "",
+    device_uuid: "",
+    fingerprint: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -50,13 +50,13 @@ function Onboarding() {
 
   useEffect(() => {
     async function initDevice() {
-      const deviceUUID = await getOrCreateUUID();
-      const browserFP = getBrowserFingerprint();
+      const device_uuid = await getOrCreateUUID();
+      const fingerprint = getBrowserFingerprint();
 
       setFormData((prev) => ({
         ...prev,
-        deviceUUID,
-        browserFP,
+        device_uuid,
+        fingerprint,
       }));
     }
 
@@ -147,7 +147,7 @@ function Onboarding() {
               <Input
                 name="matricNo"
                 placeholder="e.g., 20184215"
-                value={formData.matricNo}
+                value={formData.matricNumber}
                 onChange={handleChange}
                 className="border-black"
                 required
@@ -256,7 +256,7 @@ function Onboarding() {
               <Input
                 name="phoneNo"
                 placeholder="e.g., 08020184215"
-                value={formData.phoneNo}
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 className="border-black"
                 required

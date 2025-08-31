@@ -19,7 +19,7 @@ const MotionCard = motion.create(Card);
 const MotionTabsList = motion.create(TabsList);
 const MotionTabsContent = motion.create(TabsContent);
 
-function AdminAccount() {
+function LecturerAccount() {
   return (
     <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10">
       <MotionCard
@@ -147,4 +147,4 @@ function AdminAccount() {
   );
 }
 
-export default AdminAccount;
+export default LecturerAccount;

@@ -19,7 +19,7 @@ export default function AdminLayout() {
       <SidebarProvider>
         {!shouldHide && <AdminSidebar />}
 
-        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900">
+        <main className="w-full afacad-flux bg-gradient-to-br from-white to-cyan-300 dark:from-cyan-900 dark:to-gray-900">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <AdminMobileNav />}
           <Separator className="md:hidden" />
@@ -34,3 +34,4 @@ export default function AdminLayout() {
     </>
   );
 }
+

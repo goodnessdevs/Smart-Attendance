@@ -48,7 +48,7 @@ const items = [
   },
   {
     title: "Account",
-    href: "/lecturer/account",
+    href: "/lecturer/account-profile",
     icon: User,
   },
   {

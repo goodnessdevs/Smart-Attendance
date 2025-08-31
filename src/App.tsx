@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { RequireAuthDialog } from "./components/AuthDialog";
+
 import Layout from "./layouts/Layout";
 import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
@@ -11,15 +13,18 @@ import InboxPage from "./pages/Inbox";
 import Support from "./pages/Support";
 import AttendanceViewer from "./lecturer-pages/AttendanceViewer";
 import Calendar from "./lecturer-pages/Calendar";
-import AdminInbox from "./lecturer-pages/Inbox";
-import StudentSupportPage from "./lecturer-pages/StudentSupportPage";
-import AdminAccount from "./lecturer-pages/Account";
-import { RequireAuthDialog } from "./components/AuthDialog";
-import AdminCreateCourse from "./admin/page";
+
 import LecturerLayout from "./layouts/LecturerLayout";
+import LecturerInbox from "./lecturer-pages/Inbox";
 import LecturerAuth from "./lecturer-pages/PasswordAuth";
 import AttendanceDashboard from "./lecturer-pages/Dashboard";
+import LecturerAccount from "./lecturer-pages/Account";
+import StudentSupportPage from "./lecturer-pages/StudentSupportPage";
+
 import AdminLayout from "./layouts/AdminLayout";
+import AdminAccount from "./admin/Account";
+import AdminDashboard from "./admin/page";
+import CreatedCourses from "./admin/CreatedCourses";
 
 function App() {
   return (
@@ -45,7 +50,7 @@ function App() {
           }
         />
         <Route
-          path="/account"
+          path="/account-profile"
           element={
             <RequireAuthDialog>
               <Account />
@@ -76,20 +81,22 @@ function App() {
       </Route>
 
       {/* Lecturer routes */}
-      <Route path="/" element={<LecturerLayout />}>
+      <Route path="/lecturer" element={<LecturerLayout />}>
         <Route path="/lecturer/login" element={<Login />} />
         <Route path="/lecturer/auth" element={<LecturerAuth />} />
         <Route path="/lecturer" element={<AttendanceDashboard />} />
         <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
         <Route path="/lecturer/calendar" element={<Calendar />} />
-        <Route path="/lecturer/inbox" element={<AdminInbox />} />
-        <Route path="/lecturer/account" element={<AdminAccount />} />
+        <Route path="/lecturer/inbox" element={<LecturerInbox />} />
+        <Route path="/lecturer/account-profile" element={<LecturerAccount />} />
         <Route path="/lecturer/support" element={<StudentSupportPage />} />
       </Route>
 
       {/* Admin routes */}
-      <Route path="/" element={<AdminLayout />}>
-        <Route path="/admin" element={<AdminCreateCourse />} />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/created-courses" element={<CreatedCourses />} />
+        <Route path="/admin/account-profile" element={<AdminAccount />} />
       </Route>
     </Routes>
   );

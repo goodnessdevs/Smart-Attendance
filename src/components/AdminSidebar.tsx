@@ -28,7 +28,7 @@ const items = [
   },
   {
     title: "Created Courses",
-    href: "/created-courses",
+    href: "/admin/created-courses",
     icon: BookOpen,
   },
 //   {
@@ -38,7 +38,7 @@ const items = [
 //   },
   {
     title: "Account",
-    href: "/lecturer/account",
+    href: "/admin/account-profile",
     icon: User,
   },
 //   {
@@ -48,7 +48,7 @@ const items = [
 //   },
   {
     title: "Log out",
-    href: "/lecturer/login",
+    href: "/admin/login",
     icon: LogOut,
   },
 ];
@@ -56,7 +56,7 @@ const items = [
 export function AdminSidebar() {
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="bg-cyan-700 dark:bg-cyan-950 flex flex-col h-full justify-between">
+      <SidebarContent className="bg-cyan-700 dark:bg-zinc-900 flex flex-col h-full justify-between">
         <SidebarGroup>
           <SidebarGroupLabel className="my-2 text-2xs flex gap-x-2 items-center text-white tracking-wider">
             <div className="w-10">
