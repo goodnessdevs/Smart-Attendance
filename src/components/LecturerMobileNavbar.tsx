@@ -17,12 +17,12 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "../components/ui/sheet";
-import { Button } from "../components/ui/button";
+} from "./ui/sheet";
+import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ModeToggle } from "../components/ModeToggle";
-import { Separator } from "../components/ui/separator";
+import { ModeToggle } from "./ModeToggle";
+import { Separator } from "./ui/separator";
 
 // Menu items.
 const items = [
@@ -126,7 +126,7 @@ function SheetNavbar() {
   );
 }
 
-export const AdminMobileNavbar = () => {
+export const LecturerMobileNavbar = () => {
   return (
     <div className="md:hidden flex justify-between items-center p-4">
       <div className="flex gap-x-2 items-center">

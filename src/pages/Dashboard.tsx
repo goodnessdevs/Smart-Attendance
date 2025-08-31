@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import MarkAttendance from "../components/MarkAttendance";
 import { Card, CardContent } from "../components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { toast } from "sonner";
@@ -227,44 +226,8 @@ export default function Dashboard() {
     }
   };
 
-  const getAvatarFallback = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
-    return names
-      .map((n) => n[0]?.toUpperCase())
-      .slice(0, 2)
-      .join(" ");
-  };
-
-  const MotionAvatar = motion.create(Avatar);
-
   return (
     <div className="px-4 md:mx-4 mb-12 overflow-x-hidden">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, y: -20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{
-          duration: 0.4,
-          ease: "easeOut",
-          type: "spring",
-          stiffness: 150,
-        }}
-        className="absolute md:top-8 md:left-[1200px] hidden md:flex items-center gap-x-2"
-      >
-        <span className="font-semibold">{user?.name}</span>
-        <MotionAvatar
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.25 }}
-          transition={{
-            ease: "easeOut",
-          }}
-          className="w-12 h-12"
-        >
-
-          <AvatarImage src={user?.profilePic} alt="User Avatar" />
-          <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
-        </MotionAvatar>
-      </motion.div>
       <div className="mt-10 mb-6">
         <motion.h1
           initial={{ opacity: 0, scale: 0.8 }}

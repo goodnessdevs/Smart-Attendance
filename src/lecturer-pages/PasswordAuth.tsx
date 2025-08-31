@@ -12,9 +12,9 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
+} from "../components/ui/form";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 import { motion } from "framer-motion";
 
 const formSchema = z.object({
@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 const ADMIN_PASSWORD = "lecturer123";
 
-const AdminAuth = () => {
+const LecturerAuth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -125,4 +125,4 @@ const AdminAuth = () => {
   );
 };
 
-export default AdminAuth;
+export default LecturerAuth;

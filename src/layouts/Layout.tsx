@@ -1,10 +1,12 @@
-import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
-import { AppSidebar } from "../components/AppSidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { MobileNavbar } from "../components/MobileNavbar";
-import { Toaster } from "../components/ui/sonner";
+import { AppSidebar } from "../components/AppSidebar";
 import Footer from "../components/Footer";
+
+import { Toaster } from "../components/ui/sonner";
 import { Separator } from "../components/ui/separator";
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
+import { UserAvatar } from "../components/UserAvatar";
 
 export default function Layout() {
   const location = useLocation();
@@ -17,6 +19,7 @@ export default function Layout() {
     "/admin/lecturers",
   ];
   const shouldHide = hideNavAndFooterRoutes.includes(location.pathname);
+
   return (
     <>
       <SidebarProvider>
@@ -26,6 +29,7 @@ export default function Layout() {
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <MobileNavbar />}
           <Separator className="md:hidden" />
+          <UserAvatar />
           <Outlet />
         </main>
 

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../components/ui/button";
+import { Button } from "../components/ui/button";
 // import { Separator } from '@radix-ui/react-separator'
 import { motion } from "framer-motion";
 import {
@@ -8,12 +8,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../components/ui/card";
+} from "../components/ui/card";
 import { UserLock } from "lucide-react";
 
 const MotionCard = motion.create(Card);
 
-const AdminAuth = () => {
+const Login = () => {
   const navigate = useNavigate();
 
   const handleGoogleAuth = () => {
@@ -106,4 +106,4 @@ const AdminAuth = () => {
   );
 };
 
-export default AdminAuth;
+export default Login;

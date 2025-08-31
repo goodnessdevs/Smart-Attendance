@@ -4,15 +4,15 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../../components/ui/tabs";
+} from "../components/ui/tabs";
 import { Link } from "react-router-dom";
 
 const MotionCard = motion.create(Card);

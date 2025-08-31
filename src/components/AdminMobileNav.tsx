@@ -3,12 +3,10 @@ import React, { useState } from "react";
 import {
   LayoutDashboardIcon,
   User,
-  Calendar,
-  Inbox,
   LogOut,
-  Contact,
   LogIn,
   Loader2,
+  BookOpenCheck,
 } from "lucide-react";
 
 import {
@@ -36,25 +34,25 @@ const items = [
     icon: LayoutDashboardIcon,
   },
   {
-    title: "Inbox",
-    href: "/inbox",
-    icon: Inbox,
+    title: "Created Courses",
+    href: "/created-courses",
+    icon: BookOpenCheck,
   },
-  {
-    title: "Session Calendar",
-    href: "/calendar",
-    icon: Calendar,
-  },
+//   {
+//     title: "Session Calendar",
+//     href: "/calendar",
+//     icon: Calendar,
+//   },
   {
     title: "Account",
     href: "/account",
     icon: User,
   },
-  {
-    title: "Support",
-    href: "/support",
-    icon: Contact,
-  },
+//   {
+//     title: "Support",
+//     href: "/support",
+//     icon: Contact,
+//   },
 ];
 
 function SheetNavbar() {
@@ -182,7 +180,7 @@ function SheetNavbar() {
   );
 }
 
-export const MobileNavbar = () => {
+export const AdminMobileNav = () => {
   return (
     <div className="md:hidden flex justify-between items-center p-4">
       <div className="flex gap-x-2 items-center">

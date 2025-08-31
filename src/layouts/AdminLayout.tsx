@@ -1,18 +1,18 @@
-import { Toaster } from "../components/ui/sonner";
-import Footer from "../components/Footer";
-import { AdminSidebar } from "../components/AdminSidebar";
-import { Outlet } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
-import { AdminMobileNavbar } from "../components/AdminMobileNavbar";
 import { Separator } from "../components/ui/separator";
+import { UserAvatar } from "../components/UserAvatar";
+import { Toaster } from "../components/ui/sonner";
+
+import { AdminMobileNav } from "../components/AdminMobileNav";
+import { AdminSidebar } from "../components/AdminSidebar";
+import Footer from "../components/Footer";
 
 export default function AdminLayout() {
   const location = useLocation();
-  const hideNavAndFooterRoutes = ["/admin/auth", "/admin/lecturers/login"];
-  const shouldHide = hideNavAndFooterRoutes.some((route) =>
-    location.pathname.startsWith(route)
-  );
+
+  const hideNavRoutes = ["/admin/login", "/admin/auth"];
+  const shouldHide = hideNavRoutes.includes(location.pathname);
 
   return (
     <>
@@ -21,8 +21,9 @@ export default function AdminLayout() {
 
         <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
-          {!shouldHide && <AdminMobileNavbar />}
+          {!shouldHide && <AdminMobileNav />}
           <Separator className="md:hidden" />
+          <UserAvatar />
           <Outlet />
         </main>
 

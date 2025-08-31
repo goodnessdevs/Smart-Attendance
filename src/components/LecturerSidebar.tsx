@@ -1,8 +1,11 @@
 import {
   LayoutDashboardIcon,
   User,
+  Calendar,
+  Inbox,
   LogOut,
-  BookOpen,
+  Contact,
+  CheckIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -23,29 +26,34 @@ import { Separator } from "./ui/separator";
 const items = [
   {
     title: "Dashboard",
-    href: "/admin",
+    href: "/lecturer",
     icon: LayoutDashboardIcon,
   },
   {
-    title: "Created Courses",
-    href: "/created-courses",
-    icon: BookOpen,
+    title: "Attendance",
+    href: "lecturer/attendance",
+    icon: CheckIcon,
   },
-//   {
-//     title: "Session Calendar",
-//     href: "/lecturer/calendar",
-//     icon: Calendar,
-//   },
+  {
+    title: "Inbox",
+    href: "/lecturer/inbox",
+    icon: Inbox,
+  },
+  {
+    title: "Session Calendar",
+    href: "/lecturer/calendar",
+    icon: Calendar,
+  },
   {
     title: "Account",
     href: "/lecturer/account",
     icon: User,
   },
-//   {
-//     title: "Students Support",
-//     href: "/lecturer/support",
-//     icon: Contact,
-//   },
+  {
+    title: "Students Support",
+    href: "/lecturer/support",
+    icon: Contact,
+  },
   {
     title: "Log out",
     href: "/lecturer/login",
@@ -53,10 +61,10 @@ const items = [
   },
 ];
 
-export function AdminSidebar() {
+export function LecturerSidebar() {
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="bg-cyan-700 dark:bg-cyan-950 flex flex-col h-full justify-between">
+      <SidebarContent className="bg-sidebar flex flex-col h-full justify-between">
         <SidebarGroup>
           <SidebarGroupLabel className="my-2 text-2xs flex gap-x-2 items-center text-white tracking-wider">
             <div className="w-10">
@@ -66,10 +74,10 @@ export function AdminSidebar() {
           </SidebarGroupLabel>
           <Separator className="mb-4" />
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-6 font-semibold text-white">
+            <SidebarMenu className="space-y-6 font-semibold text-sidebar-accent">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className="hover:bg-cyan-100  dark:hover:text-cyan-950">
+                  <SidebarMenuButton asChild>
                     <Link to={item.href}>
                       <item.icon />
                       <span>{item.title}</span>
