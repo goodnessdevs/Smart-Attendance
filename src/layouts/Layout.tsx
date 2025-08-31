@@ -7,6 +7,7 @@ import { Toaster } from "../components/ui/sonner";
 import { Separator } from "../components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { UserAvatar } from "../components/UserAvatar";
+import { useAuthContext } from "../hooks/use-auth";
 
 export default function Layout() {
   const location = useLocation();
@@ -20,6 +21,8 @@ export default function Layout() {
   ];
   const shouldHide = hideNavAndFooterRoutes.includes(location.pathname);
 
+  const { user } = useAuthContext();
+
   return (
     <>
       <SidebarProvider>
@@ -29,7 +32,7 @@ export default function Layout() {
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <MobileNavbar />}
           <Separator className="md:hidden" />
-          {!shouldHide && <UserAvatar />}
+          {!shouldHide && user && <UserAvatar />}
           <Outlet />
         </main>
 

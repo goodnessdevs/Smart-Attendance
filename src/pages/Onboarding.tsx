@@ -139,8 +139,8 @@ function Onboarding() {
         </CardHeader>
 
         <CardContent className="">
-          <form onSubmit={handleSubmit} className="space-y-5 text-black">
-            <div className="space-y-2">
+          <form onSubmit={handleSubmit} className="space-y-4 text-black">
+            <div className="space-y-1">
               <Label className="text-black" htmlFor="matricNumber">
                 Matric Number
               </Label>
@@ -155,7 +155,7 @@ function Onboarding() {
             </div>
 
             {/* COLLEGE SELECT */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="college">College</Label>
               <Select
                 onValueChange={(value) =>
@@ -187,7 +187,7 @@ function Onboarding() {
             </div>
 
             {/* DEPARTMENT SELECT */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="department">Department</Label>
               <Select
                 onValueChange={(value) =>
@@ -220,7 +220,7 @@ function Onboarding() {
             </div>
 
             {/* LEVEL SELECT */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="level">Level</Label>
               <Select
                 onValueChange={(value) =>
@@ -249,7 +249,7 @@ function Onboarding() {
             </div>
 
             {/* Phone number */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label className="text-black" htmlFor="phoneNumber">
                 Phone Number
               </Label>
