@@ -320,15 +320,6 @@ function Login() {
             </Button>
           </motion.div>
 
-          {/* <div className="text-center text-sm font-semibold">
-            Don’t have an account?{" "}
-            <Link
-              to="/signup"
-              className="text-blue-600 hover:underline hover:text-blue-800"
-            >
-              Sign up
-            </Link>
-          </div> */}
         </CardContent>
       </MotionCard>
 

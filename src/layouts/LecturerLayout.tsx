@@ -10,7 +10,7 @@ import { UserAvatar } from "../components/UserAvatar";
 
 export default function LecturerLayout() {
   const location = useLocation();
-  const hideNavAndFooterRoutes = ["/admin/auth", "/admin/lecturers/login"];
+  const hideNavAndFooterRoutes = ["/lecturer/auth", "/lecturer/login"];
   const shouldHide = hideNavAndFooterRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
@@ -25,7 +25,7 @@ export default function LecturerLayout() {
           {!shouldHide && <LecturerMobileNavbar />}
           <Separator className="md:hidden" />
           <Outlet />
-          <UserAvatar />
+          {!shouldHide && <UserAvatar />}
         </main>
 
         <Toaster position="top-center" richColors duration={1500} />

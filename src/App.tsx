@@ -5,7 +5,6 @@ import Layout from "./layouts/Layout";
 import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import Onboarding from "./pages/Onboarding";
 import CheckAttendance from "./pages/CheckAttendance";
 import CalendarPage from "./pages/Calendar";
@@ -19,6 +18,7 @@ import LecturerInbox from "./lecturer-pages/Inbox";
 import LecturerAuth from "./lecturer-pages/PasswordAuth";
 import AttendanceDashboard from "./lecturer-pages/Dashboard";
 import LecturerAccount from "./lecturer-pages/Account";
+import LecturerLogin from "./lecturer-pages/Login";
 import StudentSupportPage from "./lecturer-pages/StudentSupportPage";
 
 import AdminLayout from "./layouts/AdminLayout";
@@ -76,13 +76,12 @@ function App() {
 
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
       </Route>
 
       {/* Lecturer routes */}
       <Route path="/lecturer" element={<LecturerLayout />}>
-        <Route path="/lecturer/login" element={<Login />} />
+        <Route path="/lecturer/login" element={<LecturerLogin />} />
         <Route path="/lecturer/auth" element={<LecturerAuth />} />
         <Route path="/lecturer" element={<AttendanceDashboard />} />
         <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
