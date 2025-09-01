@@ -26,6 +26,7 @@ import AdminAccount from "./admin/Account";
 import AdminDashboard from "./admin/page";
 import CreatedCourses from "./admin/CreatedCourses";
 import AdminLogin from "./admin/Login";
+import AllCourses from "./pages/AllCourses";
 
 function App() {
   return (
@@ -67,10 +68,18 @@ function App() {
           }
         />
         <Route
-          path="/courses/:courseId"
+          path="/course/:courseId"
           element={
             <RequireAuthDialog>
               <CheckAttendance />
+            </RequireAuthDialog>
+          }
+        />
+        <Route
+          path="/all-courses"
+          element={
+            <RequireAuthDialog>
+              <AllCourses />
             </RequireAuthDialog>
           }
         />
@@ -79,7 +88,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/onboarding" element={<Onboarding />} />
       </Route>
-
+AllCourses
       {/* Lecturer routes */}
       <Route path="/lecturer" element={<LecturerLayout />}>
         <Route path="/lecturer/login" element={<LecturerLogin />} />

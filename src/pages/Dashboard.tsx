@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
-import MarkAttendance from "../components/MarkAttendance";
 import { Card, CardContent } from "../components/ui/card";
 import { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/use-auth";
+import SignedOutDashboard from "./SignedOutDashboard";
 
+// Venue type
 type Venue = {
   id: string;
   name: string;
@@ -82,7 +84,7 @@ class GeolocationService {
   }
 }
 
-// Available venues (would come from DB)
+// Mock venues
 const availableVenues: Venue[] = [
   {
     id: "lh-a",
@@ -130,164 +132,138 @@ const availableVenues: Venue[] = [
   },
 ];
 
+type Course = {
+  id: string;
+  name: string;
+  code: string;
+  lecturer: string;
+  time: string;
+  location: string;
+  status: "pending" | "marked";
+};
+
+// Mock courses
+const activeCourses: Course[] = [
+  {
+    id: "csc101",
+    name: "Introduction to Computer Science",
+    code: "CSC 101",
+    lecturer: "Prof. John David",
+    time: "2:00 PM - 4:00 PM",
+    location: "Computer Lab 2",
+    status: "pending",
+  },
+  {
+    id: "phy201",
+    name: "Physics II",
+    code: "PHY 201",
+    lecturer: "Dr. Mary Johnson",
+    time: "9:00 AM - 11:00 AM",
+    location: "Science Block 301",
+    status: "marked",
+  },
+];
+
 export default function Dashboard() {
   const { user } = useAuthContext();
   const [locationGranted, setLocationGranted] = useState(false);
-  const [userLocation, setUserLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-  const [locationStatus, setLocationStatus] = useState<
-    "idle" | "loading" | "granted" | "denied"
-  >("idle");
-  const [nearbyVenues, setNearbyVenues] = useState<
-    Array<Venue & { distance: number; isWithin: boolean }>
-  >([]);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "granted" | "denied">("idle");
+  const [nearbyVenues, setNearbyVenues] = useState<Array<Venue & { distance: number; isWithin: boolean }>>([]);
 
   // Check venues when location changes
   useEffect(() => {
     if (userLocation) {
       const venuesWithDistance = availableVenues.map((venue) => {
-        const result = GeolocationService.isWithinVenue(
-          userLocation.lat,
-          userLocation.lng,
-          venue
-        );
-        return {
-          ...venue,
-          distance: result.distance,
-          isWithin: result.isWithin,
-        };
+        const result = GeolocationService.isWithinVenue(userLocation.lat, userLocation.lng, venue);
+        return { ...venue, distance: result.distance, isWithin: result.isWithin };
       });
 
-      setNearbyVenues(
-        venuesWithDistance.sort((a, b) => a.distance - b.distance)
-      );
+      setNearbyVenues(venuesWithDistance.sort((a, b) => a.distance - b.distance));
 
       const withinVenues = venuesWithDistance.filter((v) => v.isWithin);
       if (withinVenues.length > 0) {
-        toast.success(
-          `You are within range of ${withinVenues.length} venue(s)`
-        );
+        toast.success(`You are within range of ${withinVenues.length} venue(s)`);
       }
     }
   }, [userLocation]);
 
   const handleGrantLocation = async () => {
     setLocationStatus("loading");
-
     try {
       const position = await GeolocationService.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 60000,
       });
-
-      const location = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-
+      const location = { lat: position.coords.latitude, lng: position.coords.longitude };
       setUserLocation(location);
       setLocationGranted(true);
       setLocationStatus("granted");
-
-      toast.success(
-        `Location verified! (±${Math.round(
-          position.coords.accuracy
-        )}m accuracy)`
-      );
-    } catch (error) {
+      toast.success(`Location verified! (±${Math.round(position.coords.accuracy)}m accuracy)`);
+    } catch (error: unknown) {
       setLocationStatus("denied");
       setLocationGranted(false);
 
-      let errorMessage = "Unable to retrieve your location.";
       if (error instanceof Error) {
-        if (
-          error.message.includes("permission denied") ||
-          error.message.includes("PERMISSION_DENIED")
-        ) {
-          errorMessage = "Please grant location access to mark attendance.";
-        } else if (
-          error.message.includes("timeout") ||
-          error.message.includes("TIMEOUT")
-        ) {
-          errorMessage = "Location request timed out. Please try again.";
-        } else if (
-          error.message.includes("unavailable") ||
-          error.message.includes("POSITION_UNAVAILABLE")
-        ) {
-          errorMessage = "Location unavailable. Please check your GPS/network.";
-        }
+        toast.error(error.message);
+      } else {
+        toast.error("Unable to retrieve your location.");
       }
-
-      toast.error(errorMessage);
     }
   };
 
+  if (!user) {
+    return (
+      <SignedOutDashboard />
+    )
+  }
+
   return (
     <div className="px-4 md:mx-4 mb-12 overflow-x-hidden">
+      {/* Welcome */}
       <div className="mt-10 mb-6">
         <motion.h1
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-            type: "spring",
-            stiffness: 120,
-          }}
+          transition={{ duration: 0.8, ease: "easeOut", type: "spring", stiffness: 120 }}
           className="text-4xl text-center font-bold"
         >
           Welcome,{" "}
           <span className="text-cyan-700 dark:text-cyan-200 text-5xl">
-            {user ? user?.matricNo : "@student"}!
+            {user ? user?.matricNo : "student"}!
           </span>
         </motion.h1>
       </div>
 
+      {/* Dashboard Title */}
       <motion.h2
         initial={{ opacity: 0, x: -80 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-3xl font-semibold mb-6 md:mt-2 mt-14"
       >
-        Attendance Dashboard –{" "}
-        <span className="text-cyan-700 dark:text-cyan-200">Mark Courses</span>
+        Attendance Dashboard – <span className="text-cyan-700 dark:text-cyan-200">Mark Courses</span>
       </motion.h2>
 
-      <motion.div
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        {/* Location Status Section */}
+      <motion.div initial={{ opacity: 0, x: 80 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
+        {/* Location Status */}
         <div className="mb-6">
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="p-4 flex flex-col space-y-4">
+              {/* Status row */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-5 w-5" />
                   <div>
                     <h3 className="font-semibold">Location Status</h3>
                     {locationStatus === "granted" && userLocation && (
-                      <div className="text-sm text-muted-foreground">
-                        <p>
-                          Lat: {userLocation.lat.toFixed(6)}, Lng:{" "}
-                          {userLocation.lng.toFixed(6)}
-                        </p>
-                      </div>
-                    )}
-                    {locationStatus === "denied" && (
-                      <p className="text-sm text-red-600">
-                        Location access denied
-                      </p>
-                    )}
-                    {locationStatus === "idle" && (
                       <p className="text-sm text-muted-foreground">
-                        Location not requested
+                        Lat: {userLocation.lat.toFixed(6)}, Lng: {userLocation.lng.toFixed(6)}
                       </p>
                     )}
+                    {locationStatus === "denied" && <p className="text-sm text-red-600">Location access denied</p>}
+                    {locationStatus === "idle" && <p className="text-sm text-muted-foreground">Location not requested</p>}
                   </div>
                 </div>
                 <button
@@ -306,57 +282,69 @@ export default function Dashboard() {
                     : "Grant Location Access"}
                 </button>
               </div>
+
+              {/* ✅ Location Granted Info */}
+              <div>
+                <p className="text-sm">
+                  Location granted:{" "}
+                  <span className={locationGranted ? "text-green-600" : "text-red-600"}>
+                    {locationGranted ? "Yes" : "No"}
+                  </span>
+                </p>
+              </div>
+
+              {/* ✅ Nearby Venues */}
+              {nearbyVenues.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-2">Nearby Venues</h4>
+                  <ul className="space-y-1 text-sm text-muted-foreground">
+                    {nearbyVenues.map((venue) => (
+                      <li key={venue.id}>
+                        {venue.name} – {venue.distance.toFixed(1)}m{" "}
+                        {venue.isWithin && <span className="text-green-600 font-medium">(Within Range)</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Nearby Venues Section */}
-        {userLocation && nearbyVenues.length > 0 && (
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Nearby Venues</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {nearbyVenues.slice(0, 4).map((venue) => (
-                <Card
-                  key={venue.id}
-                  className={`${
-                    venue.isWithin
-                      ? "border-green-300 bg-green-50 dark:bg-green-900/20"
-                      : "border-red-200"
-                  }`}
+        {/* Courses Section */}
+        <Card className="shadow-lg">
+          <CardContent className="p-4">
+            <h3 className="text-xl font-semibold mb-4">Active Courses</h3>
+            <div className="space-y-3">
+              {activeCourses.map((course) => (
+                <Link
+                  key={course.id}
+                  to={`/course/${course.id}`}
+                  className={`block p-4 rounded-lg border transition ${
+                    course.status === "marked"
+                      ? "bg-green-50 border-green-300 dark:bg-green-900/20"
+                      : "bg-yellow-50 border-yellow-300 dark:bg-yellow-900/20"
+                  } hover:shadow-md`}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-semibold">{venue.name}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {venue.building} • {venue.floor}
-                        </p>
-                      </div>
-                      <div
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          venue.isWithin
-                            ? "bg-green-100 text-green-800 border border-green-300"
-                            : "bg-red-100 text-red-800 border border-red-300"
-                        }`}
-                      >
-                        {venue.isWithin ? "In Range" : "Out of Range"}
-                      </div>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h4 className="font-semibold">{course.name}</h4>
+                      <p className="text-sm text-muted-foreground">{course.code} • {course.lecturer}</p>
+                      <p className="text-xs text-muted-foreground">{course.time} • {course.location}</p>
                     </div>
-                    <div className="mt-2 text-sm text-muted-foreground">
-                      <p>Distance: {Math.round(venue.distance)}m</p>
-                      <p>Required: ≤{venue.radius}m</p>
-                      <p>Capacity: {venue.capacity} students</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-medium ${
+                        course.status === "marked"
+                          ? "bg-green-100 text-green-800 border border-green-300"
+                          : "bg-yellow-100 text-yellow-800 border border-yellow-300"
+                      }`}
+                    >
+                      {course.status === "marked" ? "Marked" : "Pending"}
+                    </span>
+                  </div>
+                </Link>
               ))}
             </div>
-          </div>
-        )}
-
-        <Card className="shadow-lg">
-          <CardContent className="overflow-x-auto p-0">
-            <MarkAttendance locationGranted={locationGranted} />
           </CardContent>
         </Card>
       </motion.div>

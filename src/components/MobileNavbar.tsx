@@ -9,6 +9,7 @@ import {
   Contact,
   LogIn,
   Loader2,
+  BookOpen,
 } from "lucide-react";
 
 import {
@@ -34,6 +35,11 @@ const items = [
     title: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboardIcon,
+  },
+  {
+    title: "All Courses",
+    href: "/all-courses",
+    icon: BookOpen,
   },
   {
     title: "Inbox",
