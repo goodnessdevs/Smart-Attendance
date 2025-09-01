@@ -1,3 +1,177 @@
+// import { useNavigate } from "react-router-dom";
+// import { motion } from "framer-motion";
+// import { UserLock, Loader2 } from "lucide-react";
+// import {
+//   Card,
+//   CardContent,
+//   CardHeader,
+//   CardTitle,
+//   CardDescription,
+// } from "../../components/ui/card";
+// import { Button } from "../../components/ui/button";
+// import { useEffect, useState } from "react";
+// import { useAuthContext } from "../../hooks/use-auth"; // ✅ Hook for AuthContext
+// import { toast } from "sonner";
+
+// const MotionCard = motion.create(Card);
+
+// function Login() {
+//   const navigate = useNavigate();
+//   const d = new Date();
+//   const year = d.getFullYear();
+
+//   const { login, dispatch } = useAuthContext(); // ✅ From AuthContext
+//   const [loading, setLoading] = useState(false); // ✅ Loading state for button
+
+//   // ✅ Listen for messages from popup (Google OAuth)
+//   useEffect(() => {
+//     const handleMessage = async (event: MessageEvent) => {
+//       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
+
+//       const { token } = event.data as { token?: string };
+
+//       if (token) {
+//         localStorage.setItem("jwt_token", token);
+//         setLoading(true);
+
+//         try {
+//           const res = await fetch(
+//             `${import.meta.env.VITE_BACKEND_URL}/dashboard`,
+//             {
+//               method: "GET",
+//               headers: {
+//                 Authorization: `Bearer ${token}`,
+//               },
+//             }
+//           );
+
+//           if (!res.ok) {
+//             throw new Error("Failed to validate token");
+//           }
+
+//           const data = await res.json();
+//           console.log("User data:", data);
+
+//           // Update global AuthContext
+//           login(data.user, token); // or dispatch({ type: "LOGIN", payload: data.user })
+
+//           // Navigate depending on onboarding status
+//           if (res.ok) {
+//             toast.success('Sign in successful');
+//             navigate("/onboarding");
+//           } else {
+//             toast.error('Something went wrong. Please try again');
+//           }
+//         } catch (err) {
+//           console.error("Token validation failed:", err);
+//           localStorage.removeItem("jwt_token");
+//         } finally {
+//           setLoading(false);
+//         }
+//       }
+//     };
+
+//     window.addEventListener("message", handleMessage);
+//     return () => window.removeEventListener("message", handleMessage);
+//   }, [navigate, login, dispatch]);
+
+//   // ✅ Open popup for Google login
+//   const handleGoogleAuth = () => {
+//     const width = 500;
+//     const height = 600;
+//     const left = window.screen.width / 2 - width / 2;
+//     const top = window.screen.height / 2 - height / 2;
+
+//     setLoading(true);
+
+//     window.open(
+//       import.meta.env.VITE_API_AUTH_URL,
+//       "Google Login",
+//       `width=${width},height=${height},top=${top},left=${left}`
+//     );
+//   };
+
+//   return (
+//     <div className="h-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-900 to-gray-900 px-4">
+//       <motion.div
+//         initial={{ opacity: 0, y: -50 }}
+//         whileInView={{ opacity: 1, y: 0 }}
+//         transition={{ duration: 0.9, ease: "easeInOut" }}
+//         viewport={{ once: false }}
+//         className="flex items-center justify-start gap-x-2 mb-8"
+//       >
+//         <div className="w-24 h-24">
+//           <img
+//             src="/funaab.png"
+//             alt="funaab"
+//             className="object-contain w-full h-full"
+//           />
+//         </div>
+//         <h2 className="text-2xl text-white font-bold">Smart Attendance</h2>
+//       </motion.div>
+
+//       <MotionCard
+//         initial={{ opacity: 0, y: 50 }}
+//         whileInView={{ opacity: 1, y: 0 }}
+//         transition={{ duration: 0.9, ease: "easeInOut" }}
+//         viewport={{ once: false }}
+//         className="w-full max-w-md shadow-xl bg-white text-black"
+//       >
+//         <CardHeader className="text-center">
+//           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+//           <CardDescription className="text-gray-500">
+//             Welcome back, please log in
+//           </CardDescription>
+//         </CardHeader>
+
+//         <CardContent className="space-y-6">
+//           <div className="flex justify-center">
+//             <UserLock className="h-10 w-10 text-blue-500" />
+//           </div>
+
+//           <motion.div
+//             initial={{ borderRadius: 8 }}
+//             whileHover={{
+//               borderRadius: 999,
+//               transition: { duration: 1, ease: "easeInOut" },
+//             }}
+//           >
+//             <Button
+//               onClick={handleGoogleAuth}
+//               disabled={loading}
+//               className="w-full flex gap-2 cursor-pointer justify-center text-black items-center bg-slate-200 hover:bg-slate-300 transition-colors"
+//             >
+//               {loading ? (
+//                 <>
+//                   <Loader2 className="w-5 h-5 animate-spin" />
+//                   <>Signing in...</>
+//                 </>
+//               ) : (
+//                 <>
+//                   <img
+//                     src="https://www.svgrepo.com/show/355037/google.svg"
+//                     alt="Google"
+//                     className="w-5 h-5"
+//                   />
+//                   <>Continue with Google</>
+//                 </>
+//               )}
+//             </Button>
+//           </motion.div>
+
+//         </CardContent>
+//       </MotionCard>
+
+//       <p className="text-center text-white mt-4">
+//         &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+//         reserved.
+//       </p>
+//     </div>
+//   );
+// }
+
+// export default Login;
+
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserLock, Loader2 } from "lucide-react";
@@ -10,7 +184,7 @@ import {
 } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/use-auth"; // ✅ Hook for AuthContext
+import { useAuthContext } from "../../hooks/use-auth";
 import { toast } from "sonner";
 
 const MotionCard = motion.create(Card);
@@ -20,10 +194,10 @@ function Login() {
   const d = new Date();
   const year = d.getFullYear();
 
-  const { login, dispatch } = useAuthContext(); // ✅ From AuthContext
-  const [loading, setLoading] = useState(false); // ✅ Loading state for button
+  const { login } = useAuthContext();
+  const [loading, setLoading] = useState(false);
 
-  // ✅ Listen for messages from popup (Google OAuth)
+  // Listen for messages from popup (Google OAuth)
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
@@ -52,19 +226,28 @@ function Login() {
           const data = await res.json();
           console.log("User data:", data);
 
-          // Update global AuthContext
-          login(data.user, token); // or dispatch({ type: "LOGIN", payload: data.user })
+          // Create user object without device info initially
+          // Device info will be added during onboarding
+          const user = {
+            ...data.user,
+            device_uuid: "", // Will be populated in onboarding
+            fingerprint: "", // Will be populated in onboarding
+          };
 
-          // Navigate depending on onboarding status
+          // Update global AuthContext
+          login(user, token);
+
+          // Navigate to onboarding to complete profile with device info
           if (res.ok) {
-            toast.success('Sign in successful');
+            toast.success("Sign in successful");
             navigate("/onboarding");
           } else {
-            toast.error('Something went wrong. Please try again');
+            toast.error("Something went wrong. Please try again");
           }
         } catch (err) {
           console.error("Token validation failed:", err);
           localStorage.removeItem("jwt_token");
+          toast.error("Authentication failed. Please try again");
         } finally {
           setLoading(false);
         }
@@ -73,9 +256,9 @@ function Login() {
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [navigate, login, dispatch]);
+  }, [navigate, login]);
 
-  // ✅ Open popup for Google login
+  // Open popup for Google login
   const handleGoogleAuth = () => {
     const width = 500;
     const height = 600;
@@ -84,11 +267,19 @@ function Login() {
 
     setLoading(true);
 
-    window.open(
+    const popup = window.open(
       import.meta.env.VITE_API_AUTH_URL,
       "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
+
+    // Handle popup being closed manually
+    const checkClosed = setInterval(() => {
+      if (popup?.closed) {
+        setLoading(false);
+        clearInterval(checkClosed);
+      }
+    }, 1000);
   };
 
   return (
@@ -158,7 +349,6 @@ function Login() {
               )}
             </Button>
           </motion.div>
-
         </CardContent>
       </MotionCard>
 
