@@ -54,3 +54,15 @@ export async function getUUID(): Promise<string | null> {
     request.onerror = () => reject(request.error);
   });
 }
+
+export async function clearDeviceDB(): Promise<boolean> {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("deviceStore", "readwrite");
+    const store = tx.objectStore("deviceStore");
+    const clearReq = store.clear();
+
+    clearReq.onsuccess = () => resolve(true);
+    clearReq.onerror = () => reject(clearReq.error);
+  });
+}

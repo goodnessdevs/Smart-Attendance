@@ -2,31 +2,31 @@ import { Route, Routes } from "react-router-dom";
 import { RequireAuthDialog } from "./components/AuthDialog";
 
 import Layout from "./layouts/Layout";
-import Dashboard from "./pages/Dashboard";
-import Account from "./pages/Account";
-import Login from "./pages/Login";
-import Onboarding from "./pages/Onboarding";
-import CheckAttendance from "./pages/CheckAttendance";
-import CalendarPage from "./pages/Calendar";
-import InboxPage from "./pages/Inbox";
-import Support from "./pages/Support";
-import AttendanceViewer from "./lecturer-pages/AttendanceViewer";
-import Calendar from "./lecturer-pages/Calendar";
+import Dashboard from "./pages/student-pages/Dashboard";
+import Account from "./pages/student-pages/Account";
+import Login from "./pages/student-pages/Login";
+import Onboarding from "./pages/student-pages/Onboarding";
+import CheckAttendance from "./pages/student-pages/CheckAttendance";
+import CalendarPage from "./pages/student-pages/Calendar";
+import InboxPage from "./pages/student-pages/Inbox";
+import Support from "./pages/student-pages/Support";
+import AttendanceViewer from "./pages/lecturer-pages/AttendanceViewer";
+import Calendar from "./pages/lecturer-pages/Calendar";
 
 import LecturerLayout from "./layouts/LecturerLayout";
-import LecturerInbox from "./lecturer-pages/Inbox";
-import LecturerAuth from "./lecturer-pages/PasswordAuth";
-import AttendanceDashboard from "./lecturer-pages/Dashboard";
-import LecturerAccount from "./lecturer-pages/Account";
-import LecturerLogin from "./lecturer-pages/Login";
-import StudentSupportPage from "./lecturer-pages/StudentSupportPage";
+import LecturerInbox from "./pages/lecturer-pages/Inbox";
+import LecturerAuth from "./pages/lecturer-pages/PasswordAuth";
+import AttendanceDashboard from "./pages/lecturer-pages/Dashboard";
+import LecturerAccount from "./pages/lecturer-pages/Account";
+import LecturerLogin from "./pages/lecturer-pages/Login";
+import StudentSupportPage from "./pages/lecturer-pages/StudentSupportPage";
 
 import AdminLayout from "./layouts/AdminLayout";
-import AdminAccount from "./admin/Account";
-import AdminDashboard from "./admin/page";
-import CreatedCourses from "./admin/CreatedCourses";
-import AdminLogin from "./admin/Login";
-import AllCourses from "./pages/AllCourses";
+import AdminAccount from "./pages/admin/Account";
+import AdminDashboard from "./pages/admin/page";
+import CreatedCourses from "./pages/admin/CreatedCourses";
+import AdminLogin from "./pages/admin/Login";
+import AllCourses from "./pages/student-pages/AllCourses";
 
 function App() {
   return (

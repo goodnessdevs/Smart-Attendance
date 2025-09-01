@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X, Check } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -8,22 +8,22 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../components/ui/command";
+} from "../../components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../components/ui/popover";
+} from "../../components/ui/popover";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components/ui/dialog";
-import { Input } from "../components/ui/input";
+} from "../../components/ui/dialog";
+import { Input } from "../../components/ui/input";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "../components/ui/card";
+import { Card, CardContent } from "../../components/ui/card";
 import { toast } from "sonner";
 
 // --- Types ---

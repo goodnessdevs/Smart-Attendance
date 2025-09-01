@@ -12,9 +12,9 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "../components/ui/form";
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
+} from "../../components/ui/form";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 import { motion } from "framer-motion";
 
 const formSchema = z.object({

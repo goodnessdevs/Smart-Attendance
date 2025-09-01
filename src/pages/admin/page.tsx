@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
-} from "../components/ui/card";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import { Button } from "../components/ui/button";
-import { Alert, AlertDescription } from "../components/ui/alert";
+} from "../../components/ui/card";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import { Button } from "../../components/ui/button";
+import { Alert, AlertDescription } from "../../components/ui/alert";
 import { BookOpen, Plus, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 

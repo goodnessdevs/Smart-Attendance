@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Select,
   SelectTrigger,
@@ -14,20 +14,20 @@ import {
   SelectItem,
   SelectGroup,
   SelectLabel,
-} from "../components/ui/select";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
-import { Separator } from "../components/ui/separator";
+} from "../../components/ui/select";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Separator } from "../../components/ui/separator";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { colleges } from "../components/CollegeData";
+import { colleges } from "../../components/CollegeData";
 import { Loader2 } from "lucide-react";
 import {
   getOrCreateUUID,
   getBrowserFingerprint,
-} from "../utils/browserfingerprint";
+} from "../../utils/browserfingerprint";
 import confetti from "canvas-confetti";
 
 const MotionCard = motion.create(Card);

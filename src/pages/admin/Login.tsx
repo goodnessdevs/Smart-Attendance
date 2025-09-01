@@ -1,29 +1,26 @@
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/ui/button";
 import { motion } from "framer-motion";
-import { UserLock, Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { useEffect, useState } from "react";
-import { useAuthContext } from "../hooks/use-auth"; // ✅ Hook for AuthContext
+} from "../../components/ui/card";
+import { Loader2, UserLock } from "lucide-react";
 import { toast } from "sonner";
+import { useAuthContext } from "../../hooks/use-auth";
+import { useEffect, useState } from "react";
 
 const MotionCard = motion.create(Card);
 
-function Login() {
+const Login = () => {
   const navigate = useNavigate();
-  const d = new Date();
-  const year = d.getFullYear();
 
-  const { login, dispatch } = useAuthContext(); // ✅ From AuthContext
-  const [loading, setLoading] = useState(false); // ✅ Loading state for button
+  const { login, dispatch } = useAuthContext(); 
+  const [loading, setLoading] = useState(false); 
 
-  // ✅ Listen for messages from popup (Google OAuth)
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
@@ -35,36 +32,46 @@ function Login() {
         setLoading(true);
 
         try {
+          // ✅ Validate token with backend
           const res = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/dashboard`,
             {
               method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+              headers: { Authorization: `Bearer ${token}` },
             }
           );
 
-          if (!res.ok) {
-            throw new Error("Failed to validate token");
+          if (!res.ok) throw new Error("Failed to validate token");
+          const data = await res.json();
+
+          // ✅ Now check admin status
+          const statusRes = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/check-status`,
+            {
+              method: "GET",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          if (!statusRes.ok) {
+            throw new Error("Failed to check user status");
           }
 
-          const data = await res.json();
-          console.log("User data:", data);
+          const statusData = await statusRes.json();
 
-          // Update global AuthContext
-          login(data.user, token); // or dispatch({ type: "LOGIN", payload: data.user })
-
-          // Navigate depending on onboarding status
-          if (res.ok) {
-            toast.success('Sign in successful');
-            navigate("/onboarding");
+          if (statusData.isAdmin) {
+            // console.log(statusRes.formData)
+            login(data.user, token);
+            toast.success("Sign in successful");
+            navigate("/admin");
           } else {
-            toast.error('Something went wrong. Please try again');
+            toast.error("Access denied. Only admins can log in.");
+            localStorage.removeItem("jwt_token");
           }
         } catch (err) {
-          console.error("Token validation failed:", err);
+          console.error("Login flow error:", err);
           localStorage.removeItem("jwt_token");
+          toast.error("Unauthenticated request. Please try again.");
         } finally {
           setLoading(false);
         }
@@ -75,7 +82,6 @@ function Login() {
     return () => window.removeEventListener("message", handleMessage);
   }, [navigate, login, dispatch]);
 
-  // ✅ Open popup for Google login
   const handleGoogleAuth = () => {
     const width = 500;
     const height = 600;
@@ -91,36 +97,40 @@ function Login() {
     );
   };
 
+  const d = new Date();
+  const year = d.getFullYear();
+
   return (
-    <div className="h-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-900 to-gray-900 px-4">
+    <div className="min-h-screen min-w-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-br dark:from-cyan-700 dark:to-gray-900 px-4">
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: "easeInOut" }}
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut", type: "spring", stiffness: 120 }}
         viewport={{ once: false }}
-        className="flex items-center justify-start gap-x-2 mb-8"
+        className="flex flex-col items-center justify-start gap-x-2 mb-8"
       >
         <div className="w-24 h-24">
           <img
-            src="/funaab.png"
+            src={"/funaab.png"}
             alt="funaab"
             className="object-contain w-full h-full"
           />
         </div>
-        <h2 className="text-2xl text-white font-bold">Smart Attendance</h2>
+        <h2 className="text-2xl text-white text-center font-bold">
+          Smart Attendance For Admin
+        </h2>
       </motion.div>
 
       <MotionCard
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: "easeInOut" }}
-        viewport={{ once: false }}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut", type: "spring", stiffness: 120 }}
         className="w-full max-w-md shadow-xl bg-white text-black"
       >
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
           <CardDescription className="text-gray-500">
-            Welcome back, please log in
+            Welcome back, please sign in
           </CardDescription>
         </CardHeader>
 
@@ -137,9 +147,9 @@ function Login() {
             }}
           >
             <Button
+              variant="default"
+              className="w-full flex gap-2 cursor-pointer justify-center text-black items-center bg-gray-200 hover:bg-gray-300"
               onClick={handleGoogleAuth}
-              disabled={loading}
-              className="w-full flex gap-2 cursor-pointer justify-center text-black items-center bg-slate-200 hover:bg-slate-300 transition-colors"
             >
               {loading ? (
                 <>
@@ -158,7 +168,6 @@ function Login() {
               )}
             </Button>
           </motion.div>
-
         </CardContent>
       </MotionCard>
 
@@ -168,6 +177,6 @@ function Login() {
       </p>
     </div>
   );
-}
+};
 
 export default Login;

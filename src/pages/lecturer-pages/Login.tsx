@@ -174,7 +174,7 @@
 // export default Login;
 
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -182,10 +182,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import { Loader2, UserLock } from "lucide-react";
 import { toast } from "sonner";
-import { useAuthContext } from "../hooks/use-auth";
+import { useAuthContext } from "../../hooks/use-auth";
 import { useEffect, useState } from "react";
 
 const MotionCard = motion.create(Card);

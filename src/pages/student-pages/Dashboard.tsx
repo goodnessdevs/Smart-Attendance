@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { Card, CardContent } from "../components/ui/card";
+import { Card, CardContent } from "../../components/ui/card";
 import { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
-import { useAuthContext } from "../hooks/use-auth";
+import { useAuthContext } from "../../hooks/use-auth";
 import SignedOutDashboard from "./SignedOutDashboard";
 
 // Venue type

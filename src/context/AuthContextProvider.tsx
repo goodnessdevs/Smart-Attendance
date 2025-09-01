@@ -2,6 +2,7 @@ import { useEffect, useReducer } from "react";
 import type { ReactNode } from "react";
 import { AuthContext, initialState } from "./AuthContext";
 import type { User, State } from "./AuthContext";
+import { clearDeviceDB } from "../utils/indexedDB";
 
 type Action =
   | { type: "LOGIN"; payload: { user: User; token: string } }
@@ -50,9 +51,17 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: "LOGIN", payload: { user, token } });
   };
 
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem("jwt_token");
     dispatch({ type: "LOGOUT" });
+
+    // clear device UUID + fingerprint from IndexedDB
+    try {
+      await clearDeviceDB();
+      console.log("DeviceDB cleared successfully");
+    } catch (err) {
+      console.error("Failed to clear DeviceDB:", err);
+    }
   };
 
   return (
