@@ -156,10 +156,12 @@ function SheetNavbar() {
                       <span>Logging out...</span>
                     </>
                   ) : (
-                    <>
-                      <LogOut />
-                      <span>Logout</span>
-                    </>
+                    <Button asChild>
+                      <Link to="/login">
+                        <LogOut />
+                        <span>Log out</span>
+                      </Link>
+                    </Button>
                   )}
                 </Button>
               ) : (

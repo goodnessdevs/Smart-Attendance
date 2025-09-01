@@ -30,12 +30,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 const items = [
   {
     title: "Dashboard",
-    href: "/",
+    href: "/admin",
     icon: LayoutDashboardIcon,
   },
   {
     title: "Created Courses",
-    href: "/created-courses",
+    href: "/admin/created-courses",
     icon: BookOpenCheck,
   },
 //   {
@@ -45,7 +45,7 @@ const items = [
 //   },
   {
     title: "Account",
-    href: "/account-profile",
+    href: "/admin/account-profile",
     icon: User,
   },
 //   {

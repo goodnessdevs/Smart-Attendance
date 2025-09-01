@@ -2687,3 +2687,9 @@
 //     </motion.div>
 //   );
 // }
+
+
+Now this whole case of roles is actually for the lecturer's panel and the admin panel, 
+is the user is a lecturer or an admin, the students panel not included, as it is default. 
+I actually don't understand how to implement this code because if the lecturer first signs 
+in at the lecturer panel of this web app, how will it deny him from accessing the admin page
