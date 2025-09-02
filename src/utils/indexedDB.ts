@@ -84,7 +84,7 @@ export async function saveUUID(uuid: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction("deviceStore", "readwrite");
     const store = tx.objectStore("deviceStore");
-    const record: DeviceRecord = { key: "uuid", value: uuid };
+    const record: DeviceRecord = { key: "device_uuid", value: uuid };
 
     store.put(record);
 
@@ -98,7 +98,7 @@ export async function getUUID(): Promise<string | null> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction("deviceStore", "readonly");
     const store = tx.objectStore("deviceStore");
-    const request = store.get("uuid");
+    const request = store.get("device_uuid");
 
     request.onsuccess = () => {
       const result = request.result as DeviceRecord | undefined;
