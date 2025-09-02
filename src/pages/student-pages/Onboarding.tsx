@@ -357,6 +357,7 @@ function Onboarding() {
     try {
       // Add device info
       const body = await addDeviceInfoToBody(formData);
+      console.log("Submitting onboarding body:", body);
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/update-profile`,
