@@ -350,7 +350,7 @@ function Onboarding() {
 
     try {
       // Add device info to form data automatically
-      const requestBody = await addDeviceInfoToBody(formData);
+      const body = await addDeviceInfoToBody(formData);
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/update-profile`,
@@ -360,7 +360,7 @@ function Onboarding() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify(body),
         }
       );
 
