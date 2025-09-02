@@ -293,7 +293,8 @@
 
 // export default Onboarding;
 
-import React, { useState } from "react";
+
+import React, { useState, useContext } from "react";
 import {
   Card,
   CardHeader,
@@ -321,11 +322,14 @@ import { colleges } from "../../components/CollegeData";
 import { Loader2 } from "lucide-react";
 import { addDeviceInfoToBody } from "../../utils/deviceUtils";
 import confetti from "canvas-confetti";
+import { AuthContext } from "../../context/AuthContext"; // ✅ import context
 
 const MotionCard = motion.create(Card);
 
 function Onboarding() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // ✅ get login from context
+
   const [formData, setFormData] = useState({
     matricNumber: "",
     department: "",
@@ -338,7 +342,9 @@ function Onboarding() {
   const d = new Date();
   const year = d.getFullYear();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -349,7 +355,7 @@ function Onboarding() {
     const token = localStorage.getItem("jwt_token");
 
     try {
-      // Add device info to form data automatically
+      // Add device info
       const body = await addDeviceInfoToBody(formData);
 
       const response = await fetch(
@@ -367,12 +373,27 @@ function Onboarding() {
       const data = await response.json();
 
       if (response.ok) {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-        });
+        // 🎉 Success effects
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         toast.success("Registration Completed");
+
+        // ✅ Fetch updated user details
+        const userResponse = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/user-details`,
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+
+          // ✅ Log user into context
+          login(userData, token!);
+        }
+
+        // ✅ Navigate to dashboard
         navigate("/");
       } else {
         toast.error(data.message || "Registration Failed");
@@ -385,23 +406,13 @@ function Onboarding() {
     }
   };
 
-  // Get departments for selected college
   const selectedCollege = colleges.find(
     (college) => college.value === formData.college
   );
 
   return (
     <div className="min-h-screen w-full max-w-full flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
-      <div className="flex items-center gap-x-4">
-        <div className="w-20 h-20 mb-4">
-          <img
-            src="/funaab.png"
-            alt="funaab"
-            className="object-contain w-full h-full"
-          />
-        </div>
-        <h2 className="text-2xl text-black font-bold">Smart Attendance</h2>
-      </div>
+      {/* ... keep the rest of your UI the same ... */}
 
       <MotionCard
         initial={{ opacity: 0, y: -30 }}
@@ -416,7 +427,7 @@ function Onboarding() {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="">
+        <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4 text-black">
             <div className="space-y-1">
               <Label className="text-black" htmlFor="matricNumber">

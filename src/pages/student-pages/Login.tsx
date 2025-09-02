@@ -45,22 +45,18 @@
 //             }
 //           );
 
-//           if (!res.ok) {
-//             throw new Error("Failed to validate token");
-//           }
-
 //           const data = await res.json();
-//           console.log("User data:", data);
-
-//           // Update global AuthContext
-//           login(data.user, token); // or dispatch({ type: "LOGIN", payload: data.user })
 
 //           // Navigate depending on onboarding status
 //           if (res.ok) {
-//             toast.success('Sign in successful');
+//             // Update global AuthContext
+//             login(data.user, token);
+//             console.log("User data:", data);
+//             toast.success("Sign in successful");
 //             navigate("/onboarding");
 //           } else {
-//             toast.error('Something went wrong. Please try again');
+//             toast.error("Something went wrong. Please try again");
+//             throw new Error("Failed to validate token");
 //           }
 //         } catch (err) {
 //           console.error("Token validation failed:", err);
@@ -158,7 +154,6 @@
 //               )}
 //             </Button>
 //           </motion.div>
-
 //         </CardContent>
 //       </MotionCard>
 
@@ -184,7 +179,7 @@ import {
 } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/use-auth";
+import { useAuthContext } from "../../hooks/use-auth"; // ✅ Hook for AuthContext
 import { toast } from "sonner";
 
 const MotionCard = motion.create(Card);
@@ -194,10 +189,10 @@ function Login() {
   const d = new Date();
   const year = d.getFullYear();
 
-  const { login } = useAuthContext();
+  const { login } = useAuthContext(); // ✅ only need login
   const [loading, setLoading] = useState(false);
 
-  // Listen for messages from popup (Google OAuth)
+  // ✅ Listen for messages from popup (Google OAuth)
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
@@ -209,6 +204,7 @@ function Login() {
         setLoading(true);
 
         try {
+          // First check dashboard for onboarding status
           const res = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/dashboard`,
             {
@@ -219,35 +215,42 @@ function Login() {
             }
           );
 
+          const data = await res.json();
+
           if (!res.ok) {
+            toast.error("Something went wrong. Please try again");
             throw new Error("Failed to validate token");
           }
 
-          const data = await res.json();
-          console.log("User data:", data);
+          // ✅ If user is onboarded, fetch full details
+          if (data.onboarded) {
+            const userRes = await fetch(
+              `${import.meta.env.VITE_BACKEND_URL}/user-details`,
+              {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
 
-          // Create user object without device info initially
-          // Device info will be added during onboarding
-          const user = {
-            ...data.user,
-            device_uuid: "", // Will be populated in onboarding
-            fingerprint: "", // Will be populated in onboarding
-          };
-
-          // Update global AuthContext
-          login(user, token);
-
-          // Navigate to onboarding to complete profile with device info
-          if (res.ok) {
-            toast.success("Sign in successful");
-            navigate("/onboarding");
+            if (userRes.ok) {
+              const userData = await userRes.json();
+              login(userData, token); // ✅ full user in context
+              toast.success("Sign in successful");
+              navigate("/"); // straight to dashboard
+            } else {
+              toast.error("Failed to fetch user details");
+            }
           } else {
-            toast.error("Something went wrong. Please try again");
+            // ✅ Not onboarded: store partial user & go to onboarding
+            if (data.user) {
+              login(data.user, token);
+            }
+            toast.success("Continue onboarding");
+            navigate("/onboarding");
           }
         } catch (err) {
           console.error("Token validation failed:", err);
           localStorage.removeItem("jwt_token");
-          toast.error("Authentication failed. Please try again");
         } finally {
           setLoading(false);
         }
@@ -258,7 +261,7 @@ function Login() {
     return () => window.removeEventListener("message", handleMessage);
   }, [navigate, login]);
 
-  // Open popup for Google login
+  // ✅ Open popup for Google login
   const handleGoogleAuth = () => {
     const width = 500;
     const height = 600;
@@ -267,19 +270,11 @@ function Login() {
 
     setLoading(true);
 
-    const popup = window.open(
+    window.open(
       import.meta.env.VITE_API_AUTH_URL,
       "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
-
-    // Handle popup being closed manually
-    const checkClosed = setInterval(() => {
-      if (popup?.closed) {
-        setLoading(false);
-        clearInterval(checkClosed);
-      }
-    }, 1000);
   };
 
   return (
@@ -288,7 +283,6 @@ function Login() {
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeInOut" }}
-        viewport={{ once: false }}
         className="flex items-center justify-start gap-x-2 mb-8"
       >
         <div className="w-24 h-24">
@@ -303,9 +297,8 @@ function Login() {
 
       <MotionCard
         initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeInOut" }}
-        viewport={{ once: false }}
         className="w-full max-w-md shadow-xl bg-white text-black"
       >
         <CardHeader className="text-center">

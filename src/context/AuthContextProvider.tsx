@@ -1,77 +1,13 @@
-// import { useEffect, useReducer } from "react";
-// import type { ReactNode } from "react";
-// import { AuthContext, initialState } from "./AuthContext";
-// import type { User, State } from "./AuthContext";
-
-// type Action =
-//   | { type: "LOGIN"; payload: { user: User; token: string } }
-//   | { type: "LOGOUT" };
-
-// const authReducer = (state: State, action: Action): State => {
-//   switch (action.type) {
-//     case "LOGIN":
-//       return { user: action.payload.user, token: action.payload.token };
-//     case "LOGOUT":
-//       return { user: null, token: null };
-//     default:
-//       return state;
-//   }
-// };
-
-// export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-//   const [state, dispatch] = useReducer(authReducer, initialState);
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("jwt_token");
-
-//     if (token) {
-//       fetch(`${import.meta.env.VITE_BACKEND_URL}/user-details`, {
-//         method: "GET",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       })
-//         .then((res) => {
-//           if (!res.ok) throw new Error("Invalid token");
-//           return res.json();
-//         })
-//         .then((data) => {
-//           dispatch({ type: "LOGIN", payload: { user: data, token } });
-//         })
-//         .catch(() => {
-//           localStorage.removeItem("jwt_token");
-//           dispatch({ type: "LOGOUT" });
-//         });
-//     }
-//   }, []);
-
-//   const login = (user: User, token: string) => {
-//     localStorage.setItem("jwt_token", token);
-//     dispatch({ type: "LOGIN", payload: { user, token } });
-//   };
-
-//   const logout = async () => {
-//     localStorage.removeItem("jwt_token");
-//     dispatch({ type: "LOGOUT" });
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ ...state, login, logout, dispatch }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import type { ReactNode } from "react";
 import { AuthContext, initialState } from "./AuthContext";
 import type { User, State } from "./AuthContext";
 import { clearDeviceData } from "../utils/indexedDB";
-import { getDeviceInfo } from "../utils/deviceUtils";
 
 type Action =
   | { type: "LOGIN"; payload: { user: User; token: string } }
-  | { type: "LOGOUT" };
+  | { type: "LOGOUT" }
+  | { type: "SET_LOADING"; payload: boolean };
 
 const authReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -86,44 +22,102 @@ const authReducer = (state: State, action: Action): State => {
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt_token");
+    let isCancelled = false;
 
-    if (token) {
-      // Get user details when app loads with existing token
-      const fetchUserDetails = async () => {
-        try {
-          const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user-details`, {
+    const initializeAuth = async () => {
+      const token = localStorage.getItem("jwt_token");
+
+      if (!token) {
+        setIsInitializing(false);
+        return;
+      }
+
+      try {
+        // ✅ First check onboarding status via /dashboard
+        const dashboardResponse = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/dashboard`,
+          {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          });
+          }
+        );
 
-          if (!response.ok) throw new Error("Invalid token");
-          
-          const userData = await response.json();
-          
-          // Get device info and add to user object
-          const deviceInfo = await getDeviceInfo();
-          const user: User = {
-            ...userData,
-            device_uuid: deviceInfo.device_uuid,
-            fingerprint: deviceInfo.fingerprint,
-          };
+        if (!dashboardResponse.ok) {
+          throw new Error("Invalid token");
+        }
 
-          dispatch({ type: "LOGIN", payload: { user, token } });
-        } catch (error) {
-          console.error("Failed to fetch user details:", error);
+        const dashboardData = await dashboardResponse.json();
+        
+        // ✅ If user is onboarded, fetch full user details
+        if (dashboardData.onboarded) {
+          const userResponse = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/user-details`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!userResponse.ok) {
+            throw new Error("Failed to fetch user details");
+          }
+
+          const userData = await userResponse.json();
+
+          if (!isCancelled) {
+            // ✅ userData should match your User type exactly
+            dispatch({ 
+              type: "LOGIN", 
+              payload: { 
+                user: userData, // Assuming userData IS the User object
+                token 
+              } 
+            });
+          }
+        } else {
+          // ✅ User exists but not onboarded yet
+          // You can either:
+          // Option 1: Store partial user data if available from dashboard
+          if (dashboardData.user && !isCancelled) {
+            dispatch({ 
+              type: "LOGIN", 
+              payload: { 
+                user: dashboardData.user, 
+                token 
+              } 
+            });
+          }
+          // Option 2: Or just keep them logged out until onboarding complete
+          // (Current implementation will just not set user in context)
+        }
+
+      } catch (error) {
+        console.error("Failed to initialize auth:", error);
+        
+        if (!isCancelled) {
           localStorage.removeItem("jwt_token");
-          await clearDeviceData(); // Clear device data if token is invalid
+          await clearDeviceData();
           dispatch({ type: "LOGOUT" });
         }
-      };
+      } finally {
+        if (!isCancelled) {
+          setIsInitializing(false);
+        }
+      }
+    };
 
-      fetchUserDetails();
-    }
+    initializeAuth();
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   const login = (user: User, token: string) => {
@@ -138,15 +132,23 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       console.log("Device data cleared from IndexedDB");
     } catch (error) {
       console.error("Failed to clear device data:", error);
-      // Continue with logout even if clearing fails
+    } finally {
+      localStorage.removeItem("jwt_token");
+      dispatch({ type: "LOGOUT" });
     }
-    
-    localStorage.removeItem("jwt_token");
-    dispatch({ type: "LOGOUT" });
+  };
+
+  // ✅ Enhanced context value with loading state
+  const contextValue = {
+    ...state,
+    login,
+    logout,
+    dispatch,
+    isInitializing,
   };
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, dispatch }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
