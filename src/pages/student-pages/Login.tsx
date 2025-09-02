@@ -220,6 +220,8 @@ function Login() {
           if (!res.ok) {
             toast.error("Something went wrong. Please try again");
             throw new Error("Failed to validate token");
+          } else {
+            console.log("User data:", data);
           }
 
           // ✅ If user is onboarded, fetch full details
