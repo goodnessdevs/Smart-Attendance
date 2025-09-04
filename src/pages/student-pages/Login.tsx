@@ -387,14 +387,11 @@ function Login() {
       // Accept messages from your backend domain
       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
 
-      const { token, success, error } = event.data as { 
-        token?: string; 
-        success?: boolean; 
-        error?: string; 
-      };
+      const { token } = event.data as { token?: string };
 
       // Handle authentication success
-      if (success && token) {
+      if (token) {
+        localStorage.setItem("jwt_token", token);
         setLoading(true);
 
         try {
@@ -453,13 +450,6 @@ function Login() {
           setLoading(false);
         }
       }
-      
-      // Handle authentication error
-      if (error) {
-        setLoading(false);
-        toast.error(error || "Authentication failed");
-      }
-
     };
 
     window.addEventListener("message", handleMessage);
