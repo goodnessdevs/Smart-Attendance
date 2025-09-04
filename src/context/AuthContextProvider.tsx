@@ -1,20 +1,20 @@
 import { useEffect, useReducer, useState } from "react";
 import type { ReactNode } from "react";
-import { AuthContext, initialState } from "./AuthContext";
-import type { User, State } from "./AuthContext";
+import { AuthContext, initialState, type Action, type State, type User } from "./AuthContext";
 import { clearDeviceData } from "../utils/indexedDB";
-
-type Action =
-  | { type: "LOGIN"; payload: { user: User; token: string } }
-  | { type: "LOGOUT" }
-  | { type: "SET_LOADING"; payload: boolean };
 
 const authReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "LOGIN":
-      return { user: action.payload.user, token: action.payload.token };
+      return { 
+        user: action.payload.user, 
+        token: action.payload.token 
+      };
     case "LOGOUT":
-      return { user: null, token: null };
+      return { 
+        user: null, 
+        token: null 
+      };
     default:
       return state;
   }
@@ -36,7 +36,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        // ✅ First check onboarding status via /dashboard
+        // Check onboarding status via /dashboard
         const dashboardResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/dashboard`,
           {
@@ -53,7 +53,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         const dashboardData = await dashboardResponse.json();
         
-        // ✅ If user is onboarded, fetch full user details
+        // If user is onboarded, fetch full user details
         if (dashboardData.onboarded) {
           const userResponse = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/user-details`,
@@ -72,30 +72,23 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           const userData = await userResponse.json();
 
           if (!isCancelled) {
-            // ✅ userData should match your User type exactly
             dispatch({ 
               type: "LOGIN", 
               payload: { 
-                user: userData, // Assuming userData IS the User object
+                user: userData,
                 token 
               } 
             });
           }
-        } else {
-          // ✅ User exists but not onboarded yet
-          // You can either:
-          // Option 1: Store partial user data if available from dashboard
-          if (dashboardData.user && !isCancelled) {
-            dispatch({ 
-              type: "LOGIN", 
-              payload: { 
-                user: dashboardData.user, 
-                token 
-              } 
-            });
-          }
-          // Option 2: Or just keep them logged out until onboarding complete
-          // (Current implementation will just not set user in context)
+        } else if (dashboardData.user && !isCancelled) {
+          // User exists but not onboarded yet - store partial data
+          dispatch({ 
+            type: "LOGIN", 
+            payload: { 
+              user: dashboardData.user, 
+              token 
+            } 
+          });
         }
 
       } catch (error) {
@@ -127,7 +120,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      // Clear device data from IndexedDB
       await clearDeviceData();
       console.log("Device data cleared from IndexedDB");
     } catch (error) {
@@ -138,7 +130,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // ✅ Enhanced context value with loading state
   const contextValue = {
     ...state,
     login,
