@@ -460,11 +460,6 @@ function Login() {
         toast.error(error || "Authentication failed");
       }
 
-      // Handle popup cancellation (user closed popup)
-      if (event.data === "popup_closed") {
-        setLoading(false);
-        toast.info("Sign in cancelled");
-      }
     };
 
     window.addEventListener("message", handleMessage);
@@ -479,19 +474,11 @@ function Login() {
 
     setLoading(true);
 
-    const popup = window.open(
-      import.meta.env.VITE_API_AUTH_URL,
+    window.open(
+      import.meta.env.VITE_GOOGLE_AUTH_URL,
       "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
-
-    // Handle popup closed without completion
-    const checkClosed = setInterval(() => {
-      if (popup?.closed) {
-        clearInterval(checkClosed);
-        setLoading(false);
-      }
-    }, 1000);
   };
 
   return (
