@@ -384,11 +384,17 @@ function Login() {
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
+      // Accept messages from your backend domain
       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
 
-      const { token } = event.data as { token?: string };
+      const { token, success, error } = event.data as { 
+        token?: string; 
+        success?: boolean; 
+        error?: string; 
+      };
 
-      if (token) {
+      // Handle authentication success
+      if (success && token) {
         setLoading(true);
 
         try {
@@ -430,12 +436,11 @@ function Login() {
             // Use context login method (it handles localStorage)
             login(userData, token);
             toast.success("Welcome back!");
-            navigate("/"); // Go to main dashboard
+            navigate("/");
             
           } else {
             // User not onboarded - go to onboarding
-            // Don't login yet, let onboarding handle it
-            localStorage.setItem("jwt_token", token); // Just store token
+            localStorage.setItem("jwt_token", token);
             toast.success("Please complete your setup");
             navigate("/onboarding");
           }
@@ -447,6 +452,18 @@ function Login() {
         } finally {
           setLoading(false);
         }
+      }
+      
+      // Handle authentication error
+      if (error) {
+        setLoading(false);
+        toast.error(error || "Authentication failed");
+      }
+
+      // Handle popup cancellation (user closed popup)
+      if (event.data === "popup_closed") {
+        setLoading(false);
+        toast.info("Sign in cancelled");
       }
     };
 
@@ -463,7 +480,7 @@ function Login() {
     setLoading(true);
 
     const popup = window.open(
-      import.meta.env.VITE_GOOGLE_AUTH_URL,
+      import.meta.env.VITE_API_AUTH_URL,
       "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
