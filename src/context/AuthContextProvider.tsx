@@ -87,27 +87,27 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             });
           }
         } else if (!dashboardData.onboarded && !isCancelled) {
-          const userResponse = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/user-details`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          // const userResponse = await fetch(
+          //   `${import.meta.env.VITE_BACKEND_URL}/user-details`,
+          //   {
+          //     method: "GET",
+          //     headers: {
+          //       Authorization: `Bearer ${token}`,
+          //     },
+          //   }
+          // );
 
-          if (!userResponse.ok) {
-            throw new Error("Failed to fetch user details");
-          }
+          // if (!userResponse.ok) {
+          //   throw new Error("Failed to fetch user details");
+          // }
 
-          const userData = await userResponse.json();
+          // const userData = await userResponse.json();
 
           // User exists but not onboarded yet - store partial data
           dispatch({
             type: "LOGIN",
             payload: {
-              user: userData.user,
+              user: null,
               token,
             },
           });
