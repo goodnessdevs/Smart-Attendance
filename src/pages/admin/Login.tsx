@@ -336,22 +336,22 @@ const AdminLogin = () => {
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
 
-    const popup = window.open(
+    window.open(
       import.meta.env.VITE_GOOGLE_AUTH_URL,
       "Google Admin Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
 
     // Handle popup closure without authentication
-    const checkClosed = setInterval(() => {
-      if (popup?.closed) {
-        clearInterval(checkClosed);
-        if (loading) {
-          setLoading(false);
-          setError("Authentication was cancelled");
-        }
-      }
-    }, 1000);
+    // const checkClosed = setInterval(() => {
+    //   if (popup?.closed) {
+    //     clearInterval(checkClosed);
+    //     if (loading) {
+    //       setLoading(false);
+    //       setError("Authentication was cancelled");
+    //     }
+    //   }
+    // }, 1000);
   };
 
   const handleRetry = () => {
