@@ -165,7 +165,7 @@ const activeCourses: Course[] = [
 ];
 
 export default function Dashboard() {
-  const { token, user } = useAuthContext();
+  const { token, user, isInitializing } = useAuthContext();
   const [locationGranted, setLocationGranted] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "granted" | "denied">("idle");
@@ -213,10 +213,18 @@ export default function Dashboard() {
     }
   };
 
-  if (!token) {
+  // While auth is still initializing, show a loading indicator
+  if (isInitializing) {
     return (
-      <SignedOutDashboard />
-    )
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-semibold">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  // Once initialization is done:
+  if (!token) {
+    return <SignedOutDashboard />;
   }
 
   return (

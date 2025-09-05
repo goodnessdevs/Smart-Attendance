@@ -6,8 +6,8 @@ export const UserAvatar = () => {
   const { user } = useAuthContext();
 
   const getAvatarFallback = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
     return names
       .map((n) => n[0]?.toUpperCase())
       .slice(0, 2)
@@ -28,7 +28,7 @@ export const UserAvatar = () => {
       }}
       className="float-right relative right-20 bottom-10 hidden md:flex items-center gap-x-2"
     >
-      <span className="font-semibold">{user?.name}</span>
+      <span className="font-semibold">{user?.fullName}</span>
       <MotionAvatar
         initial={{ scale: 1 }}
         whileHover={{ scale: 1.25 }}
