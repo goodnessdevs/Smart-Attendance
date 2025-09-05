@@ -337,7 +337,7 @@ const AdminLogin = () => {
     const top = window.screen.height / 2 - height / 2;
 
     const popup = window.open(
-      import.meta.env.VITE_API_AUTH_URL,
+      import.meta.env.VITE_GOOGLE_AUTH_URL,
       "Google Admin Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
