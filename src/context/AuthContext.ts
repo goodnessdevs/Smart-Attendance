@@ -1,14 +1,15 @@
 import { createContext } from "react";
 
 export type User = {
-  matricNumber: string;
-  phoneNumber: string;
-  level: string;
-  college: string;
-  department: string;
-  device_uuid: string;
-  fingerprint: string;
+  _id: string;
+  fullName: string;
+  email: string;
+  coursesOffered: string[];
+  attended: number;
+  totalClasses: number;
+  absent: number;
   profilePic: string;
+  isAdmin: boolean;
 };
 
 export type State = {
@@ -17,7 +18,7 @@ export type State = {
 };
 
 export type Action =
-  | { type: "LOGIN"; payload: { user: User; token: string } }
+  | { type: "LOGIN"; payload: { user: User | null; token: string } }
   | { type: "LOGOUT" };
 
 export type AuthContextType = State & {

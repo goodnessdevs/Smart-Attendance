@@ -1,19 +1,25 @@
 import { useEffect, useReducer, useState } from "react";
 import type { ReactNode } from "react";
-import { AuthContext, initialState, type Action, type State, type User } from "./AuthContext";
+import {
+  AuthContext,
+  initialState,
+  type Action,
+  type State,
+  type User,
+} from "./AuthContext";
 import { clearDeviceData } from "../utils/indexedDB";
 
 const authReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "LOGIN":
-      return { 
-        user: action.payload.user, 
-        token: action.payload.token 
+      return {
+        user: action.payload.user,
+        token: action.payload.token,
       };
     case "LOGOUT":
-      return { 
-        user: null, 
-        token: null 
+      return {
+        user: null,
+        token: null,
       };
     default:
       return state;
@@ -52,7 +58,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         const dashboardData = await dashboardResponse.json();
-        
+
         // If user is onboarded, fetch full user details
         if (dashboardData.onboarded) {
           const userResponse = await fetch(
@@ -72,28 +78,27 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           const userData = await userResponse.json();
 
           if (!isCancelled) {
-            dispatch({ 
-              type: "LOGIN", 
-              payload: { 
-                user: userData,
-                token 
-              } 
+            dispatch({
+              type: "LOGIN",
+              payload: {
+                user: userData.user,
+                token,
+              },
             });
           }
-        } else if (dashboardData.user && !isCancelled) {
+        } else if (!dashboardData.onboarded && !isCancelled) {
           // User exists but not onboarded yet - store partial data
-          dispatch({ 
-            type: "LOGIN", 
-            payload: { 
-              user: dashboardData.user, 
-              token 
-            } 
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              user: null,
+              token,
+            },
           });
         }
-
       } catch (error) {
         console.error("Failed to initialize auth:", error);
-        
+
         if (!isCancelled) {
           localStorage.removeItem("jwt_token");
           await clearDeviceData();
@@ -113,7 +118,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const login = (user: User, token: string) => {
+  const login = (user: User | null, token: string) => {
     localStorage.setItem("jwt_token", token);
     dispatch({ type: "LOGIN", payload: { user, token } });
   };
@@ -139,8 +144,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };

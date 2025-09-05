@@ -165,7 +165,7 @@ const activeCourses: Course[] = [
 ];
 
 export default function Dashboard() {
-  const { user } = useAuthContext();
+  const { token, user } = useAuthContext();
   const [locationGranted, setLocationGranted] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "granted" | "denied">("idle");
@@ -213,7 +213,7 @@ export default function Dashboard() {
     }
   };
 
-  if (!user) {
+  if (!token) {
     return (
       <SignedOutDashboard />
     )
@@ -231,7 +231,7 @@ export default function Dashboard() {
         >
           Welcome,{" "}
           <span className="text-cyan-700 dark:text-cyan-200 text-5xl">
-            {user ? user?.matricNo : "student"}!
+            {user ? user?.fullName : "student"}!
           </span>
         </motion.h1>
       </div>

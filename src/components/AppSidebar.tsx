@@ -61,7 +61,7 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { user, logout } = useAuthContext();
+  const { logout, token } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -102,7 +102,7 @@ export function AppSidebar() {
               ))}
 
               <SidebarMenuItem>
-                {user ? (
+                {token ? (
                   <SidebarMenuButton onClick={handleLogout} disabled={loading}>
                     {loading ? (
                       <>
@@ -117,7 +117,7 @@ export function AppSidebar() {
                     )}
                   </SidebarMenuButton>
                 ) : (
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton className="bg-sidebar-accent text-sidebar" asChild>
                     <Link to="/login">
                       <LogIn />
                       <span>Login</span>

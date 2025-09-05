@@ -72,7 +72,7 @@ function Login() {
             const userData = await userResponse.json();
             
             // Use context login method (it handles localStorage)
-            login(userData, token);
+            login(userData.user, token);
             toast.success("Welcome back!");
             navigate("/");
             

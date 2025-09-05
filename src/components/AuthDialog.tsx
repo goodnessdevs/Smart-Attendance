@@ -17,9 +17,9 @@ type RequireAuthDialogProps = {
 
 export function RequireAuthDialog({ children }: RequireAuthDialogProps) {
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+  const { token } = useAuthContext();
 
-  if (!user) {
+  if (!token) {
     return (
       <Dialog
         defaultOpen

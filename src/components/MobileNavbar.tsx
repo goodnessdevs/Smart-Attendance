@@ -65,7 +65,7 @@ const items = [
 
 function SheetNavbar() {
   const [open, setOpen] = React.useState(false);
-  const { user, logout } = useAuthContext();
+  const { user, logout, token } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -95,8 +95,8 @@ function SheetNavbar() {
   }, []);
 
   const getAvatarFallback = () => {
-    if (!user?.matricNumber) return "U";
-    const names = user.matricNumber.split(" ");
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
     return names
       .map((n) => n[0]?.toUpperCase())
       .slice(0, 2)
@@ -132,7 +132,7 @@ function SheetNavbar() {
                 <AvatarImage src={user?.profilePic} alt="User Avatar" />
                 <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
               </MotionAvatar>
-              <span className="font-semibold">{user?.matricNumber}</span>
+              <span className="font-semibold">{user?.fullName}</span>
             </SheetTitle>
             <SheetDescription>
               Access your courses, mark your attendance, and view notifications.
@@ -154,7 +154,7 @@ function SheetNavbar() {
             ))}
 
             <>
-              {user ? (
+              {token ? (
                 <Button onClick={handleLogout} disabled={loading} asChild>
                   {loading ? (
                     <>
