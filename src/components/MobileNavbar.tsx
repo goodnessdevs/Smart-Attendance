@@ -33,7 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 const items = [
   {
     title: "Dashboard",
-    href: "/dashboard",
+    href: "/",
     icon: LayoutDashboardIcon,
   },
   {
@@ -95,8 +95,8 @@ function SheetNavbar() {
   }, []);
 
   const getAvatarFallback = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
+    if (!user?.matricNumber) return "U";
+    const names = user.matricNumber.split(" ");
     return names
       .map((n) => n[0]?.toUpperCase())
       .slice(0, 2)
@@ -132,7 +132,7 @@ function SheetNavbar() {
                 <AvatarImage src={user?.profilePic} alt="User Avatar" />
                 <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
               </MotionAvatar>
-              <span className="font-semibold">{user?.name}</span>
+              <span className="font-semibold">{user?.matricNumber}</span>
             </SheetTitle>
             <SheetDescription>
               Access your courses, mark your attendance, and view notifications.

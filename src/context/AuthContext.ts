@@ -8,6 +8,7 @@ export type User = {
   department: string;
   device_uuid: string;
   fingerprint: string;
+  profilePic: string;
 };
 
 export type State = {
