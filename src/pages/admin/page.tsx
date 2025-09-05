@@ -546,6 +546,9 @@ export default function AdminDashboard() {
         }
       );
 
+      const data = await res.json();
+      console.log(data)
+
       if (res.ok) {
         setSuccess("Course created successfully!");
         setFormData({
