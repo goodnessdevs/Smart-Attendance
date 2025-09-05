@@ -103,6 +103,10 @@ function SheetNavbar() {
       .join(" ");
   };
 
+  React.useEffect(() => {
+    console.log("Auth User:", user);
+  }, [user]);
+
   const MotionAvatar = motion.create(Avatar);
 
   return (
@@ -162,12 +166,10 @@ function SheetNavbar() {
                       <span>Logging out...</span>
                     </>
                   ) : (
-                    <Button asChild>
-                      <Link to="/login">
+                      <>
                         <LogOut />
                         <span>Log out</span>
-                      </Link>
-                    </Button>
+                      </>
                   )}
                 </Button>
               ) : (

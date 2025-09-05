@@ -30,7 +30,7 @@ import { useState } from "react";
 const items = [
   {
     title: "Dashboard",
-    href: "/dashboard",
+    href: "/",
     icon: LayoutDashboardIcon,
   },
   {

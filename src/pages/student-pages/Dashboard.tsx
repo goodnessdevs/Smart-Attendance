@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "../../components/ui/card";
 import { useState, useEffect } from "react";
-import { MapPin } from "lucide-react";
+import { Loader2, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
@@ -217,6 +217,7 @@ export default function Dashboard() {
   if (isInitializing) {
     return (
       <div className="flex items-center justify-center h-screen">
+        <p className="animate-spin w-6 h-6"><Loader2 /></p>
         <p className="text-lg font-semibold">Loading dashboard...</p>
       </div>
     );

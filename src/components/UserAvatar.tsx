@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { motion } from "framer-motion";
 import { useAuthContext } from "../hooks/use-auth";
+import React from "react";
 
 export const UserAvatar = () => {
   const { user } = useAuthContext();
@@ -15,6 +16,10 @@ export const UserAvatar = () => {
   };
 
   const MotionAvatar = motion.create(Avatar);
+
+  React.useEffect(() => {
+    console.log("Auth User:", user);
+  }, [user]);
 
   return (
     <motion.div
