@@ -3,6 +3,9 @@ import {
   User,
   LogOut,
   BookOpen,
+  Edit2,
+  Calendar,
+  Contact,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -31,21 +34,26 @@ const items = [
     href: "/admin/created-courses",
     icon: BookOpen,
   },
-//   {
-//     title: "Session Calendar",
-//     href: "/lecturer/calendar",
-//     icon: Calendar,
-//   },
+  {
+    title: "Edit Courses",
+    href: "/admin/edit-courses",
+    icon: Edit2,
+  },
+  {
+    title: "Session Calendar",
+    href: "/admin/calendar",
+    icon: Calendar,
+  },
   {
     title: "Account",
     href: "/admin/account-profile",
     icon: User,
   },
-//   {
-//     title: "Students Support",
-//     href: "/lecturer/support",
-//     icon: Contact,
-//   },
+  {
+    title: "Customer Support",
+    href: "/admin/support",
+    icon: Contact,
+  },
   {
     title: "Log out",
     href: "/admin/login",

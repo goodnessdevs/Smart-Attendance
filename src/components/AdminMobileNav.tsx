@@ -7,6 +7,9 @@ import {
   LogIn,
   Loader2,
   BookOpenCheck,
+  Contact,
+  Calendar,
+  Edit2,
 } from "lucide-react";
 
 import {
@@ -38,21 +41,26 @@ const items = [
     href: "/admin/created-courses",
     icon: BookOpenCheck,
   },
-//   {
-//     title: "Session Calendar",
-//     href: "/calendar",
-//     icon: Calendar,
-//   },
+  {
+    title: "Edit Courses",
+    href: "/admin/edit-courses",
+    icon: Edit2,
+  },
+  {
+    title: "Session Calendar",
+    href: "/admin/calendar",
+    icon: Calendar,
+  },
   {
     title: "Account",
     href: "/admin/account-profile",
     icon: User,
   },
-//   {
-//     title: "Support",
-//     href: "/support",
-//     icon: Contact,
-//   },
+  {
+    title: "Customer Support",
+    href: "/admin/support",
+    icon: Contact,
+  },
 ];
 
 function SheetNavbar() {
@@ -87,8 +95,8 @@ function SheetNavbar() {
   }, []);
 
   const getAvatarFallback = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
     return names
       .map((n) => n[0]?.toUpperCase())
       .slice(0, 2)
@@ -124,7 +132,7 @@ function SheetNavbar() {
                 <AvatarImage src={user?.profilePic} alt="User Avatar" />
                 <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
               </MotionAvatar>
-              <span className="font-semibold">{user?.name}</span>
+              <span className="font-semibold">{user?.fullName}</span>
             </SheetTitle>
             <SheetDescription>
               Access your courses, mark your attendance, and view notifications.

@@ -1,9 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-} from "../../components/ui/card";
+import { Card, CardContent } from "../../components/ui/card";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
@@ -11,6 +8,7 @@ import { Button } from "../../components/ui/button";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { BookOpen, Plus, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { Checkbox } from "../../components/ui/checkbox";
 
 interface CourseFormData {
   courseName: string;
@@ -18,6 +16,8 @@ interface CourseFormData {
   courseDescription: string;
   unit: string;
   lecturers: string[];
+  venues: string[];
+  days: string[];
   isActive: boolean;
 }
 
@@ -35,6 +35,8 @@ export default function AdminDashboard() {
     courseDescription: "",
     unit: "",
     lecturers: [""],
+    venues: [""],
+    days: [""],
     isActive: false,
   });
 
@@ -66,6 +68,23 @@ export default function AdminDashboard() {
     setFormData((prev) => ({ ...prev, lecturers: updated }));
   };
 
+  // ✅ Venues array handlers
+  const handleVenueChange = (index: number, value: string) => {
+    const updated = [...formData.venues];
+    updated[index] = value;
+    setFormData((prev) => ({ ...prev, venues: updated }));
+  };
+
+  const addVenue = () => {
+    setFormData((prev) => ({ ...prev, venues: [...prev.venues, ""] }));
+  };
+
+  const removeVenue = (index: number) => {
+    if (formData.venues.length === 1) return;
+    const updated = formData.venues.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, venues: updated }));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -94,6 +113,8 @@ export default function AdminDashboard() {
           courseDescription: "",
           unit: "",
           lecturers: [""],
+          venues: [""],
+          days: [""],
           isActive: false,
         });
         setTotalCourses((c) => c + 1);
@@ -104,6 +125,8 @@ export default function AdminDashboard() {
           courseDescription: "",
           unit: "",
           lecturers: [""],
+          venues: [""],
+          days: [""],
           isActive: false,
         });
         throw new Error("Failed to publish course");
@@ -127,7 +150,9 @@ export default function AdminDashboard() {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               Admin Dashboard
             </h1>
-            <p className="text-gray-600 dark:text-gray-200">Manage courses and instructors.</p>
+            <p className="text-gray-600 dark:text-gray-200">
+              Manage courses and instructors.
+            </p>
           </motion.div>
 
           <motion.div {...fadeUp}>
@@ -159,13 +184,13 @@ export default function AdminDashboard() {
         >
           <form
             onSubmit={handleSubmit}
-            className="max-w-xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow p-3 space-y-3"
+            className="max-w-md mx-auto bg-white dark:bg-gray-900 rounded-lg shadow p-2 space-y-2"
           >
-            <h1 className="text-lg font-medium">Create Course</h1>
+            <h1 className="text-sm font-medium">Create Course</h1>
 
             {/* Course Name */}
-            <div className="space-y-1">
-              <Label htmlFor="courseName" className="text-xs">
+            <div className="space-y-0.5">
+              <Label htmlFor="courseName" className="text-[11px]">
                 Course Name *
               </Label>
               <Input
@@ -174,13 +199,13 @@ export default function AdminDashboard() {
                 placeholder="e.g., Intro to Algorithms"
                 value={formData.courseName}
                 onChange={handleChange}
-                className="h-7 text-xs"
+                className="h-6 text-[11px]"
               />
             </div>
 
             {/* Course Title */}
-            <div className="space-y-1">
-              <Label htmlFor="courseTitle" className="text-xs">
+            <div className="space-y-0.5">
+              <Label htmlFor="courseTitle" className="text-[11px]">
                 Course Title *
               </Label>
               <Input
@@ -189,13 +214,13 @@ export default function AdminDashboard() {
                 placeholder="e.g., CSC 201"
                 value={formData.courseTitle}
                 onChange={handleChange}
-                className="h-7 text-xs"
+                className="h-6 text-[11px]"
               />
             </div>
 
             {/* Description */}
-            <div className="space-y-1">
-              <Label htmlFor="courseDescription" className="text-xs">
+            <div className="space-y-0.5">
+              <Label htmlFor="courseDescription" className="text-[11px]">
                 Description *
               </Label>
               <Textarea
@@ -205,13 +230,49 @@ export default function AdminDashboard() {
                 rows={2}
                 value={formData.courseDescription}
                 onChange={handleChange}
-                className="text-xs"
+                className="text-[11px]"
               />
             </div>
 
+            {/* Days */}
+
+            {/* Days */}
+            <div className="space-y-0.5">
+              <Label className="text-[11px]">Course Days *</Label>
+              <div className="grid grid-cols-2 gap-1">
+                {[
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday"
+                ].map((day) => (
+                  <div key={day} className="flex items-center gap-1">
+                    <Checkbox
+                      id={day}
+                      checked={formData.days.includes(day)}
+                      onCheckedChange={(checked) => {
+                        const updated = checked
+                          ? [...formData.days, day]
+                          : formData.days.filter((d) => d !== day);
+                        setFormData((prev) => ({ ...prev, days: updated }));
+                      }}
+                      className="h-3 w-3"
+                    />
+                    <label
+                      htmlFor={day}
+                      className="text-[11px] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      {day}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Unit */}
-            <div className="space-y-1">
-              <Label htmlFor="unit" className="text-xs">
+            <div className="space-y-0.5">
+              <Label htmlFor="unit" className="text-[11px]">
                 Unit
               </Label>
               <Input
@@ -221,20 +282,20 @@ export default function AdminDashboard() {
                 placeholder="3"
                 value={formData.unit}
                 onChange={handleChange}
-                className="h-7 w-20 text-xs"
+                className="h-6 w-16 text-[11px]"
               />
             </div>
 
             {/* Lecturers */}
-            <div className="space-y-1">
-              <Label className="text-xs">Lecturers *</Label>
+            <div className="space-y-0.5">
+              <Label className="text-[11px]">Lecturers *</Label>
               {formData.lecturers.map((lecturer, i) => (
                 <div key={i} className="flex items-center gap-1">
                   <Input
                     placeholder={`Lecturer ${i + 1}`}
                     value={lecturer}
                     onChange={(e) => handleLecturerChange(i, e.target.value)}
-                    className="h-7 text-xs"
+                    className="h-6 text-[11px]"
                   />
                   <Button
                     type="button"
@@ -242,7 +303,7 @@ export default function AdminDashboard() {
                     size="icon"
                     onClick={() => removeLecturer(i)}
                     disabled={formData.lecturers.length === 1}
-                    className="h-7 w-7"
+                    className="h-6 w-6"
                   >
                     <Trash2 className="w-3 h-3" />
                   </Button>
@@ -253,7 +314,41 @@ export default function AdminDashboard() {
                 variant="outline"
                 size="sm"
                 onClick={addLecturer}
-                className="h-7 px-2 text-[11px]"
+                className="h-6 px-2 text-[11px]"
+              >
+                <Plus className="w-3 h-3 mr-1" /> Add
+              </Button>
+            </div>
+
+            {/* Venues */}
+            <div className="space-y-0.5">
+              <Label className="text-[11px]">Venues *</Label>
+              {formData.venues.map((venue, i) => (
+                <div key={i} className="flex items-center gap-1">
+                  <Input
+                    placeholder={`Venue ${i + 1}`}
+                    value={venue}
+                    onChange={(e) => handleVenueChange(i, e.target.value)}
+                    className="h-6 text-[11px]"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => removeVenue(i)}
+                    disabled={formData.venues.length === 1}
+                    className="h-6 w-6"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addVenue}
+                className="h-6 px-2 text-[11px]"
               >
                 <Plus className="w-3 h-3 mr-1" /> Add
               </Button>
@@ -261,7 +356,7 @@ export default function AdminDashboard() {
 
             {/* Alerts */}
             {error && (
-              <Alert className="border-red-200 bg-red-50 p-2 text-xs">
+              <Alert className="border-red-200 bg-red-50 p-2 text-[11px]">
                 <AlertDescription className="text-red-800">
                   {error}
                 </AlertDescription>
@@ -273,7 +368,7 @@ export default function AdminDashboard() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="h-8 min-w-[100px] bg-cyan-600 hover:bg-cyan-700 text-xs"
+                className="h-7 min-w-[80px] bg-cyan-600 hover:bg-cyan-700 text-[11px]"
               >
                 {loading ? (
                   <>
