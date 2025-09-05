@@ -161,15 +161,15 @@ function SheetNavbar() {
               {token ? (
                 <Button onClick={handleLogout} disabled={loading} asChild>
                   {loading ? (
-                    <>
-                      <Loader2 className="animate-spin" />
+                    <div className="flex items-center gap-x-2">
+                      <Loader2 className="animate-spin w-4 h-4" />
                       <span>Logging out...</span>
-                    </>
+                    </div>
                   ) : (
-                      <>
-                        <LogOut />
+                      <div className="flex items-center gap-x-2">
+                        <LogOut className="w-4 h-4" />
                         <span>Log out</span>
-                      </>
+                      </div>
                   )}
                 </Button>
               ) : (

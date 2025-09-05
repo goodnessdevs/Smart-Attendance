@@ -216,7 +216,7 @@ export default function Dashboard() {
   // While auth is still initializing, show a loading indicator
   if (isInitializing) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen gap-x-2">
         <p className="animate-spin w-6 h-6"><Loader2 /></p>
         <p className="text-lg font-semibold">Loading dashboard...</p>
       </div>
