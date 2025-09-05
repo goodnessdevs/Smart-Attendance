@@ -115,9 +115,9 @@ function Login() {
   return (
     <div className="h-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-900 to-gray-900 px-4">
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: "easeInOut" }}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut", type: "spring", stiffness: 120 }}
         className="flex items-center justify-start gap-x-2 mb-8"
       >
         <div className="w-24 h-24">
@@ -131,9 +131,9 @@ function Login() {
       </motion.div>
 
       <MotionCard
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: "easeInOut" }}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut", type: "spring", stiffness: 120 }}
         className="w-full max-w-md shadow-xl bg-white text-black"
       >
         <CardHeader className="text-center">
