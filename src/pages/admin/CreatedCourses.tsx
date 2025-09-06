@@ -23,7 +23,7 @@ const CreatedCourses = () => {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem("token"); // adjust if you use cookies
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/created-courses`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/courses`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
