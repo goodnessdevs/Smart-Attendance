@@ -41,6 +41,7 @@ const CourseRegistration = () => {
         if (!res.ok) throw new Error("Failed to fetch courses");
         const data = await res.json();
         setCourses(data.courses);
+        console.log(data.courses)
       } catch (error) {
         console.log(error);
         toast.error("Error fetching courses");
