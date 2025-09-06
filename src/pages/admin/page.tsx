@@ -438,8 +438,8 @@ interface CourseFormData {
   courseDescription: string;
   unit: string;
   lecturers: string[];
-  venues: string[];
-  days: string[];
+  courseVenue: string[];
+  courseDays: string[];
   isActive: boolean;
 }
 
@@ -452,8 +452,8 @@ export default function AdminDashboard() {
     courseDescription: "",
     unit: "",
     lecturers: [""],
-    venues: [""],
-    days: [],
+    courseVenue: [""],
+    courseDays: [],
     isActive: true,
   });
 
@@ -467,9 +467,9 @@ export default function AdminDashboard() {
       formData.courseName.trim() !== "" &&
       formData.courseTitle.trim() !== "" &&
       formData.courseDescription.trim() !== "" &&
-      formData.days.length > 0 &&
+      formData.courseDays.length > 0 &&
       formData.lecturers.some((l) => l.trim() !== "") &&
-      formData.venues.some((v) => v.trim() !== "")
+      formData.courseVenue.some((v) => v.trim() !== "")
     );
   };
 
@@ -499,26 +499,26 @@ export default function AdminDashboard() {
   };
 
   const handleVenueChange = (index: number, value: string) => {
-    const updated = [...formData.venues];
+    const updated = [...formData.courseVenue];
     updated[index] = value;
-    setFormData((prev) => ({ ...prev, venues: updated }));
+    setFormData((prev) => ({ ...prev, courseVenue: updated }));
   };
 
   const addVenue = () => {
-    setFormData((prev) => ({ ...prev, venues: [...prev.venues, ""] }));
+    setFormData((prev) => ({ ...prev, courseVenue: [...prev.courseVenue, ""] }));
   };
 
   const removeVenue = (index: number) => {
-    if (formData.venues.length === 1) return;
-    const updated = formData.venues.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, venues: updated }));
+    if (formData.courseVenue.length === 1) return;
+    const updated = formData.courseVenue.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, courseVenue: updated }));
   };
 
   const handleDayToggle = (day: string, checked: boolean) => {
     const updated = checked
-      ? [...formData.days, day]
-      : formData.days.filter((d) => d !== day);
-    setFormData((prev) => ({ ...prev, days: updated }));
+      ? [...formData.courseDays, day]
+      : formData.courseDays.filter((d) => d !== day);
+    setFormData((prev) => ({ ...prev, courseDays: updated }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -559,8 +559,8 @@ export default function AdminDashboard() {
           courseDescription: "",
           unit: "",
           lecturers: [""],
-          venues: [""],
-          days: [],
+          courseVenue: [""],
+          courseDays: [],
           isActive: true,
         });
         setTotalCourses((c) => c + 1);
@@ -583,8 +583,8 @@ export default function AdminDashboard() {
       courseDescription: "",
       unit: "",
       lecturers: [""],
-      venues: [""],
-      days: [],
+      courseVenue: [""],
+      courseDays: [],
       isActive: true,
     });
     setError(null);
@@ -705,7 +705,7 @@ export default function AdminDashboard() {
                       <div key={day} className="flex items-center space-x-2">
                         <Checkbox
                           id={day}
-                          checked={formData.days.includes(day)}
+                          checked={formData.courseDays.includes(day)}
                           onCheckedChange={(checked) =>
                             handleDayToggle(day, !!checked)
                           }
@@ -714,9 +714,9 @@ export default function AdminDashboard() {
                       </div>
                     ))}
                   </div>
-                  {formData.days.length > 0 && (
+                  {formData.courseDays.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-1">
-                      {formData.days.map((day: string) => (
+                      {formData.courseDays.map((day: string) => (
                         <Badge
                           key={day}
                           variant="secondary"
@@ -774,7 +774,7 @@ export default function AdminDashboard() {
                     <MapPin className="w-4 h-4" /> Venues{" "}
                     <span className="text-red-500">*</span>
                   </Label>
-                  {formData.venues.map((venue: string, i: number) => (
+                  {formData.courseVenue.map((venue: string, i: number) => (
                     <div key={i} className="flex gap-2">
                       <Input
                         placeholder="Lecture Hall A"
@@ -787,7 +787,7 @@ export default function AdminDashboard() {
                         variant="ghost"
                         size="icon"
                         onClick={() => removeVenue(i)}
-                        disabled={formData.venues.length === 1}
+                        disabled={formData.courseVenue.length === 1}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 className="w-4 h-4" />

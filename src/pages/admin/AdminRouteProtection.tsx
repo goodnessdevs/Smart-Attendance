@@ -47,7 +47,7 @@ export default function AdminRouteProtection({
 
   if (loading) {
     return (
-      <p className="flex text-xl font-semibold">
+      <p className="flex items-center gap-x-2 m-5 text-xl font-semibold">
         <Loader2 className="animate-spin w-4 h-4" /> Loading...
       </p>
     );

@@ -50,7 +50,7 @@ const items = [
     icon: User,
   },
   {
-    title: "Customer Support",
+    title: "Student Support",
     href: "/admin/support",
     icon: Contact,
   },

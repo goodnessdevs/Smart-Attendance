@@ -22,7 +22,7 @@ const CreatedCourses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const token = localStorage.getItem("token"); // adjust if you use cookies
+        const token = localStorage.getItem("jwt_token"); // adjust if you use cookies
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/courses`, {
           headers: {
             Authorization: `Bearer ${token}`,
