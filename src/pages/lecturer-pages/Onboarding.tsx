@@ -6,19 +6,18 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/card";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectGroup,
-  SelectLabel,
-} from "../../components/ui/select";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Separator } from "../../components/ui/separator";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+  CommandInput,
+  CommandEmpty,
+} from "../../components/ui/command"; // ✅ Command import
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -26,8 +25,33 @@ import { colleges } from "../../components/CollegeData";
 import { Loader2 } from "lucide-react";
 import { useAuthContext } from "../../hooks/use-auth";
 import confetti from "canvas-confetti";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../components/ui/popover";
 
 const MotionCard = motion.create(Card);
+
+interface CourseFormData {
+  courseName: string;
+  courseTitle: string;
+  courseDescription: string;
+  unit: string;
+  lecturers: string[];
+  venues: string[];
+  days: string[];
+  isActive: boolean;
+}
 
 function LecturerOnboarding() {
   const navigate = useNavigate();
@@ -40,29 +64,35 @@ function LecturerOnboarding() {
     coursesOffered: [] as string[],
   });
   const [loading, setLoading] = useState(false);
-  const [allCourses, setAllCourses] = useState<{ code: string; title: string }[]>([]);
+  const [allCourses, setAllCourses] = useState<CourseFormData[]>([]);
+  const [search, setSearch] = useState("");
 
   const d = new Date();
   const year = d.getFullYear();
 
-  // ✅ Fetch available courses on mount
+  // ✅ Fetch available courses
   useEffect(() => {
-    async function fetchCourses() {
+    const fetchCourses = async () => {
       try {
         const token = localStorage.getItem("jwt_token");
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/all-courses`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setAllCourses(data); // expecting [{ code, title }, ...]
-        } else {
-          console.error("Failed to fetch courses");
-        }
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/all-courses`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch courses");
+
+        const data = await res.json();
+
+        // assuming API returns { courses: [...] }
+        setAllCourses(Array.isArray(data) ? data : data.courses || []);
       } catch (err) {
         console.error("Error fetching courses:", err);
+        setAllCourses([]); // fallback to empty array
       }
-    }
+    };
 
     fetchCourses();
   }, []);
@@ -74,7 +104,12 @@ function LecturerOnboarding() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.lecturerName || !formData.phoneNumber || !formData.college || formData.coursesOffered.length === 0) {
+    if (
+      !formData.lecturerName ||
+      !formData.phoneNumber ||
+      !formData.college ||
+      formData.coursesOffered.length === 0
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -89,8 +124,6 @@ function LecturerOnboarding() {
     }
 
     try {
-      console.log("Submitting lecturer onboarding data:", formData);
-
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/update-lecturer`,
         {
@@ -106,7 +139,6 @@ function LecturerOnboarding() {
       const data = await response.json();
 
       if (response.ok) {
-        // 🎉 Success effects
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         toast.success("Lecturer Registration Completed!");
 
@@ -124,7 +156,7 @@ function LecturerOnboarding() {
           login(userData, token);
         }
 
-        navigate("/");
+        navigate("/lecturer");
       } else {
         toast.error(data.message || "Registration Failed");
       }
@@ -135,6 +167,15 @@ function LecturerOnboarding() {
       setLoading(false);
     }
   };
+
+  // ✅ Filter courses by search input
+  const filteredCourses = Array.isArray(allCourses)
+    ? allCourses.filter(
+        (c) =>
+          c.courseName.toLowerCase().includes(search.toLowerCase()) ||
+          c.courseTitle.toLowerCase().includes(search.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
@@ -199,17 +240,20 @@ function LecturerOnboarding() {
             <div className="space-y-1">
               <Label htmlFor="college">College</Label>
               <Select
+                value={formData.college}
                 onValueChange={(value) =>
                   setFormData((prev) => ({ ...prev, college: value }))
                 }
-                value={formData.college}
               >
-                <SelectTrigger id="college" className="border-black">
-                  <SelectValue placeholder="Select your college" className="text-black" />
+                <SelectTrigger
+                  id="college"
+                  className="w-full border border-black"
+                >
+                  <SelectValue placeholder="Select your college" />
                 </SelectTrigger>
-                <SelectContent side="bottom" className="bg-white text-black">
+                <SelectContent className="bg-white text-black">
                   <SelectGroup>
-                    <SelectLabel>College</SelectLabel>
+                    <SelectLabel>Colleges</SelectLabel>
                     {colleges.map((college, index) => (
                       <SelectItem key={index} value={college.value}>
                         {college.title}
@@ -220,33 +264,53 @@ function LecturerOnboarding() {
               </Select>
             </div>
 
-            {/* COURSES OFFERED MULTI-SELECT */}
+            {/* COURSES OFFERED COMMAND MULTI-SELECT */}
             <div className="space-y-1">
               <Label htmlFor="coursesOffered">Courses Offered</Label>
-              <Select
-                onValueChange={(value) => {
-                  if (!formData.coursesOffered.includes(value)) {
-                    setFormData((prev) => ({
-                      ...prev,
-                      coursesOffered: [...prev.coursesOffered, value],
-                    }));
-                  }
-                }}
-              >
-                <SelectTrigger id="coursesOffered" className="border-black">
-                  <SelectValue placeholder="Search and select courses" />
-                </SelectTrigger>
-                <SelectContent side="bottom" className="bg-white text-black max-h-60 overflow-y-auto">
-                  <SelectGroup>
-                    <SelectLabel>Courses</SelectLabel>
-                    {allCourses.map((course, index) => (
-                      <SelectItem key={index} value={course.code}>
-                        {course.code} - {course.title}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button className="w-full border border-black text-left">
+                    {formData.coursesOffered.length > 0
+                      ? `${formData.coursesOffered.length} course(s) selected`
+                      : "Select courses"}
+                  </Button>
+                </PopoverTrigger>
+
+                <PopoverContent className="w-full p-0">
+                  <Command className="bg-white text-black">
+                    <CommandInput
+                      placeholder="Search courses..."
+                      value={search}
+                      onValueChange={setSearch}
+                    />
+                    <CommandList className="max-h-60 overflow-y-auto">
+                      <CommandEmpty>No courses found.</CommandEmpty>
+                      <CommandGroup heading="Courses">
+                        {filteredCourses.slice(0, 10).map((course, idx) => (
+                          <CommandItem
+                            key={idx}
+                            value={course.courseName}
+                            onSelect={(value) => {
+                              if (!formData.coursesOffered.includes(value)) {
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  coursesOffered: [
+                                    ...prev.coursesOffered,
+                                    value,
+                                  ],
+                                }));
+                              }
+                            }}
+                          >
+                            {course.courseName} - {course.courseTitle}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
 
               {/* Display selected courses */}
               <div className="flex flex-wrap gap-2 mt-2">
@@ -262,7 +326,9 @@ function LecturerOnboarding() {
                       onClick={() =>
                         setFormData((prev) => ({
                           ...prev,
-                          coursesOffered: prev.coursesOffered.filter((c) => c !== course),
+                          coursesOffered: prev.coursesOffered.filter(
+                            (c) => c !== course
+                          ),
                         }))
                       }
                     >
@@ -295,7 +361,8 @@ function LecturerOnboarding() {
 
       <div className="mt-3">
         <p className="text-center text-sm font-semibold">
-          &copy; {year}, Federal University of Agriculture, Abeokuta. All rights reserved.
+          &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+          reserved.
         </p>
       </div>
     </div>
