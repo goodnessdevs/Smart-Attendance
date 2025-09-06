@@ -80,7 +80,7 @@ const CreatedCourses = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Created Courses</h1>
 
-      <div className="my-4 mb-6 w-md mx-auto">
+      <div className="my-4 mb-6 md:w-md w-sm">
         <Input
           type="text"
           placeholder="Search courses..."
