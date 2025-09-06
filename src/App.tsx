@@ -31,6 +31,8 @@ import AdminCalendarPage from "./pages/admin/Calendar";
 import EditCoursesPage from "./pages/admin/EditCourses";
 import AdminSupportPage from "./pages/admin/Support";
 import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
+import LecturerRouteProtection from "./pages/lecturer-pages/LecturerRouteProtection";
+import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
 
 function App() {
   return (
@@ -97,12 +99,20 @@ function App() {
       <Route path="/lecturer" element={<LecturerLayout />}>
         <Route path="/lecturer/login" element={<LecturerLogin />} />
         <Route path="/lecturer/auth" element={<LecturerAuth />} />
-        <Route path="/lecturer" element={<AttendanceDashboard />} />
+        <Route
+          path="/lecturer"
+          element={
+            <LecturerRouteProtection>
+              <AttendanceDashboard />
+            </LecturerRouteProtection>
+          }
+        />
         <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
         <Route path="/lecturer/calendar" element={<Calendar />} />
         <Route path="/lecturer/inbox" element={<LecturerInbox />} />
         <Route path="/lecturer/account-profile" element={<LecturerAccount />} />
         <Route path="/lecturer/support" element={<StudentSupportPage />} />
+        <Route path="/lecturer/onboarding" element={<LecturerOnboarding />} />
       </Route>
 
       {/* Admin routes */}

@@ -2,13 +2,13 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
-export default function AdminRouteProtection({
+export default function LecturerRouteProtection({
   children,
 }: {
   children: ReactNode;
 }) {
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [isLecturer, setIsLecturer] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -17,7 +17,7 @@ export default function AdminRouteProtection({
 
       try {
         if (!token) {
-          setIsAdmin(false);
+          setIsLecturer(false);
           setLoading(false);
           return;
         }
@@ -33,10 +33,10 @@ export default function AdminRouteProtection({
         if (!res.ok) throw new Error("Failed to check status");
 
         const data = await res.json();
-        setIsAdmin(data.isAdmin);
+        setIsLecturer(data.isLecturer);
       } catch (err) {
         console.error("Error checking status:", err);
-        setIsAdmin(false);
+        setIsLecturer(false);
       } finally {
         setLoading(false);
       }
@@ -53,7 +53,7 @@ export default function AdminRouteProtection({
     );
   }
 
-  if (!isAdmin) {
+  if (!isLecturer) {
     return <Navigate to="/" replace />;
   }
 

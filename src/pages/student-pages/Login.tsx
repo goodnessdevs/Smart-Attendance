@@ -52,7 +52,7 @@ function Login() {
           }
 
           const dashboardData = await dashboardResponse.json();
-          
+
           // If user is onboarded, fetch full details and go to dashboard
           if (dashboardData.onboarded) {
             const userResponse = await fetch(
@@ -70,19 +70,17 @@ function Login() {
             }
 
             const userData = await userResponse.json();
-            
+
             // Use context login method (it handles localStorage)
             login(userData.user, token);
             toast.success("Welcome back!");
             navigate("/");
-            
           } else {
             // User not onboarded - go to onboarding
             // localStorage.setItem("jwt_token", token);
             toast.success("Please complete your setup");
             navigate("/onboarding");
           }
-
         } catch (error) {
           console.error("Authentication failed:", error);
           toast.error("Authentication failed. Please try again.");
@@ -117,7 +115,12 @@ function Login() {
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: "easeInOut", type: "spring", stiffness: 120 }}
+        transition={{
+          duration: 0.9,
+          ease: "easeInOut",
+          type: "spring",
+          stiffness: 120,
+        }}
         className="flex items-center justify-start gap-x-2 mb-8"
       >
         <div className="w-24 h-24">
@@ -133,7 +136,12 @@ function Login() {
       <MotionCard
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: "easeInOut", type: "spring", stiffness: 120 }}
+        transition={{
+          duration: 0.9,
+          ease: "easeInOut",
+          type: "spring",
+          stiffness: 120,
+        }}
         className="w-full max-w-md shadow-xl bg-white text-black"
       >
         <CardHeader className="text-center">
@@ -180,10 +188,15 @@ function Login() {
         </CardContent>
       </MotionCard>
 
-      <p className="text-center text-white mt-4">
+      <motion.p
+        initial={{ opacity: 0.2 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1.5, ease: "linear" }}
+        className="text-center text-white mt-4"
+      >
         &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
         reserved.
-      </p>
+      </motion.p>
     </div>
   );
 }

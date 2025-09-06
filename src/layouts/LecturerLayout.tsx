@@ -11,7 +11,7 @@ import { useAuthContext } from "../hooks/use-auth";
 
 export default function LecturerLayout() {
   const location = useLocation();
-  const hideNavAndFooterRoutes = ["/lecturer/auth", "/lecturer/login"];
+  const hideNavAndFooterRoutes = ["/lecturer/auth", "/lecturer/login", "/lecturer/onboarding"];
   const shouldHide = hideNavAndFooterRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
