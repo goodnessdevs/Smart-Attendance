@@ -10,8 +10,8 @@ interface Course {
   courseDescription: string;
   unit: number;
   lecturers: string[];
-  venues: string[];
-  days: string[];
+  courseVenue: string[];
+  courseDays: string[];
 }
 
 const CreatedCourses = () => {
@@ -30,7 +30,6 @@ const CreatedCourses = () => {
         });
 
         if (!res.ok) throw new Error("Failed to fetch courses");
-        console.log(res.ok)
 
         const data = await res.json();
         console.log(data)
@@ -84,17 +83,17 @@ const CreatedCourses = () => {
 
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <Users className="w-4 h-4" />
-                  <span>{course.lecturers.join(", ")}</span>
+                  <span>{Array.isArray(course.lecturers) ? course.lecturers.join(", ") : "N/A"}</span>
                 </div>
 
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <MapPin className="w-4 h-4" />
-                  <span>{course.venues.join(", ")}</span>
+                  <span>{Array.isArray(course.courseVenue) ? course.courseVenue.join(", ") : "N/A"}</span>
                 </div>
 
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <Calendar className="w-4 h-4" />
-                  <span>{course.days.join(", ")}</span>
+                  <span>{Array.isArray(course.courseDays) ? course.courseDays.join(", ") : "N/A"}</span>
                 </div>
 
                 <p className="text-sm font-medium text-blue-600">
