@@ -30,8 +30,10 @@ const CreatedCourses = () => {
         });
 
         if (!res.ok) throw new Error("Failed to fetch courses");
+        console.log(res.ok)
 
         const data = await res.json();
+        console.log(data)
         setCourses(data);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Something went wrong");
