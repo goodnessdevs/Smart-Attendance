@@ -21,7 +21,7 @@ const MotionTabsContent = motion.create(TabsContent);
 
 function Account() {
   return (
-    <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10">
+    <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10 mt-8">
       <MotionCard
         initial={{ opacity: 1, x: 100 }}
         whileInView={{ opacity: 1, x: 0 }}
