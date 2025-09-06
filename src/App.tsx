@@ -97,8 +97,22 @@ function App() {
 
       {/* Lecturer routes */}
       <Route path="/lecturer" element={<LecturerLayout />}>
-        <Route path="/lecturer/login" element={<LecturerLogin />} />
-        <Route path="/lecturer/auth" element={<LecturerAuth />} />
+        <Route
+          path="/lecturer/login"
+          element={
+            // <LecturerRouteProtection>
+              <LecturerLogin />
+            // </LecturerRouteProtection>
+          }
+        />
+        <Route
+          path="/lecturer/auth"
+          element={
+            <LecturerRouteProtection>
+              <LecturerAuth />
+            </LecturerRouteProtection>
+          }
+        />
         <Route
           path="/lecturer"
           element={
@@ -107,12 +121,54 @@ function App() {
             </LecturerRouteProtection>
           }
         />
-        <Route path="/lecturer/attendance" element={<AttendanceViewer />} />
-        <Route path="/lecturer/calendar" element={<Calendar />} />
-        <Route path="/lecturer/inbox" element={<LecturerInbox />} />
-        <Route path="/lecturer/account-profile" element={<LecturerAccount />} />
-        <Route path="/lecturer/support" element={<StudentSupportPage />} />
-        <Route path="/lecturer/onboarding" element={<LecturerOnboarding />} />
+        <Route
+          path="/lecturer/attendance"
+          element={
+            <LecturerRouteProtection>
+              <AttendanceViewer />
+            </LecturerRouteProtection>
+          }
+        />
+        <Route
+          path="/lecturer/calendar"
+          element={
+            <LecturerRouteProtection>
+              <Calendar />
+            </LecturerRouteProtection>
+          }
+        />
+        <Route
+          path="/lecturer/inbox"
+          element={
+            <LecturerRouteProtection>
+              <LecturerInbox />
+            </LecturerRouteProtection>
+          }
+        />
+        <Route
+          path="/lecturer/account-profile"
+          element={
+            <LecturerRouteProtection>
+              <LecturerAccount />
+            </LecturerRouteProtection>
+          }
+        />
+        <Route
+          path="/lecturer/support"
+          element={
+            <LecturerRouteProtection>
+              <StudentSupportPage />
+            </LecturerRouteProtection>
+          }
+        />
+        <Route
+          path="/lecturer/onboarding"
+          element={
+            <LecturerRouteProtection>
+              <LecturerOnboarding />
+            </LecturerRouteProtection>
+          }
+        />
       </Route>
 
       {/* Admin routes */}
@@ -125,11 +181,46 @@ function App() {
             </AdminRouteProtection>
           }
         />
-        <Route path="/admin/created-courses" element={<CreatedCourses />} />
-        <Route path="/admin/edit-courses" element={<EditCoursesPage />} />
-        <Route path="/admin/support" element={<AdminSupportPage />} />
-        <Route path="/admin/calendar" element={<AdminCalendarPage />} />
-        <Route path="/admin/account-profile" element={<AdminAccount />} />
+        <Route
+          path="/admin/created-courses"
+          element={
+            <AdminRouteProtection>
+              <CreatedCourses />
+            </AdminRouteProtection>
+          }
+        />
+        <Route
+          path="/admin/edit-courses"
+          element={
+            <AdminRouteProtection>
+              <EditCoursesPage />
+            </AdminRouteProtection>
+          }
+        />
+        <Route
+          path="/admin/support"
+          element={
+            <AdminRouteProtection>
+              <AdminSupportPage />
+            </AdminRouteProtection>
+          }
+        />
+        <Route
+          path="/admin/calendar"
+          element={
+            <AdminRouteProtection>
+              <AdminCalendarPage />
+            </AdminRouteProtection>
+          }
+        />
+        <Route
+          path="/admin/account-profile"
+          element={
+            <AdminRouteProtection>
+              <AdminAccount />
+            </AdminRouteProtection>
+          }
+        />
 
         <Route path="/admin/login" element={<AdminLogin />} />
       </Route>

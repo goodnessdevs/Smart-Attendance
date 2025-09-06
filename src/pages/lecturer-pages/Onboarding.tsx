@@ -39,6 +39,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
+import { getBrowserFingerprint, getOrCreateUUID } from "../../utils/browserfingerprint";
 
 const MotionCard = motion.create(Card);
 
@@ -96,6 +97,27 @@ function LecturerOnboarding() {
 
     fetchCourses();
   }, []);
+
+  // ✅ Initialize device data on component mount
+    useEffect(() => {
+      async function initDevice() {
+        try {
+          const device_uuid = await getOrCreateUUID();
+          const fingerprint = getBrowserFingerprint();
+  
+          setFormData((prev) => ({
+            ...prev,
+            device_uuid,
+            fingerprint,
+          }));
+        } catch (error) {
+          console.error("Failed to initialize device data:", error);
+          toast.error("Failed to initialize device data");
+        }
+      }
+  
+      initDevice();
+    }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
