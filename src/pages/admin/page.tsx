@@ -430,6 +430,7 @@ import {
 import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 interface CourseFormData {
   courseName: string;
@@ -551,6 +552,7 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         setSuccess("Course created successfully!");
+        toast.success("Course created successfully!");
         setFormData({
           courseName: "",
           courseTitle: "",
@@ -563,9 +565,11 @@ export default function AdminDashboard() {
         });
         setTotalCourses((c) => c + 1);
       } else {
+        toast.error("Failed to create course");
         throw new Error("Failed to create course");
       }
     } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to create course")
       setError(err instanceof Error ? err.message : "Failed to create course");
     } finally {
       setLoading(false);

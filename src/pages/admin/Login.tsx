@@ -199,7 +199,7 @@
 
 // export default Login;
 
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { motion } from "framer-motion";
 import {
@@ -218,7 +218,6 @@ import { Alert, AlertDescription } from "../../components/ui/alert";
 const MotionCard = motion.create(Card);
 
 const AdminLogin = () => {
-  const navigate = useNavigate();
   const { login } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -246,7 +245,7 @@ const AdminLogin = () => {
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [navigate, login]);
+  }, [Navigate, login]);
 
   const handleAdminAuthentication = async (token: string) => {
     try {
@@ -305,8 +304,8 @@ const AdminLogin = () => {
       login(userData.user, token);
       
       // Step 5: Success - navigate to admin dashboard
-      toast.success(`Welcome back, ${userData.user?.name || 'Admin'}!`);
-      navigate("/admin");
+      toast.success(`Welcome back, ${userData.user?.fullName || 'Admin'}!`);
+      <Navigate to="/admin" replace />
 
     } catch (err) {
       console.error("Admin authentication error:", err);
@@ -342,16 +341,6 @@ const AdminLogin = () => {
       `width=${width},height=${height},top=${top},left=${left}`
     );
 
-    // Handle popup closure without authentication
-    // const checkClosed = setInterval(() => {
-    //   if (popup?.closed) {
-    //     clearInterval(checkClosed);
-    //     if (loading) {
-    //       setLoading(false);
-    //       setError("Authentication was cancelled");
-    //     }
-    //   }
-    // }, 1000);
   };
 
   const handleRetry = () => {

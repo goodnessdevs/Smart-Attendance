@@ -14,7 +14,6 @@ import AttendanceViewer from "./pages/lecturer-pages/AttendanceViewer";
 import Calendar from "./pages/lecturer-pages/Calendar";
 import AllCourses from "./pages/student-pages/AllCourses";
 
-
 import LecturerLayout from "./layouts/LecturerLayout";
 import LecturerInbox from "./pages/lecturer-pages/Inbox";
 import LecturerAuth from "./pages/lecturer-pages/PasswordAuth";
@@ -31,6 +30,7 @@ import AdminLogin from "./pages/admin/Login";
 import AdminCalendarPage from "./pages/admin/Calendar";
 import EditCoursesPage from "./pages/admin/EditCourses";
 import AdminSupportPage from "./pages/admin/Support";
+import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
 
 function App() {
   return (
@@ -92,7 +92,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/onboarding" element={<Onboarding />} />
       </Route>
-AllCourses
+
       {/* Lecturer routes */}
       <Route path="/lecturer" element={<LecturerLayout />}>
         <Route path="/lecturer/login" element={<LecturerLogin />} />
@@ -107,12 +107,20 @@ AllCourses
 
       {/* Admin routes */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRouteProtection>
+              <AdminDashboard />
+            </AdminRouteProtection>
+          }
+        />
         <Route path="/admin/created-courses" element={<CreatedCourses />} />
         <Route path="/admin/edit-courses" element={<EditCoursesPage />} />
         <Route path="/admin/support" element={<AdminSupportPage />} />
         <Route path="/admin/calendar" element={<AdminCalendarPage />} />
         <Route path="/admin/account-profile" element={<AdminAccount />} />
+
         <Route path="/admin/login" element={<AdminLogin />} />
       </Route>
     </Routes>
