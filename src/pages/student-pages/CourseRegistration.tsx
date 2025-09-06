@@ -111,7 +111,7 @@ const CourseRegistration = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[400px] p-0">
-          <Command>
+          <Command className="bg-white text-black">
             <CommandInput placeholder="Search course..." />
             <CommandList>
               {loading ? (
@@ -125,9 +125,9 @@ const CourseRegistration = () => {
                     {courses.map((course) => (
                       <CommandItem
                         key={course.id}
-                        onSelect={() => handleSelect(course.courseCode)}
+                        onSelect={() => handleSelect(course.courseName)}
                       >
-                        {course.courseCode}
+                        {course.courseName}
                       </CommandItem>
                     ))}
                   </CommandGroup>
