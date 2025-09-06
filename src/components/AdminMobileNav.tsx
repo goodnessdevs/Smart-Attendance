@@ -65,7 +65,7 @@ const items = [
 
 function SheetNavbar() {
   const [open, setOpen] = React.useState(false);
-  const { user, logout } = useAuthContext();
+  const { user, token, logout } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -75,7 +75,7 @@ function SheetNavbar() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
       logout();
-      navigate("/login");
+      navigate("/admin/login");
     } finally {
       setLoading(false);
     }
@@ -154,18 +154,18 @@ function SheetNavbar() {
             ))}
 
             <>
-              {user ? (
+              {token ? (
                 <Button onClick={handleLogout} disabled={loading} asChild>
                   {loading ? (
-                    <>
-                      <Loader2 className="animate-spin" />
+                    <div className="flex items-center gap-x-2">
+                      <Loader2 className="animate-spin w-4 h-4" />
                       <span>Logging out...</span>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <LogOut />
-                      <span>Logout</span>
-                    </>
+                    <div className="flex items-center gap-x-2">
+                      <LogOut className="w-4 h-4" />
+                      <span>Log out</span>
+                    </div>
                   )}
                 </Button>
               ) : (

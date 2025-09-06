@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   LayoutDashboardIcon,
@@ -8,6 +8,8 @@ import {
   LogOut,
   Contact,
   CheckIcon,
+  Loader2,
+  LogIn,
 } from "lucide-react";
 
 import {
@@ -20,9 +22,10 @@ import {
 } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 import { Separator } from "./ui/separator";
+import { useAuthContext } from "../hooks/use-auth";
 
 // Menu items.
 const items = [
@@ -56,15 +59,25 @@ const items = [
     href: "/lecturer/support",
     icon: Contact,
   },
-  {
-    title: "Log out",
-    href: "/lecturer/login",
-    icon: LogOut,
-  },
 ];
 
 function SheetNavbar() {
   const [open, setOpen] = React.useState(false);
+  const { logout, token } = useAuthContext();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  // logout handler
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+      logout();
+      navigate("/lecturer/login");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleNavClick = () => {
     setOpen(false);
@@ -101,7 +114,6 @@ function SheetNavbar() {
             </SheetDescription>
             <Separator />
           </SheetHeader>
-          
 
           <nav className="md:hidden flex flex-col mx-4 gap-4">
             {items.map((item, index) => (
@@ -116,6 +128,31 @@ function SheetNavbar() {
               </Link>
             ))}
           </nav>
+
+          <>
+            {token ? (
+              <Button onClick={handleLogout} disabled={loading} asChild>
+                {loading ? (
+                  <div className="flex items-center gap-x-2">
+                    <Loader2 className="animate-spin w-4 h-4" />
+                    <span>Logging out...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-x-2">
+                    <LogOut className="w-4 h-4" />
+                    <span>Log out</span>
+                  </div>
+                )}
+              </Button>
+            ) : (
+              <Button asChild>
+                <Link to="/login">
+                  <LogIn />
+                  <span>Login</span>
+                </Link>
+              </Button>
+            )}
+          </>
 
           <div className="mx-4 mt-2">
             <ModeToggle />

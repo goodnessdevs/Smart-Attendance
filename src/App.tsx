@@ -33,6 +33,7 @@ import AdminSupportPage from "./pages/admin/Support";
 import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
 import LecturerRouteProtection from "./pages/lecturer-pages/LecturerRouteProtection";
 import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
+import CourseRegistration from "./pages/student-pages/CourseRegistration";
 
 function App() {
   return (
@@ -41,6 +42,14 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         {/* Protected routes */}
+        <Route
+          path="/register-courses"
+          element={
+            <RequireAuthDialog>
+              <CourseRegistration />
+            </RequireAuthDialog>
+          }
+        />
         <Route
           path="/calendar"
           element={

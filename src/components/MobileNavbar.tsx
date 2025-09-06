@@ -10,6 +10,7 @@ import {
   LogIn,
   Loader2,
   BookOpen,
+  Pencil,
 } from "lucide-react";
 
 import {
@@ -35,6 +36,11 @@ const items = [
     title: "Dashboard",
     href: "/",
     icon: LayoutDashboardIcon,
+  },
+    {
+    title: "Register Courses",
+    href: "/register-courses",
+    icon: Pencil,
   },
   {
     title: "All Courses",
