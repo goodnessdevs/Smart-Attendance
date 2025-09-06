@@ -15,6 +15,7 @@ import {
 import { Button } from "../../components/ui/button";
 import { X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { Badge } from "../../components/ui/badge";
 
 interface Course {
   id: string;
@@ -41,7 +42,7 @@ const CourseRegistration = () => {
         if (!res.ok) throw new Error("Failed to fetch courses");
         const data = await res.json();
         setCourses(data.courses);
-        console.log(data.courses)
+        console.log(data.courses);
       } catch (error) {
         console.log(error);
         toast.error("Error fetching courses");
@@ -110,8 +111,8 @@ const CourseRegistration = () => {
             {loading ? "Loading..." : "Select Course"}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[400px] p-0">
-          <Command className="bg-white text-black">
+        <PopoverContent className="w-[300px] p-0">
+          <Command className="bg-white text-black dark:text-black">
             <CommandInput placeholder="Search course..." />
             <CommandList>
               {loading ? (
@@ -121,7 +122,7 @@ const CourseRegistration = () => {
               ) : (
                 <>
                   <CommandEmpty>No courses found.</CommandEmpty>
-                  <CommandGroup>
+                  <CommandGroup className="text-black dark:text-black">
                     {courses.map((course) => (
                       <CommandItem
                         key={course.id}
@@ -139,21 +140,22 @@ const CourseRegistration = () => {
       </Popover>
 
       {/* Selected Courses */}
-      <div className="flex flex-wrap gap-2">
-        {selectedCourses.map((courseCode) => (
-          <div
-            key={courseCode}
-            className="flex items-center gap-1 px-3 py-1 rounded-full bg-secondary text-sm"
+      <div className="flex flex-wrap gap-3">
+        {selectedCourses.map((courseName) => (
+          <Badge
+            key={courseName}
+            variant="secondary"
+            className="flex items-center gap-2 px-4 py-2 text-base rounded-lg"
           >
-            {courseCode}
+            {courseName}
             <button
               type="button"
-              onClick={() => handleRemove(courseCode)}
-              className="ml-1 hover:text-red-500"
+              onClick={() => handleRemove(courseName)}
+              className="hover:text-red-500"
             >
-              <X size={14} />
+              <X size={16} />
             </button>
-          </div>
+          </Badge>
         ))}
       </div>
 
