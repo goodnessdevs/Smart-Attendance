@@ -8,6 +8,7 @@ import {
   type User,
 } from "./AuthContext";
 import { clearDeviceData } from "../utils/indexedDB";
+import { Loader2 } from "lucide-react";
 
 const authReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -143,6 +144,14 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>
+      {isInitializing ? (
+        <div className="flex items-center justify-center h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-green-700 dark:text-white" />
+        </div>
+      ) : (
+        children
+      )}
+    </AuthContext.Provider>
   );
 };

@@ -78,7 +78,7 @@ function Login() {
             
           } else {
             // User not onboarded - go to onboarding
-            localStorage.setItem("jwt_token", token);
+            // localStorage.setItem("jwt_token", token);
             toast.success("Please complete your setup");
             navigate("/onboarding");
           }
