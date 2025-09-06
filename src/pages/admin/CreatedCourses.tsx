@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
 import { Loader2, BookOpen, Users, MapPin, Calendar } from "lucide-react";
+import { Input } from "../../components/ui/input";
 
 interface Course {
   _id: string;
@@ -27,6 +27,7 @@ const CreatedCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -53,6 +54,15 @@ const CreatedCourses = () => {
     fetchCourses();
   }, []);
 
+  const filteredCourse = courses.filter((course) => {
+    const term = searchTerm.toLowerCase();
+    const codeMatch = course.courseName.toLowerCase().includes(term);
+    const titleMatch = course.courseTitle
+      ? course.courseTitle.toLowerCase().includes(term)
+      : false;
+    return codeMatch || titleMatch;
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -70,13 +80,22 @@ const CreatedCourses = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Created Courses</h1>
 
+      <div className="my-4 w-md mx-auto">
+        <Input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       {courses.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400">
           No courses created yet.
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course) => (
+          {filteredCourse.map((course) => (
             <Card
               key={course._id}
               className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition-shadow"
@@ -125,10 +144,6 @@ const CreatedCourses = () => {
                 <p className="text-sm font-medium text-blue-600">
                   Units: {course.unit}
                 </p>
-
-                <Button variant="outline" size="sm" className="w-full mt-2">
-                  View Details
-                </Button>
               </CardContent>
             </Card>
           ))}
