@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Loader2, BookOpen, Users, MapPin, Calendar } from "lucide-react";
 
@@ -8,10 +13,14 @@ interface Course {
   courseName: string;
   courseTitle: string;
   courseDescription: string;
-  unit: number;
+  unit: string;
   lecturers: string[];
   courseVenue: string[];
   courseDays: string[];
+}
+
+interface ApiResponse {
+  courses: Course[];
 }
 
 const CreatedCourses = () => {
@@ -31,9 +40,9 @@ const CreatedCourses = () => {
 
         if (!res.ok) throw new Error("Failed to fetch courses");
 
-        const data = await res.json();
-        console.log(data)
-        setCourses(data);
+        const data: ApiResponse = await res.json(); // 👈 strongly typed
+        console.log(data);
+        setCourses(data.courses);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Something went wrong");
       } finally {
@@ -62,7 +71,9 @@ const CreatedCourses = () => {
       <h1 className="text-3xl font-bold mb-6">Created Courses</h1>
 
       {courses.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400">No courses created yet.</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          No courses created yet.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
@@ -73,7 +84,10 @@ const CreatedCourses = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <BookOpen className="w-5 h-5 text-blue-600" />
-                  {course.courseName} <span className="text-sm text-gray-500">({course.courseTitle})</span>
+                  {course.courseName}{" "}
+                  <span className="text-sm text-gray-500">
+                    ({course.courseTitle})
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
@@ -83,28 +97,36 @@ const CreatedCourses = () => {
 
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <Users className="w-4 h-4" />
-                  <span>{Array.isArray(course.lecturers) ? course.lecturers.join(", ") : "N/A"}</span>
+                  <span>
+                    {Array.isArray(course.lecturers)
+                      ? course.lecturers.join(", ")
+                      : "N/A"}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <MapPin className="w-4 h-4" />
-                  <span>{Array.isArray(course.courseVenue) ? course.courseVenue.join(", ") : "N/A"}</span>
+                  <span>
+                    {Array.isArray(course.courseVenue)
+                      ? course.courseVenue.join(", ")
+                      : "N/A"}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <Calendar className="w-4 h-4" />
-                  <span>{Array.isArray(course.courseDays) ? course.courseDays.join(", ") : "N/A"}</span>
+                  <span>
+                    {Array.isArray(course.courseDays)
+                      ? course.courseDays.join(", ")
+                      : "N/A"}
+                  </span>
                 </div>
 
                 <p className="text-sm font-medium text-blue-600">
                   Units: {course.unit}
                 </p>
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full mt-2"
-                >
+                <Button variant="outline" size="sm" className="w-full mt-2">
                   View Details
                 </Button>
               </CardContent>
