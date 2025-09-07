@@ -1,21 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../../components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/ui/popover";
 import { Button } from "../../components/ui/button";
-import { X, Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "../../components/ui/badge";
+import { Input } from "../../components/ui/input";
 
 interface Course {
   _id: string;
@@ -31,8 +19,8 @@ interface Course {
 const CourseRegistration = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [registering, setRegistering] = useState<string | null>(null); // track course being registered
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Fetch courses from backend
   useEffect(() => {
@@ -57,29 +45,10 @@ const CourseRegistration = () => {
     fetchCourses();
   }, []);
 
-  // Add selected course
-  const handleSelect = (courseName: string) => {
-    if (!selectedCourses.includes(courseName)) {
-      setSelectedCourses([...selectedCourses, courseName]);
-    } else {
-      toast.info(`${courseName} already selected`);
-    }
-    setOpen(false);
-  };
-
-  // Remove selected course
-  const handleRemove = (courseName: string) => {
-    setSelectedCourses(selectedCourses.filter((c) => c !== courseName));
-  };
-
-  // Submit selected courses
-  const handleSubmit = async () => {
-    if (selectedCourses.length === 0) {
-      toast.error("Please select at least one course");
-      return;
-    }
-
+  // Register a course
+  const handleRegister = async (courseName: string) => {
     const token = localStorage.getItem("jwt_token");
+    setRegistering(courseName);
 
     try {
       const res = await fetch(
@@ -90,83 +59,75 @@ const CourseRegistration = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ courses: selectedCourses }), // ✅ sending courseName only
+          body: JSON.stringify({ courses: [courseName] }), // ✅ send array with courseName
         }
       );
 
-      if (!res.ok) throw new Error("Failed to register courses");
+      if (!res.ok) throw new Error("Failed to register course");
 
-      toast.success("Courses registered successfully!");
-      setSelectedCourses([]); // Reset selection
+      toast.success(`${courseName} registered successfully!`);
     } catch (error) {
       console.log(error);
-      toast.error("Error registering courses");
+      toast.error(`Error registering ${courseName}`);
+    } finally {
+      setRegistering(null);
     }
   };
 
+  const filteredCourse = courses.filter((course) => {
+    const term = searchTerm.toLowerCase();
+    const codeMatch = course.courseName.toLowerCase().includes(term);
+    const titleMatch = course.courseTitle
+      ? course.courseTitle.toLowerCase().includes(term)
+      : false;
+    return codeMatch || titleMatch;
+  });
+
   return (
-    <div className="max-w-lg mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-bold">Course Registration</h1>
 
-      {/* Course Selector */}
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-full justify-between">
-            {loading ? "Loading..." : "Select Course"}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[350px] p-0">
-          <Command className="bg-white text-black dark:text-black">
-            <CommandInput placeholder="Search course..." />
-            <CommandList>
-              {loading ? (
-                <div className="flex justify-center p-4">
-                  <Loader2 className="animate-spin" />
-                </div>
-              ) : (
-                <>
-                  <CommandEmpty>No courses found.</CommandEmpty>
-                  <CommandGroup className="text-black dark:text-black">
-                    {courses.map((course) => (
-                      <CommandItem
-                        key={course._id}
-                        onSelect={() => handleSelect(course.courseName)}
-                      >
-                        {course.courseName} — {course.courseTitle}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </>
-              )}
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-
-      {/* Selected Courses */}
-      <div className="flex flex-wrap gap-3">
-        {selectedCourses.map((courseName) => (
-          <Badge
-            key={courseName}
-            variant="secondary"
-            className="flex items-center gap-2 px-4 py-2 text-base rounded-lg"
-          >
-            {courseName}
-            <button
-              type="button"
-              onClick={() => handleRemove(courseName)}
-              className="hover:text-red-500"
-            >
-              <X size={16} />
-            </button>
-          </Badge>
-        ))}
+      <div className="my-4 mb-6 md:w-md w-[250px]">
+        <Input
+          type="text"
+          placeholder="Search courses..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
-      {/* Submit */}
-      <Button className="w-full" onClick={handleSubmit}>
-        Register Selected Courses
-      </Button>
+      {loading ? (
+        <div className="flex justify-center py-10">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredCourse.map((course) => (
+            <Card key={course._id} className="flex flex-col justify-between">
+              <CardHeader>
+                <CardTitle>{course.courseName}</CardTitle>
+                <p className="text-sm text-muted-foreground">{course.courseTitle}</p>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {/* <p className="text-sm">{course.courseDescription}</p> */}
+                <p className="text-xs text-muted-foreground">Units: {course.unit}</p>
+                <Button
+                  className="w-full"
+                  disabled={registering === course.courseName}
+                  onClick={() => handleRegister(course.courseName)}
+                >
+                  {registering === course.courseName ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Plus className="h-4 w-4 mr-2" />
+                  )}
+                  Add
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
