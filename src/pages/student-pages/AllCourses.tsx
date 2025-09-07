@@ -8,7 +8,7 @@ type Course = {
   lecturers: string[];
   courseDays: string[];
   courseVenue: string;
-  isActive: boolean;
+  // isActive: boolean;
 };
 
 interface ApiResponse {
@@ -83,7 +83,7 @@ const AllCourses = () => {
                 <span className="text-gray-500">Days:</span>{" "}
                 {course.courseDays.join(", ")}
               </p> */}
-              <p
+              {/* <p
                 className={`mt-2 inline-block px-2 py-1 rounded text-xs font-bold ${
                   course.isActive
                     ? "bg-green-100 text-green-700"
@@ -91,7 +91,7 @@ const AllCourses = () => {
                 }`}
               >
                 {course.isActive ? "true" : "false"}
-              </p>
+              </p> */}
             </div>
           ))}
         </div>

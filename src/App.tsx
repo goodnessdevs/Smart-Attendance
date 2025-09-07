@@ -69,9 +69,9 @@ function App() {
         <Route
           path="/account-profile"
           element={
-            // <RequireAuthDialog>
+            <RequireAuthDialog>
               <Account />
-            // </RequireAuthDialog>
+            </RequireAuthDialog>
           }
         />
         <Route

@@ -365,8 +365,8 @@ export default function Dashboard() {
                     to={`/course/${course._id}`}
                     className={`block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 ${
                       course.isActive
-                        ? "bg-green-50 border-green-200 dark:bg-green-900/20"
-                        : "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20"
+                        ? "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20"
+                        : "bg-green-50 border-green-200 dark:bg-green-900/20"
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -384,8 +384,8 @@ export default function Dashboard() {
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold shadow ${
                           course.isActive
-                            ? "bg-green-100 text-green-700 border border-green-200"
-                            : "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                            ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                            : "bg-green-100 text-green-700 border border-green-200"
                         }`}
                       >
                         {course.isActive ? "Pending" : "Marked"}
