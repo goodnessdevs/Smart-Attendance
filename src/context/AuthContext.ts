@@ -10,6 +10,12 @@ export type User = {
   absent: number;
   profilePic: string;
   isAdmin: boolean;
+  level: string;
+  matricNumber: string;
+  department: string;
+  college: string;
+  googleId: string;
+  phoneNumber: string;
 };
 
 export type State = {
@@ -35,8 +41,8 @@ export const initialState: State = {
 
 export const AuthContext = createContext<AuthContextType>({
   ...initialState,
-  login: () => {},
-  logout: () => {},
-  dispatch: () => {},
+  login: () => { },
+  logout: () => { },
+  dispatch: () => { },
   isInitializing: true,
 });

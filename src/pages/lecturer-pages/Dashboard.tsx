@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Check } from "lucide-react";
+import { X, Check, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import {
   Command,
@@ -25,6 +25,8 @@ import { Input } from "../../components/ui/input";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "../../components/ui/card";
 import { toast } from "sonner";
+import SignedOutLecturerDashboard from "./SignedOutLecturer";
+import { useAuthContext } from "../../hooks/use-auth";
 
 // --- Types ---
 type Venue = {
@@ -200,6 +202,7 @@ const daysOfWeek = [
 ];
 
 export default function AttendanceDashboard() {
+  const {token, isInitializing} = useAuthContext()
   const [selectedCourses, setSelectedCourses] = useState<CourseSelection[]>([]);
   const [activeCourses, setActiveCourses] = useState<CourseSelection[]>([]);
   const [createdCourses, setCreatedCourses] = useState<CourseSelection[]>([]);
@@ -401,6 +404,18 @@ export default function AttendanceDashboard() {
       console.error('Error:', error);
     }
   };
+
+  // --- Auth loading ---
+    if (isInitializing) {
+      return (
+        <div className="flex items-center justify-center h-screen gap-x-3">
+          <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
+          <p className="text-lg font-semibold">Loading dashboard...</p>
+        </div>
+      );
+    }
+  
+    if (!token) return <SignedOutLecturerDashboard />;
 
   return (
     <motion.div

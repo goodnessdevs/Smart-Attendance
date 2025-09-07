@@ -431,6 +431,8 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import SignedOutAdminDashboard from "./SignedOutAdmin";
+import { useAuthContext } from "../../hooks/use-auth";
 
 interface CourseFormData {
   courseName: string;
@@ -444,6 +446,7 @@ interface CourseFormData {
 }
 
 export default function AdminDashboard() {
+  const {token, isInitializing} = useAuthContext()
   const [totalCourses, setTotalCourses] = useState<number>(12);
 
   const [formData, setFormData] = useState<CourseFormData>({
@@ -592,6 +595,18 @@ export default function AdminDashboard() {
   };
 
   const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+  // --- Auth loading ---
+    if (isInitializing) {
+      return (
+        <div className="flex items-center justify-center h-screen gap-x-3">
+          <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
+          <p className="text-lg font-semibold">Loading dashboard...</p>
+        </div>
+      );
+    }
+  
+    if (!token) return <SignedOutAdminDashboard />;
 
   return (
     <motion.div

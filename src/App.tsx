@@ -109,9 +109,9 @@ function App() {
         <Route
           path="/lecturer/login"
           element={
-            // <LecturerRouteProtection>
+            <LecturerRouteProtection>
               <LecturerLogin />
-            // </LecturerRouteProtection>
+            </LecturerRouteProtection>
           }
         />
         <Route

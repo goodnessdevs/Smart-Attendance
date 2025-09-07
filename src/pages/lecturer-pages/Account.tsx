@@ -13,13 +13,41 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/use-auth";
+import { useState } from "react";
+import { Loader2, LogOut } from "lucide-react";
 
 const MotionCard = motion.create(Card);
 const MotionTabsList = motion.create(TabsList);
 const MotionTabsContent = motion.create(TabsContent);
 
 function LecturerAccount() {
+  const { user, logout } = useAuthContext();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+  
+    // logout handler
+    const handleLogout = async () => {
+      setLoading(true);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+        logout();
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const getAvatarFallback = () => {
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
+    return names
+      .map((n) => n[0]?.toUpperCase())
+      .slice(0, 2)
+      .join(" ");
+  };
+    
   return (
     <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10">
       <MotionCard
@@ -31,13 +59,13 @@ function LecturerAccount() {
       >
         <CardHeader className="flex flex-col items-center text-center">
           <Avatar className="w-20 h-20 mb-2">
-            <AvatarImage src="/avatar.png" alt="Lecturer Avatar" />
-            <AvatarFallback>LC</AvatarFallback>
+            <AvatarImage src={user?.profilePic} alt="Lecturer Avatar" />
+            <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
           </Avatar>
           <CardTitle className="text-lg md:text-xl font-semibold">
-            Lecturer Name
+            {user?.fullName}
           </CardTitle>
-          <p className="text-muted-foreground text-sm">Staff ID: LEC2025001</p>
+          {/* <p className="text-muted-foreground text-sm">Staff ID: LEC2025001</p> */}
         </CardHeader>
       </MotionCard>
 
@@ -70,17 +98,13 @@ function LecturerAccount() {
             <CardContent className="space-y-2">
               <div className="flex justify-between">
                 <span>Total Courses Assigned:</span>
-                <span>4</span>
-              </div>
-              {/* <div className="flex justify-between">
-                <span>Pending Classes:</span>
-                <span>5</span>
+                <span>0</span>
               </div>
               <div className="flex justify-between">
-                <span>Average Attendance %:</span>
-                <span>82%</span>
-              </div> */}
-              <Button className="mt-4 w-full">View Full Class Records</Button>
+                <span>Active Courses:</span>
+                <span>0</span>
+              </div>
+              {/* <Button className="mt-4 w-full">View Full Class Records</Button> */}
             </CardContent>
           </Card>
         </MotionTabsContent>
@@ -101,19 +125,19 @@ function LecturerAccount() {
               <div>
                 <label className="block mb-1 text-sm">Full Name</label>
                 <p className="w-full border rounded px-3 py-2 text-sm">
-                  Lecturer Name
+                  {user?.fullName}
                 </p>
               </div>
               <div>
                 <label className="block mb-1 text-sm">Email</label>
                 <p className="w-full border rounded px-3 py-2 text-sm">
-                  lecturer@email.com
+                  {user?.email}
                 </p>
               </div>
               <div>
-                <label className="block mb-1 text-sm">Department</label>
+                <label className="block mb-1 text-sm">College</label>
                 <p className="w-full border rounded px-3 py-2 text-sm">
-                  Computer Science
+                  {user?.college}
                 </p>
               </div>
               {/* <Button className="w-full mt-4">Update Info</Button> */}
@@ -134,11 +158,19 @@ function LecturerAccount() {
               <CardTitle>Are you sure?</CardTitle>
             </CardHeader>
             <CardContent>
-              <Link to={"/login"}>
-                <Button variant="destructive" className="w-full cursor-pointer">
-                  Logout
+                <Button variant="destructive" onClick={handleLogout} className="w-full cursor-pointer">
+                  {loading ? (
+                    <div className="flex items-center gap-x-2">
+                      <Loader2 className="animate-spin w-4 h-4" />
+                      <span>Logging out...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-x-2">
+                      <LogOut className="w-4 h-4" />
+                      <span>Log out</span>
+                    </div>
+                  )}
                 </Button>
-              </Link>
             </CardContent>
           </Card>
         </MotionTabsContent>

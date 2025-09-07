@@ -217,7 +217,7 @@ export default function Dashboard() {
           <h1 className="text-4xl font-bold">
             Welcome,{" "}
             <span className="bg-gradient-to-r from-cyan-600 to-blue-500 dark:from-cyan-300 dark:to-blue-400 bg-clip-text text-transparent">
-              {user ? user.fullName : "Student"}
+              {user ? user.matricNumber : "Student"}
             </span>
           </h1>
         </motion.div>
