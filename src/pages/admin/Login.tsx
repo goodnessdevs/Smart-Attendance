@@ -73,7 +73,6 @@ const AdminLogin = () => {
         }
 
         const userData = await userResponse.json();
-        console.log("Admin user data:", userData);
 
         // Step 4: Store token and login admin user
         localStorage.setItem("jwt_token", token);

@@ -42,7 +42,7 @@ const CreatedCourses = () => {
         if (!res.ok) throw new Error("Failed to fetch courses");
 
         const data: ApiResponse = await res.json(); // 👈 strongly typed
-        console.log(data);
+
         setCourses(data.courses);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Something went wrong");

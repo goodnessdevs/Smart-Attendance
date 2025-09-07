@@ -79,44 +79,31 @@ const availableVenues: Venue[] = [
   },
 ];
 
-// --- Mock courses ---
-const activeCourses: Course[] = [
-  {
-    id: "csc101",
-    name: "Introduction to Computer Science",
-    code: "CSC 101",
-    lecturer: "Prof. John David",
-    time: "2:00 PM - 4:00 PM",
-    location: "Computer Lab 2",
-    status: "pending",
-  },
-  {
-    id: "phy201",
-    name: "Physics II",
-    code: "PHY 201",
-    lecturer: "Dr. Mary Johnson",
-    time: "9:00 AM - 11:00 AM",
-    location: "Science Block 301",
-    status: "marked",
-  },
-];
-
 // --- Geolocation utility service ---
 class GeolocationService {
   private static readonly EARTH_RADIUS_METERS = 6371000;
 
-  static calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  static calculateDistance(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number
+  ): number {
     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
     const dLat = toRadians(lat2 - lat1);
     const dLng = toRadians(lng2 - lng1);
     const a =
       Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLng / 2) ** 2;
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLng / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return this.EARTH_RADIUS_METERS * c;
   }
 
-  static getCurrentPosition(options?: PositionOptions): Promise<GeolocationPosition> {
+  static getCurrentPosition(
+    options?: PositionOptions
+  ): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
         reject(new Error("Geolocation is not supported by this browser."));
@@ -133,25 +120,63 @@ class GeolocationService {
   }
 
   static isWithinVenue(userLat: number, userLng: number, venue: Venue) {
-    const distance = this.calculateDistance(userLat, userLng, venue.lat, venue.lng);
+    const distance = this.calculateDistance(
+      userLat,
+      userLng,
+      venue.lat,
+      venue.lng
+    );
     return { isWithin: distance <= venue.radius, distance };
   }
 }
 
 export default function Dashboard() {
   const { token, user, isInitializing } = useAuthContext();
+  const [activeCourses, setActiveCourses] = useState<Course[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(true);
+
+  // Fetch active courses
+  useEffect(() => {
+    const fetchActiveCourses = async () => {
+      try {
+        const token = localStorage.getItem("jwt_token");
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/active-courses`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!res.ok) throw new Error("Failed to fetch active courses");
+        const data = await res.json();
+        console.log(data, data.courses)
+        setActiveCourses(data.courses); // 🔹 assuming backend returns { courses: [...] }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error fetching active courses");
+      } finally {
+        setLoadingCourses(false);
+      }
+    };
+
+    fetchActiveCourses();
+  }, []);
 
   // --- Persist states with localStorage ---
   const [locationGranted, setLocationGranted] = useState<boolean>(
     () => localStorage.getItem("locationGranted") === "true"
   );
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(() => {
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(() => {
     const saved = localStorage.getItem("userLocation");
     return saved ? JSON.parse(saved) : null;
   });
-  const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "granted" | "denied">(
-    locationGranted ? "granted" : "idle"
-  );
+  const [locationStatus, setLocationStatus] = useState<
+    "idle" | "loading" | "granted" | "denied"
+  >(locationGranted ? "granted" : "idle");
   const [nearbyVenues, setNearbyVenues] = useState<
     Array<Venue & { distance: number; isWithin: boolean }>
   >([]);
@@ -169,10 +194,20 @@ export default function Dashboard() {
   useEffect(() => {
     if (userLocation) {
       const venuesWithDistance = availableVenues.map((venue) => {
-        const result = GeolocationService.isWithinVenue(userLocation.lat, userLocation.lng, venue);
-        return { ...venue, distance: result.distance, isWithin: result.isWithin };
+        const result = GeolocationService.isWithinVenue(
+          userLocation.lat,
+          userLocation.lng,
+          venue
+        );
+        return {
+          ...venue,
+          distance: result.distance,
+          isWithin: result.isWithin,
+        };
       });
-      setNearbyVenues(venuesWithDistance.sort((a, b) => a.distance - b.distance));
+      setNearbyVenues(
+        venuesWithDistance.sort((a, b) => a.distance - b.distance)
+      );
     }
   }, [userLocation]);
 
@@ -180,15 +215,26 @@ export default function Dashboard() {
     setLocationStatus("loading");
     try {
       const position = await GeolocationService.getCurrentPosition();
-      const location = { lat: position.coords.latitude, lng: position.coords.longitude };
+      const location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
       setUserLocation(location);
       setLocationGranted(true);
       setLocationStatus("granted");
-      toast.success(`Location verified! (±${Math.round(position.coords.accuracy)}m accuracy)`);
+      toast.success(
+        `Location verified! (±${Math.round(
+          position.coords.accuracy
+        )}m accuracy)`
+      );
     } catch (error: unknown) {
       setLocationStatus("denied");
       setLocationGranted(false);
-      toast.error(error instanceof Error ? error.message : "Unable to retrieve your location.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to retrieve your location."
+      );
     }
   };
 
@@ -233,14 +279,17 @@ export default function Dashboard() {
               </h3>
               {locationStatus === "granted" && userLocation && (
                 <p className="text-sm text-muted-foreground">
-                  Lat: {userLocation.lat.toFixed(6)}, Lng: {userLocation.lng.toFixed(6)}
+                  Lat: {userLocation.lat.toFixed(6)}, Lng:{" "}
+                  {userLocation.lng.toFixed(6)}
                 </p>
               )}
               {locationStatus === "denied" && (
                 <p className="text-sm text-red-600">Location access denied</p>
               )}
               {locationStatus === "idle" && (
-                <p className="text-sm text-muted-foreground">Location not requested</p>
+                <p className="text-sm text-muted-foreground">
+                  Location not requested
+                </p>
               )}
             </div>
             <button
@@ -262,7 +311,9 @@ export default function Dashboard() {
 
           <p className="text-sm">
             Location granted:{" "}
-            <span className={locationGranted ? "text-green-600" : "text-red-600"}>
+            <span
+              className={locationGranted ? "text-green-600" : "text-red-600"}
+            >
               {locationGranted ? "Yes" : "No"}
             </span>
           </p>
@@ -298,40 +349,51 @@ export default function Dashboard() {
         <Card className="shadow-xl">
           <CardContent className="p-6">
             <h3 className="text-xl font-semibold mb-5">Active Courses</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              {activeCourses.map((course) => (
-                <Link
-                  key={course.id}
-                  to={`/course/${course.id}`}
-                  className={`block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 ${
-                    course.status === "marked"
-                      ? "bg-green-50 border-green-200 dark:bg-green-900/20"
-                      : "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20"
-                  }`}
-                >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-semibold text-lg">{course.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {course.code} • {course.lecturer}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {course.time} • {course.location}
-                      </p>
+
+            {loadingCourses ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-cyan-600" />
+              </div>
+            ) : activeCourses.length === 0 ? (
+              <p className="text-muted-foreground">
+                No active courses available.
+              </p>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                {activeCourses.map((course) => (
+                  <Link
+                    key={course.id}
+                    to={`/course/${course.id}`}
+                    className={`block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 ${
+                      course.status === "marked"
+                        ? "bg-green-50 border-green-200 dark:bg-green-900/20"
+                        : "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-lg">{course.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {course.code} • {course.lecturer}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {course.time} • {course.location}
+                        </p>
+                      </div>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold shadow ${
+                          course.status === "marked"
+                            ? "bg-green-100 text-green-700 border border-green-200"
+                            : "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                        }`}
+                      >
+                        {course.status === "marked" ? "Marked" : "Pending"}
+                      </span>
                     </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold shadow ${
-                        course.status === "marked"
-                          ? "bg-green-100 text-green-700 border border-green-200"
-                          : "bg-yellow-100 text-yellow-700 border border-yellow-200"
-                      }`}
-                    >
-                      {course.status === "marked" ? "Marked" : "Pending"}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </motion.div>

@@ -11,6 +11,10 @@ type Course = {
   isActive: boolean;
 };
 
+interface ApiResponse {
+  courses: Course[];
+}
+
 const AllCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,9 +35,8 @@ const AllCourses = () => {
         if (!res.ok) {
           throw new Error("Failed to fetch courses");
         }
-        const data: Course[] = await res.json();
-        console.log(data);
-        setCourses(data);
+        const data: ApiResponse = await res.json();
+        setCourses(data.courses);
       } catch (err) {
         setError((err as Error).message);
       } finally {
