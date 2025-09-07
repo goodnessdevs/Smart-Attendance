@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "../../components/ui/input";
@@ -59,7 +64,7 @@ const CourseRegistration = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ courses: [courseName] }), // ✅ send array with courseName
+          body: JSON.stringify({ courseName }), // ✅ send just courseName
         }
       );
 
@@ -106,11 +111,15 @@ const CourseRegistration = () => {
             <Card key={course._id} className="flex flex-col justify-between">
               <CardHeader>
                 <CardTitle>{course.courseName}</CardTitle>
-                <p className="text-sm text-muted-foreground">{course.courseTitle}</p>
+                <p className="text-sm text-muted-foreground">
+                  {course.courseTitle}
+                </p>
               </CardHeader>
               <CardContent className="space-y-3">
                 {/* <p className="text-sm">{course.courseDescription}</p> */}
-                <p className="text-xs text-muted-foreground">Units: {course.unit}</p>
+                <p className="text-xs text-muted-foreground">
+                  Units: {course.unit}
+                </p>
                 <Button
                   className="w-full"
                   disabled={registering === course.courseName}
