@@ -108,27 +108,31 @@ const CourseRegistration = () => {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredCourse.map((course) => (
-            <Card key={course._id} className="flex flex-col justify-between">
-              <CardHeader>
-                <CardTitle>{course.courseName}</CardTitle>
-                <p className="text-sm text-muted-foreground">
+            <Card
+              key={course._id}
+              className="flex flex-col justify-between p-3"
+            >
+              <CardHeader className="p-2">
+                <CardTitle className="text-base">{course.courseName}</CardTitle>
+                <p className="text-xs text-muted-foreground">
                   {course.courseTitle}
                 </p>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {/* <p className="text-sm">{course.courseDescription}</p> */}
+              <CardContent className="space-y-2 p-2">
+                {/* <p className="text-xs">{course.courseDescription}</p> */}
                 <p className="text-xs text-muted-foreground">
                   Units: {course.unit}
                 </p>
                 <Button
-                  className="w-full"
+                  size="sm" // ✅ smaller button
+                  className="w-full h-8 text-sm"
                   disabled={registering === course.courseName}
                   onClick={() => handleRegister(course.courseName)}
                 >
                   {registering === course.courseName ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <Loader2 className="h-3 w-3 animate-spin mr-1" />
                   ) : (
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-3 w-3 mr-1" />
                   )}
                   Add
                 </Button>

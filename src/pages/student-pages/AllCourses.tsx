@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
 type Course = {
-  id: string;
-  courseCode: string;
+  _id: string;
+  courseName: string;
   courseTitle: string;
   courseDescription: string;
   lecturers: string[];
-  courseTime: string;
   courseDays: string[];
   courseVenue: string;
   isActive: boolean;
@@ -25,6 +24,7 @@ const AllCourses = () => {
           throw new Error("Failed to fetch courses");
         }
         const data: Course[] = await res.json();
+        console.log(data)
         setCourses(data);
       } catch (err) {
         setError((err as Error).message);
@@ -48,7 +48,7 @@ const AllCourses = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
             <div
-              key={course.id}
+              key={course._id}
               className="p-4 rounded-xl shadow-md border hover:shadow-lg transition"
             >
               <h3 className="text-xl font-semibold mb-2">{course.courseTitle}</h3>
@@ -56,7 +56,7 @@ const AllCourses = () => {
                 {course.courseDescription}
               </p>
               <p className="text-sm font-medium">
-                <span className="text-gray-500">Code:</span> {course.courseCode}
+                <span className="text-gray-500">Code:</span> {course.courseName}
               </p>
               <p className="text-sm font-medium">
                 <span className="text-gray-500">Venue:</span> {course.courseVenue}
@@ -65,13 +65,10 @@ const AllCourses = () => {
                 <span className="text-gray-500">Lecturers:</span>{" "}
                 {course.lecturers.join(", ")}
               </p>
-              <p className="text-sm font-medium">
-                <span className="text-gray-500">Time:</span> {course.courseTime}
-              </p>
-              <p className="text-sm font-medium">
+              {/* <p className="text-sm font-medium">
                 <span className="text-gray-500">Days:</span>{" "}
                 {course.courseDays.join(", ")}
-              </p>
+              </p> */}
               <p
                 className={`mt-2 inline-block px-2 py-1 rounded text-xs font-bold ${
                   course.isActive
@@ -79,7 +76,7 @@ const AllCourses = () => {
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
-                {course.isActive ? "Active" : "Inactive"}
+                {course.isActive ? "true" : "false"}
               </p>
             </div>
           ))}
