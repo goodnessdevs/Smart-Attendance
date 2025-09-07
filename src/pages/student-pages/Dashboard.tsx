@@ -22,13 +22,11 @@ type Venue = {
 
 // --- Course type ---
 type Course = {
-  id: string;
-  name: string;
-  code: string;
-  lecturer: string;
-  time: string;
-  location: string;
-  status: "pending" | "marked";
+  _id: string;
+  courseName: string;
+  courseTitle: string;
+  courseDescription: string;
+  isActive: boolean;
 };
 
 // --- Mock venues ---
@@ -150,7 +148,7 @@ export default function Dashboard() {
         );
         if (!res.ok) throw new Error("Failed to fetch active courses");
         const data = await res.json();
-        console.log(data, data.courses)
+        console.log(data, data.courses);
         setActiveCourses(data.courses); // 🔹 assuming backend returns { courses: [...] }
       } catch (error) {
         console.error(error);
@@ -261,9 +259,9 @@ export default function Dashboard() {
           className="flex items-center gap-4"
         >
           <h1 className="text-4xl font-bold">
-            Welcome,{" "}
+            Hello,{" "}
             <span className="bg-gradient-to-r from-cyan-600 to-blue-500 dark:from-cyan-300 dark:to-blue-400 bg-clip-text text-transparent">
-              {user ? user.matricNumber : "Student"}
+              {user ? `${user.matricNumber}!` : "Student"}
             </span>
           </h1>
         </motion.div>
@@ -341,6 +339,7 @@ export default function Dashboard() {
       </Card>
 
       {/* Courses Section */}
+      {/* Courses Section */}
       <motion.div
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -362,32 +361,34 @@ export default function Dashboard() {
               <div className="grid md:grid-cols-2 gap-4">
                 {activeCourses.map((course) => (
                   <Link
-                    key={course.id}
-                    to={`/course/${course.id}`}
+                    key={course._id}
+                    to={`/course/${course._id}`}
                     className={`block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 ${
-                      course.status === "marked"
+                      course.isActive
                         ? "bg-green-50 border-green-200 dark:bg-green-900/20"
                         : "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20"
                     }`}
                   >
                     <div className="flex justify-between items-center">
                       <div>
-                        <h4 className="font-semibold text-lg">{course.name}</h4>
+                        <h4 className="font-semibold text-lg">
+                          {course.courseName}
+                        </h4>
                         <p className="text-sm text-muted-foreground">
-                          {course.code} • {course.lecturer}
+                          {course.courseTitle}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {course.time} • {course.location}
+                          {course.courseDescription}
                         </p>
                       </div>
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold shadow ${
-                          course.status === "marked"
+                          course.isActive
                             ? "bg-green-100 text-green-700 border border-green-200"
                             : "bg-yellow-100 text-yellow-700 border border-yellow-200"
                         }`}
                       >
-                        {course.status === "marked" ? "Marked" : "Pending"}
+                        {course.isActive ? "Pending" : "Marked"}
                       </span>
                     </div>
                   </Link>
