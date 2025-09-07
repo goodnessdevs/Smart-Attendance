@@ -18,9 +18,14 @@ import { toast } from "sonner";
 import { Badge } from "../../components/ui/badge";
 
 interface Course {
-  id: string;
-  courseCode: string;
+  _id: string;
   courseName: string;
+  courseTitle: string;
+  courseDescription: string;
+  unit: string;
+  lecturers: string[];
+  courseVenue: string[];
+  courseDays: string[];
 }
 
 const CourseRegistration = () => {
@@ -42,7 +47,6 @@ const CourseRegistration = () => {
         if (!res.ok) throw new Error("Failed to fetch courses");
         const data = await res.json();
         setCourses(data.courses);
-        console.log(data.courses);
       } catch (error) {
         console.log(error);
         toast.error("Error fetching courses");
@@ -54,18 +58,18 @@ const CourseRegistration = () => {
   }, []);
 
   // Add selected course
-  const handleSelect = (courseCode: string) => {
-    if (!selectedCourses.includes(courseCode)) {
-      setSelectedCourses([...selectedCourses, courseCode]);
+  const handleSelect = (courseName: string) => {
+    if (!selectedCourses.includes(courseName)) {
+      setSelectedCourses([...selectedCourses, courseName]);
     } else {
-      toast.info(`${courseCode} already selected`);
+      toast.info(`${courseName} already selected`);
     }
     setOpen(false);
   };
 
   // Remove selected course
-  const handleRemove = (courseCode: string) => {
-    setSelectedCourses(selectedCourses.filter((c) => c !== courseCode));
+  const handleRemove = (courseName: string) => {
+    setSelectedCourses(selectedCourses.filter((c) => c !== courseName));
   };
 
   // Submit selected courses
@@ -86,7 +90,7 @@ const CourseRegistration = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ courses: selectedCourses }),
+          body: JSON.stringify({ courses: selectedCourses }), // ✅ sending courseName only
         }
       );
 
@@ -111,7 +115,7 @@ const CourseRegistration = () => {
             {loading ? "Loading..." : "Select Course"}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0">
+        <PopoverContent className="w-[350px] p-0">
           <Command className="bg-white text-black dark:text-black">
             <CommandInput placeholder="Search course..." />
             <CommandList>
@@ -125,10 +129,10 @@ const CourseRegistration = () => {
                   <CommandGroup className="text-black dark:text-black">
                     {courses.map((course) => (
                       <CommandItem
-                        key={course.id}
+                        key={course._id}
                         onSelect={() => handleSelect(course.courseName)}
                       >
-                        {course.courseName}
+                        {course.courseName} — {course.courseTitle}
                       </CommandItem>
                     ))}
                   </CommandGroup>
