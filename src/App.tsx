@@ -69,9 +69,9 @@ function App() {
         <Route
           path="/account-profile"
           element={
-            <RequireAuthDialog>
+            // <RequireAuthDialog>
               <Account />
-            </RequireAuthDialog>
+            // </RequireAuthDialog>
           }
         />
         <Route
@@ -125,9 +125,9 @@ function App() {
         <Route
           path="/lecturer"
           element={
-            <LecturerRouteProtection>
+            // <LecturerRouteProtection>
               <AttendanceDashboard />
-            </LecturerRouteProtection>
+            // </LecturerRouteProtection>
           }
         />
         <Route
@@ -185,9 +185,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            <AdminRouteProtection>
+            // <AdminRouteProtection>
               <AdminDashboard />
-            </AdminRouteProtection>
+            // </AdminRouteProtection>
           }
         />
         <Route

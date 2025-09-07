@@ -60,13 +60,13 @@ function Account() {
   };
 
   return (
-    <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10 mt-8">
+    <div className="w-full max-w-full p-4 md:max-w-6xl mx-auto mb-10">
       <MotionCard
         initial={{ opacity: 1, x: 80 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9 }}
         viewport={{ once: false }}
-        className="w-full max-w-full md:w-3xl mb-6 mx-auto"
+        className="w-full max-w-full md:w-3xl mb-6 mx-auto mt-10"
       >
         <CardHeader className="flex flex-col items-center text-center">
           <Avatar className="w-20 h-20 mb-2">
