@@ -19,12 +19,20 @@ const AllCourses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/all-courses`);
+        const token = localStorage.getItem("jwt_token");
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/all-courses`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!res.ok) {
           throw new Error("Failed to fetch courses");
         }
         const data: Course[] = await res.json();
-        console.log(data)
+        console.log(data);
         setCourses(data);
       } catch (err) {
         setError((err as Error).message);
@@ -51,7 +59,9 @@ const AllCourses = () => {
               key={course._id}
               className="p-4 rounded-xl shadow-md border hover:shadow-lg transition"
             >
-              <h3 className="text-xl font-semibold mb-2">{course.courseTitle}</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                {course.courseTitle}
+              </h3>
               <p className="text-sm text-gray-600 mb-2">
                 {course.courseDescription}
               </p>
@@ -59,7 +69,8 @@ const AllCourses = () => {
                 <span className="text-gray-500">Code:</span> {course.courseName}
               </p>
               <p className="text-sm font-medium">
-                <span className="text-gray-500">Venue:</span> {course.courseVenue}
+                <span className="text-gray-500">Venue:</span>{" "}
+                {course.courseVenue}
               </p>
               <p className="text-sm font-medium">
                 <span className="text-gray-500">Lecturers:</span>{" "}
