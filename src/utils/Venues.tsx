@@ -19,7 +19,7 @@ export const venues: Venue[] = [
     radius: 40,
   },
   {
-    venueName: "Engineering Auditorium",
+    venueName: "MP 01",
     lat: 7.228478264627234,
     long: 3.435238674530148,
     radius: 70,

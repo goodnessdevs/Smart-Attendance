@@ -426,6 +426,7 @@ import {
   Users,
   AlertCircle,
   Check,
+  ChevronsUpDown,
 } from "lucide-react";
 import {
   Command,
@@ -441,6 +442,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SignedOutAdminDashboard from "./SignedOutAdmin";
 import { useAuthContext } from "../../hooks/use-auth";
+import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover";
 
 interface CourseFormData {
   courseName: string;
@@ -664,7 +666,7 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label htmlFor="courseName">
-                      Course Name <span className="text-red-500">*</span>
+                      Course Code <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="courseName"
@@ -677,7 +679,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="courseTitle">
-                      Course Code <span className="text-red-500">*</span>
+                      Course Title <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="courseTitle"
@@ -803,38 +805,58 @@ export default function AdminDashboard() {
                     <span className="text-red-500">*</span>
                   </Label>
 
-                  <Command className="border rounded-md">
-                    <CommandInput placeholder="Search venues..." />
-                    <CommandList className="max-h-60 overflow-y-auto">
-                      <CommandEmpty>No venues found.</CommandEmpty>
-                      {venues.map((venue) => (
-                        <CommandItem
-                          key={venue.venueName}
-                          value={venue.venueName}
-                          onSelect={() => {
-                            if (
-                              !formData.courseVenue.some(
-                                (v) => v.venueName === venue.venueName
-                              )
-                            ) {
-                              setFormData((prev) => ({
-                                ...prev,
-                                courseVenue: [...prev.courseVenue, venue],
-                              }));
-                            }
-                          }}
-                        >
-                          {venue.venueName}
-                        </CommandItem>
-                      ))}
-                    </CommandList>
-                  </Command>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className="w-full justify-between"
+                      >
+                        {formData.courseVenue.length > 0
+                          ? `${formData.courseVenue.length} venue(s) selected`
+                          : "Select venues..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[300px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search venues..." />
+                        <CommandList className="max-h-60 overflow-y-auto">
+                          <CommandEmpty>No venues found.</CommandEmpty>
+                          {venues.map((venue) => (
+                            <CommandItem
+                              key={venue.venueName}
+                              value={venue.venueName}
+                              onSelect={() => {
+                                if (
+                                  !formData.courseVenue.some(
+                                    (v) => v.venueName === venue.venueName
+                                  )
+                                ) {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    courseVenue: [...prev.courseVenue, venue],
+                                  }));
+                                }
+                              }}
+                            >
+                              {venue.venueName}
+                            </CommandItem>
+                          ))}
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
 
                   {/* Display selected venues */}
                   {formData.courseVenue.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                       {formData.courseVenue.map((venue, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
+                        <Badge
+                          key={i}
+                          variant="secondary"
+                          className="text-xs flex items-center gap-1"
+                        >
                           {venue.venueName}
                           <Button
                             type="button"
