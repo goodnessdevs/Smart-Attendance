@@ -109,9 +109,9 @@ function SheetNavbar() {
       .join(" ");
   };
 
-  React.useEffect(() => {
-    console.log("Auth User:", user);
-  }, [user]);
+  // React.useEffect(() => {
+  //   console.log("Auth User:", user);
+  // }, [user]);
 
   const MotionAvatar = motion.create(Avatar);
 

@@ -388,7 +388,23 @@ export default function Dashboard() {
                             : "bg-green-100 text-green-700 border border-green-200"
                         }`}
                       >
-                        {course.isActive ? "Pending" : "Marked"}
+                        {course.isActive ? (
+                          <motion.span
+                            animate={{ scale: [0.9, 1.1, 0.9] }}
+                            transition={{
+                              duration: 1.2,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
+                            className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-yellow-100 text-yellow-700 border border-yellow-200"
+                          >
+                            Pending
+                          </motion.span>
+                        ) : (
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-green-100 text-green-700 border border-green-200">
+                            Marked
+                          </span>
+                        )}
                       </span>
                     </div>
                   </Link>
