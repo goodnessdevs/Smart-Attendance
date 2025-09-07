@@ -427,6 +427,14 @@ import {
   AlertCircle,
   Check,
 } from "lucide-react";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandItem,
+  CommandEmpty,
+} from "../../components/ui/command";
+import { venues, type Venue } from "../../utils/Venues";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
@@ -440,13 +448,13 @@ interface CourseFormData {
   courseDescription: string;
   unit: string;
   lecturers: string[];
-  courseVenue: string[];
+  courseVenue: Venue[];
   courseDays: string[];
   isActive: boolean;
 }
 
 export default function AdminDashboard() {
-  const {token, isInitializing} = useAuthContext()
+  const { token, isInitializing } = useAuthContext();
   const [totalCourses, setTotalCourses] = useState<number>(12);
 
   const [formData, setFormData] = useState<CourseFormData>({
@@ -455,7 +463,7 @@ export default function AdminDashboard() {
     courseDescription: "",
     unit: "",
     lecturers: [""],
-    courseVenue: [""],
+    courseVenue: [],
     courseDays: [],
     isActive: true,
   });
@@ -472,7 +480,7 @@ export default function AdminDashboard() {
       formData.courseDescription.trim() !== "" &&
       formData.courseDays.length > 0 &&
       formData.lecturers.some((l) => l.trim() !== "") &&
-      formData.courseVenue.some((v) => v.trim() !== "")
+      formData.courseVenue.some((v) => v.venueName.trim() !== "")
     );
   };
 
@@ -501,21 +509,24 @@ export default function AdminDashboard() {
     setFormData((prev) => ({ ...prev, lecturers: updated }));
   };
 
-  const handleVenueChange = (index: number, value: string) => {
-    const updated = [...formData.courseVenue];
-    updated[index] = value;
-    setFormData((prev) => ({ ...prev, courseVenue: updated }));
-  };
+  // const handleVenueChange = (index: number, value: string) => {
+  //   const updated = [...formData.courseVenue];
+  //   updated[index] = value;
+  //   setFormData((prev) => ({ ...prev, courseVenue: updated }));
+  // };
 
-  const addVenue = () => {
-    setFormData((prev) => ({ ...prev, courseVenue: [...prev.courseVenue, ""] }));
-  };
+  // const addVenue = () => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     courseVenue: [...prev.courseVenue, ""],
+  //   }));
+  // };
 
-  const removeVenue = (index: number) => {
-    if (formData.courseVenue.length === 1) return;
-    const updated = formData.courseVenue.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, courseVenue: updated }));
-  };
+  // const removeVenue = (index: number) => {
+  //   if (formData.courseVenue.length === 1) return;
+  //   const updated = formData.courseVenue.filter((_, i) => i !== index);
+  //   setFormData((prev) => ({ ...prev, courseVenue: updated }));
+  // };
 
   const handleDayToggle = (day: string, checked: boolean) => {
     const updated = checked
@@ -551,7 +562,7 @@ export default function AdminDashboard() {
       );
 
       const data = await res.json();
-      console.log(data)
+      console.log(data);
 
       if (res.ok) {
         setSuccess("Course created successfully!");
@@ -562,7 +573,7 @@ export default function AdminDashboard() {
           courseDescription: "",
           unit: "",
           lecturers: [""],
-          courseVenue: [""],
+          courseVenue: [],
           courseDays: [],
           isActive: true,
         });
@@ -572,7 +583,9 @@ export default function AdminDashboard() {
         throw new Error("Failed to create course");
       }
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Failed to create course")
+      toast.error(
+        err instanceof Error ? err.message : "Failed to create course"
+      );
       setError(err instanceof Error ? err.message : "Failed to create course");
     } finally {
       setLoading(false);
@@ -586,7 +599,7 @@ export default function AdminDashboard() {
       courseDescription: "",
       unit: "",
       lecturers: [""],
-      courseVenue: [""],
+      courseVenue: [],
       courseDays: [],
       isActive: true,
     });
@@ -597,16 +610,16 @@ export default function AdminDashboard() {
   const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
   // --- Auth loading ---
-    if (isInitializing) {
-      return (
-        <div className="flex items-center justify-center h-screen gap-x-3">
-          <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
-          <p className="text-lg font-semibold">Loading dashboard...</p>
-        </div>
-      );
-    }
-  
-    if (!token) return <SignedOutAdminDashboard />;
+  if (isInitializing) {
+    return (
+      <div className="flex items-center justify-center h-screen gap-x-3">
+        <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
+        <p className="text-lg font-semibold">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (!token) return <SignedOutAdminDashboard />;
 
   return (
     <motion.div
@@ -789,35 +802,60 @@ export default function AdminDashboard() {
                     <MapPin className="w-4 h-4" /> Venues{" "}
                     <span className="text-red-500">*</span>
                   </Label>
-                  {formData.courseVenue.map((venue: string, i: number) => (
-                    <div key={i} className="flex gap-2">
-                      <Input
-                        placeholder="Lecture Hall A"
-                        value={venue}
-                        onChange={(e) => handleVenueChange(i, e.target.value)}
-                        className="h-9 sm:h-10"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeVenue(i)}
-                        disabled={formData.courseVenue.length === 1}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+
+                  <Command className="border rounded-md">
+                    <CommandInput placeholder="Search venues..." />
+                    <CommandList className="max-h-60 overflow-y-auto">
+                      <CommandEmpty>No venues found.</CommandEmpty>
+                      {venues.map((venue) => (
+                        <CommandItem
+                          key={venue.venueName}
+                          value={venue.venueName}
+                          onSelect={() => {
+                            if (
+                              !formData.courseVenue.some(
+                                (v) => v.venueName === venue.venueName
+                              )
+                            ) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                courseVenue: [...prev.courseVenue, venue],
+                              }));
+                            }
+                          }}
+                        >
+                          {venue.venueName}
+                        </CommandItem>
+                      ))}
+                    </CommandList>
+                  </Command>
+
+                  {/* Display selected venues */}
+                  {formData.courseVenue.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {formData.courseVenue.map((venue, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {venue.venueName}
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                courseVenue: prev.courseVenue.filter(
+                                  (v) => v.venueName !== venue.venueName
+                                ),
+                              }))
+                            }
+                            className="ml-1 h-4 w-4 text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </Badge>
+                      ))}
                     </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={addVenue}
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Venue
-                  </Button>
+                  )}
                 </div>
 
                 {/* Alerts */}
