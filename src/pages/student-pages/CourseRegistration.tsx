@@ -70,7 +70,8 @@ const CourseRegistration = () => {
       );
 
       if (!res.ok) throw new Error("Failed to register course");
-
+      const data = await res.json();
+      console.log(data);
       toast.success(`Course registered successfully!`);
     } catch (error) {
       console.log(error);
@@ -109,10 +110,7 @@ const CourseRegistration = () => {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredCourse.map((course) => (
-            <Card
-              key={course._id}
-              className="flex flex-col justify-between p-3"
-            >
+            <Card key={course._id} className="flex flex-col gap-y-0 p-2">
               <CardHeader className="p-2">
                 <CardTitle className="text-base">{course.courseName}</CardTitle>
                 <p className="text-xs text-muted-foreground">

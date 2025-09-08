@@ -36,6 +36,7 @@ const AllCourses = () => {
           throw new Error("Failed to fetch courses");
         }
         const data: ApiResponse = await res.json();
+        console.log(data.courses)
         setCourses(data.courses);
       } catch (err) {
         setError((err as Error).message);
