@@ -125,9 +125,9 @@ function App() {
         <Route
           path="/lecturer"
           element={
-            // <LecturerRouteProtection>
+            <LecturerRouteProtection>
               <AttendanceDashboard />
-            // </LecturerRouteProtection>
+            </LecturerRouteProtection>
           }
         />
         <Route
@@ -185,9 +185,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            // <AdminRouteProtection>
+            <AdminRouteProtection>
               <AdminDashboard />
-            // </AdminRouteProtection>
+            </AdminRouteProtection>
           }
         />
         <Route
@@ -231,7 +231,14 @@ function App() {
           }
         />
 
-        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/login"
+          element={
+            <AdminRouteProtection>
+              <AdminLogin />
+            </AdminRouteProtection>
+          }
+        />
       </Route>
     </Routes>
   );

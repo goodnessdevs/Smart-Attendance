@@ -116,7 +116,7 @@ export function AdminSidebar() {
                     )}
                   </SidebarMenuButton>
                 ) : (
-                  <SidebarMenuButton className="bg-sidebar-accent text-sidebar" asChild>
+                  <SidebarMenuButton className="dark:bg-cyan-700 dark:text-white bg-white text-cyan-700" asChild>
                     <Link to="/login">
                       <LogIn />
                       <span>Login</span>

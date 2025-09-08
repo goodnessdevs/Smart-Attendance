@@ -15,7 +15,7 @@ export default function SignedOutAdminDashboard() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
-        className="absolute inset-0 bg-gradient-to-br from-white to-cyan-300 dark:from-cyan-900 dark:to-gray-900"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15),transparent_70%)]"
       />
 
       {/* Content */}

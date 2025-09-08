@@ -152,7 +152,6 @@ export default function Dashboard() {
         setActiveCourses(data.courses); // 🔹 assuming backend returns { courses: [...] }
       } catch (error) {
         console.error(error);
-        toast.error("Error fetching active courses");
       } finally {
         setLoadingCourses(false);
       }
