@@ -179,6 +179,7 @@ export default function AdminDashboard() {
         });
         setTotalCourses((c) => c + 1);
       } else {
+        console.log(data)
         toast.error("Failed to create course");
         throw new Error("Failed to create course");
       }
