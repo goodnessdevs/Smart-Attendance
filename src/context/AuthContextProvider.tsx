@@ -7,8 +7,9 @@ import {
   type State,
   type User,
 } from "./AuthContext";
-import { clearDeviceData } from "../utils/indexedDB";
+import { clearDeviceData, getOrCreateFingerprint } from "../utils/indexedDB";
 import { Loader2 } from "lucide-react";
+import { getOrCreateUUID } from "../utils/browserfingerprint";
 
 const authReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -118,22 +119,25 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const login = (user: User | null, token: string) => {
+  const login = async (user: User | null, token: string) => {
     localStorage.setItem("jwt_token", token);
+    await getOrCreateUUID();
+    await getOrCreateFingerprint();
     dispatch({ type: "LOGIN", payload: { user, token } });
   };
 
   const logout = async () => {
-    try {
-      await clearDeviceData();
-      console.log("Device data cleared from IndexedDB");
-    } catch (error) {
-      console.error("Failed to clear device data:", error);
-    } finally {
-      localStorage.removeItem("jwt_token");
-      dispatch({ type: "LOGOUT" });
-    }
-  };
+  try {
+    // ❌ don’t clear device DB
+    // await clearDeviceData(); 
+
+    localStorage.removeItem("jwt_token");
+    dispatch({ type: "LOGOUT" });
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+};
+
 
   const contextValue = {
     ...state,
