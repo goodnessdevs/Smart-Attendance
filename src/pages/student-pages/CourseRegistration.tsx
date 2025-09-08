@@ -126,10 +126,10 @@ const CourseRegistration = () => {
                 <Button
                   size="sm" // ✅ smaller button
                   className="w-full h-8 text-sm"
-                  disabled={registering === course.courseName}
-                  onClick={() => handleRegister(course.courseName)}
+                  disabled={registering === course.courseId}
+                  onClick={() => handleRegister(course.courseId)}
                 >
-                  {registering === course.courseName ? (
+                  {registering === course.courseId ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
                   ) : (
                     <Plus className="h-3 w-3 mr-1" />
