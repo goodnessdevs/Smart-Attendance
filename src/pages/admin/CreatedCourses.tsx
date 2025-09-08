@@ -15,7 +15,7 @@ interface Course {
   courseDescription: string;
   unit: string;
   lecturers: string[];
-  courseVenue: string[];
+  venueName: string;
   courseDays: string[];
 }
 
@@ -126,9 +126,7 @@ const CreatedCourses = () => {
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <MapPin className="w-4 h-4" />
                   <span>
-                    {Array.isArray(course.courseVenue)
-                      ? course.courseVenue.join(", ")
-                      : "N/A"}
+                    {course.venueName}
                   </span>
                 </div>
 

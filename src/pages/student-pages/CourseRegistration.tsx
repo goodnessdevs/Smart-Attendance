@@ -13,11 +13,12 @@ import { Input } from "../../components/ui/input";
 interface Course {
   _id: string;
   courseName: string;
+  courseId: string;
   courseTitle: string;
   courseDescription: string;
   unit: string;
   lecturers: string[];
-  courseVenue: string[];
+  venueName: string;
   courseDays: string[];
 }
 
@@ -51,9 +52,9 @@ const CourseRegistration = () => {
   }, []);
 
   // Register a course
-  const handleRegister = async (courseName: string) => {
+  const handleRegister = async (courseId: string) => {
     const token = localStorage.getItem("jwt_token");
-    setRegistering(courseName);
+    setRegistering(courseId);
 
     try {
       const res = await fetch(
@@ -64,16 +65,16 @@ const CourseRegistration = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ courseName }), // ✅ send just courseName
+          body: JSON.stringify({ courseId }), // ✅ send just courseName
         }
       );
 
       if (!res.ok) throw new Error("Failed to register course");
 
-      toast.success(`${courseName} registered successfully!`);
+      toast.success(`Course registered successfully!`);
     } catch (error) {
       console.log(error);
-      toast.error(`Error registering ${courseName}`);
+      toast.error(`Error registering course`);
     } finally {
       setRegistering(null);
     }
@@ -118,8 +119,9 @@ const CourseRegistration = () => {
                   {course.courseTitle}
                 </p>
               </CardHeader>
-              <CardContent className="space-y-2 p-2">
-                {/* <p className="text-xs">{course.courseDescription}</p> */}
+              <CardContent className="space-y-1 p-2">
+                <p className="text-xs">{course.courseId}</p>
+                <p className="text-xs">{course.venueName}</p>
                 <p className="text-xs text-muted-foreground">
                   Units: {course.unit}
                 </p>

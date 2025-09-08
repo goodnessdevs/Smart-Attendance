@@ -7,7 +7,7 @@ type Course = {
   courseDescription: string;
   lecturers: string[];
   courseDays: string[];
-  courseVenue: string;
+  venueName: string;
   // isActive: boolean;
 };
 
@@ -73,7 +73,7 @@ const AllCourses = () => {
               </p>
               <p className="text-sm font-medium">
                 <span className="text-gray-500">Venue:</span>{" "}
-                {course.courseVenue}
+                {course.venueName}
               </p>
               <p className="text-sm font-medium">
                 <span className="text-gray-500">Lecturers:</span>{" "}
