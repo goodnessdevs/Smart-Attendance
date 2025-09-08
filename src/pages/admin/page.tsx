@@ -179,7 +179,6 @@ export default function AdminDashboard() {
         });
         setTotalCourses((c) => c + 1);
       } else {
-        console.log(data)
         toast.error("Failed to create course");
         throw new Error("Failed to create course");
       }
@@ -418,7 +417,7 @@ export default function AdminDashboard() {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
-                      <Command>
+                      <Command className="bg-white text-black">
                         <CommandInput placeholder="Search venues..." />
                         <CommandList className="max-h-60 overflow-y-auto">
                           <CommandEmpty>No venues found.</CommandEmpty>

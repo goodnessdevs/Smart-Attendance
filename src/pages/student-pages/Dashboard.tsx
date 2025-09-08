@@ -338,7 +338,6 @@ export default function Dashboard() {
       </Card>
 
       {/* Courses Section */}
-      {/* Courses Section */}
       <motion.div
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -384,7 +383,7 @@ export default function Dashboard() {
                         <motion.span
                           animate={{ scale: [0.9, 1.1, 0.9] }}
                           transition={{
-                            duration: 0.9,
+                            duration: 0.8,
                             repeat: Infinity,
                             ease: "easeInOut",
                           }}
