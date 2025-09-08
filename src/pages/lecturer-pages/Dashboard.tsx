@@ -44,7 +44,7 @@ export default function AttendanceDashboard() {
       setLoadingCourses(true);
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/courses`,
+          `${import.meta.env.VITE_API_URL}/courses`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -54,7 +54,10 @@ export default function AttendanceDashboard() {
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        setAllCourses(data);
+
+        // ✅ Normalize to array
+        const coursesArray = Array.isArray(data) ? data : data.courses;
+        setAllCourses(coursesArray || []);
       } catch (error) {
         console.error("Error fetching courses:", error);
         toast.error("Failed to load courses");
