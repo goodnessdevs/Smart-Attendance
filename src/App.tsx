@@ -185,9 +185,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            <AdminRouteProtection>
+            // <AdminRouteProtection>
               <AdminDashboard />
-            </AdminRouteProtection>
+            // </AdminRouteProtection>
           }
         />
         <Route

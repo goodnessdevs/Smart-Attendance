@@ -29,7 +29,7 @@ import {
   CommandItem,
   CommandEmpty,
 } from "../../components/ui/command";
-import { venues, type Venue } from "../../utils/Venues";
+import { venues } from "../../utils/Venues";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
@@ -43,12 +43,15 @@ import {
 } from "../../components/ui/popover";
 
 interface CourseFormData {
+  courseId: string;
   courseName: string;
   courseTitle: string;
   courseDescription: string;
   unit: string;
   lecturers: string[];
-  courseVenue: Venue[];
+  venueName: string;
+  lat: number;
+  long: number;
   courseDays: string[];
   isActive: boolean;
 }
@@ -58,12 +61,15 @@ export default function AdminDashboard() {
   const [totalCourses, setTotalCourses] = useState<number>(12);
 
   const [formData, setFormData] = useState<CourseFormData>({
+    courseId: "",
     courseName: "",
     courseTitle: "",
     courseDescription: "",
     unit: "",
     lecturers: [""],
-    courseVenue: [],
+    venueName: "",
+    lat: 0,
+    long: 0,
     courseDays: [],
     isActive: true,
   });
@@ -75,12 +81,13 @@ export default function AdminDashboard() {
   // Form validation
   const isFormValid = () => {
     return (
+      formData.courseId.trim() !== "" &&
       formData.courseName.trim() !== "" &&
       formData.courseTitle.trim() !== "" &&
       formData.courseDescription.trim() !== "" &&
       formData.courseDays.length > 0 &&
       formData.lecturers.some((l) => l.trim() !== "") &&
-      formData.courseVenue.some((v) => v.venueName.trim() !== "")
+      formData.venueName.trim() !== ""
     );
   };
 
@@ -108,25 +115,6 @@ export default function AdminDashboard() {
     const updated = formData.lecturers.filter((_, i) => i !== index);
     setFormData((prev) => ({ ...prev, lecturers: updated }));
   };
-
-  // const handleVenueChange = (index: number, value: string) => {
-  //   const updated = [...formData.courseVenue];
-  //   updated[index] = value;
-  //   setFormData((prev) => ({ ...prev, courseVenue: updated }));
-  // };
-
-  // const addVenue = () => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     courseVenue: [...prev.courseVenue, ""],
-  //   }));
-  // };
-
-  // const removeVenue = (index: number) => {
-  //   if (formData.courseVenue.length === 1) return;
-  //   const updated = formData.courseVenue.filter((_, i) => i !== index);
-  //   setFormData((prev) => ({ ...prev, courseVenue: updated }));
-  // };
 
   const handleDayToggle = (day: string, checked: boolean) => {
     const updated = checked
@@ -168,12 +156,15 @@ export default function AdminDashboard() {
         setSuccess("Course created successfully!");
         toast.success("Course created successfully!");
         setFormData({
+          courseId: "",
           courseName: "",
           courseTitle: "",
           courseDescription: "",
           unit: "",
           lecturers: [""],
-          courseVenue: [],
+          venueName: "",
+          lat: 0,
+          long: 0,
           courseDays: [],
           isActive: true,
         });
@@ -194,12 +185,15 @@ export default function AdminDashboard() {
 
   const resetForm = () => {
     setFormData({
+      courseId: "",
       courseName: "",
       courseTitle: "",
       courseDescription: "",
       unit: "",
       lecturers: [""],
-      courseVenue: [],
+      venueName: "",
+      lat: 0,
+      long: 0,
       courseDays: [],
       isActive: true,
     });
@@ -269,7 +263,7 @@ export default function AdminDashboard() {
                     <Input
                       id="courseName"
                       name="courseName"
-                      placeholder="Intro to Computer Science"
+                      placeholder="CSC 301"
                       value={formData.courseName}
                       onChange={handleChange}
                       className="h-9 sm:h-10"
@@ -282,12 +276,26 @@ export default function AdminDashboard() {
                     <Input
                       id="courseTitle"
                       name="courseTitle"
-                      placeholder="CSC 101"
+                      placeholder="Intro to computer science"
                       value={formData.courseTitle}
                       onChange={handleChange}
                       className="h-9 sm:h-10"
                     />
                   </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="courseId">
+                    Course Id <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="courseId"
+                    name="courseId"
+                    placeholder="csc301_MAH"
+                    value={formData.courseId}
+                    onChange={handleChange}
+                    className="h-9 sm:h-10"
+                  />
                 </div>
 
                 {/* Description */}
@@ -396,10 +404,10 @@ export default function AdminDashboard() {
                   </Button>
                 </div>
 
-                {/* Venues */}
+                {/* Venue */}
                 <div className="space-y-2">
                   <Label className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" /> Venues{" "}
+                    <MapPin className="w-4 h-4" /> Venue{" "}
                     <span className="text-red-500">*</span>
                   </Label>
 
@@ -410,84 +418,50 @@ export default function AdminDashboard() {
                         role="combobox"
                         className="w-full justify-between"
                       >
-                        {formData.courseVenue.length > 0
-                          ? `${formData.courseVenue.length} venue(s) selected`
-                          : "Select venues..."}
+                        {formData.venueName
+                          ? formData.venueName
+                          : "Select a venue..."}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
-                      <Command className="bg-white text-black">
+                      <Command className="bg-white text-black p-2">
                         <CommandInput placeholder="Search venues..." />
                         <CommandList className="max-h-60 overflow-y-auto">
                           <CommandEmpty>No venues found.</CommandEmpty>
-                          {venues.map((venue) => {
-                            const alreadySelected = formData.courseVenue.some(
-                              (v) => v.venueName === venue.venueName
-                            );
-
-                            return (
-                              <CommandItem
-                                key={venue.venueName}
-                                value={venue.venueName}
-                                onSelect={() => {
-                                  if (alreadySelected) {
-                                    // remove if already selected
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      courseVenue: prev.courseVenue.filter(
-                                        (v) => v.venueName !== venue.venueName
-                                      ),
-                                    }));
-                                  } else {
-                                    // add new venue
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      courseVenue: [
-                                        ...prev.courseVenue,
-                                        venue,
-                                      ],
-                                    }));
-                                  }
-                                }}
-                              >
-                                {alreadySelected ? "✓ " : ""} {venue.venueName}
-                              </CommandItem>
-                            );
-                          })}
+                          {venues.map((venue) => (
+                            <CommandItem
+                              key={venue.venueName}
+                              value={venue.venueName}
+                              onSelect={() => {
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  venueName: venue.venueName,
+                                  lat: venue.lat,
+                                  long: venue.long,
+                                }));
+                              }}
+                            >
+                              {venue.venueName}
+                            </CommandItem>
+                          ))}
                         </CommandList>
                       </Command>
                     </PopoverContent>
                   </Popover>
 
-                  {/* Display selected venues */}
-                  {formData.courseVenue.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {formData.courseVenue.map((venue, i) => (
-                        <Badge
-                          key={i}
-                          variant="secondary"
-                          className="text-xs flex items-center gap-1"
-                        >
-                          {venue.venueName}
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            onClick={() =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                courseVenue: prev.courseVenue.filter(
-                                  (v) => v.venueName !== venue.venueName
-                                ),
-                              }))
-                            }
-                            className="ml-1 h-4 w-4 text-red-500 hover:text-red-700"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </Badge>
-                      ))}
+                  {/* Show selected venue with lat/long */}
+                  {formData.venueName && (
+                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                      <p>
+                        <span className="font-medium">Venue:</span>{" "}
+                        {formData.venueName}
+                      </p>
+                      <p>
+                        <span className="font-medium">Lat:</span> {formData.lat}{" "}
+                        | <span className="font-medium">Long:</span>{" "}
+                        {formData.long}
+                      </p>
                     </div>
                   )}
                 </div>
