@@ -125,9 +125,9 @@ function App() {
         <Route
           path="/lecturer"
           element={
-            <LecturerRouteProtection>
+            // <LecturerRouteProtection>
               <AttendanceDashboard />
-            </LecturerRouteProtection>
+            // </LecturerRouteProtection>
           }
         />
         <Route
