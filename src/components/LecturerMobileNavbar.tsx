@@ -10,6 +10,8 @@ import {
   CheckIcon,
   Loader2,
   LogIn,
+  BookOpenCheck,
+  Megaphone,
 } from "lucide-react";
 
 import {
@@ -33,6 +35,16 @@ const items = [
     title: "Dashboard",
     href: "/lecturer",
     icon: LayoutDashboardIcon,
+  },
+    {
+    title: "Register Courses",
+    href: "/lecturer/register-courses",
+    icon: BookOpenCheck,
+  },
+  {
+    title: "Publish Attendance",
+    href: "/lecturer/publish-attendance",
+    icon: Megaphone,
   },
   {
     title: "Attendance",

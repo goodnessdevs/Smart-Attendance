@@ -142,9 +142,9 @@ function App() {
         <Route
           path="/lecturer/register-courses"
           element={
-            <LecturerRouteProtection>
+            // <LecturerRouteProtection>
               <LecturerCourseRegistration />
-            </LecturerRouteProtection>
+            // </LecturerRouteProtection>
           }
         />
         <Route
