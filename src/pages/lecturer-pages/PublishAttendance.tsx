@@ -31,7 +31,7 @@ const LecturerPublishCourses = () => {
     const fetchCourses = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/lecturer-courses`,
+          `${import.meta.env.VITE_BACKEND_URL}/lecturer-course`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
