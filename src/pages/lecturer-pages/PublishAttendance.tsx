@@ -43,7 +43,8 @@ const LecturerPublishCourses = () => {
         );
         if (!res.ok) throw new Error("Failed to fetch lecturer courses");
         const data = await res.json();
-        setCourses(data.courses || []);
+        setCourses(data || []);
+        console.log(data)
       } catch (error) {
         console.error(error);
         toast.error("Error fetching lecturer courses");
@@ -68,15 +69,15 @@ const LecturerPublishCourses = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            courseName: course.courseName,
-            courseTitle: course.courseTitle,
+            // courseName: course.courseName,
+            // courseTitle: course.courseTitle,
             courseId: course.courseId,
-            courseDays: course.courseDays,
-            venueName: course.venueName,
-            lat: course.lat,
-            long: course.long,
-            lecturers: course.lecturers,
-            isActive: true,
+            // courseDays: course.courseDays,
+            // venueName: course.venueName,
+            // lat: course.lat,
+            // long: course.long,
+            // lecturers: course.lecturers,
+            // isActive: true,
           }),
         }
       );
