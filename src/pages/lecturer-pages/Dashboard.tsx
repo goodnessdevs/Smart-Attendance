@@ -1,400 +1,83 @@
-// import { useState, useEffect } from "react";
-// import { X, Loader2 } from "lucide-react";
-// import { Button } from "../../components/ui/button";
-// import {
-//   Command,
-//   CommandEmpty,
-//   CommandGroup,
-//   CommandInput,
-//   CommandItem,
-//   CommandList,
-// } from "../../components/ui/command";
-// import {
-//   Popover,
-//   PopoverContent,
-//   PopoverTrigger,
-// } from "../../components/ui/popover";
-// import { motion } from "framer-motion";
-// import { toast } from "sonner";
-// import { useAuthContext } from "../../hooks/use-auth";
-// import SignedOutLecturerDashboard from "./SignedOutLecturer";
-
-// interface Course {
-//   courseName: string;
-//   courseTitle: string;
-//   courseId: string;
-//   courseDays: [];
-//   lecturers: string[];
-//   venueName: string;
-//   lat: number;
-//   long: number;
-//   isActive: boolean;
-// }
-
-// export default function AttendanceDashboard() {
-//   const { token, isInitializing } = useAuthContext();
-//   const [allCourses, setAllCourses] = useState<Course[]>([]);
-//   const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
-//   const [open, setOpen] = useState(false);
-//   const [loadingCourses, setLoadingCourses] = useState(false);
-//   const [isPublishing, setIsPublishing] = useState(false);
-
-//   useEffect(() => {
-//     const fetchCourses = async () => {
-//       setLoadingCourses(true);
-//       try {
-//         const response = await fetch(
-//           `${import.meta.env.VITE_BACKEND_URL}/courses`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${token}`,
-//             },
-//           }
-//         );
-//         if (!response.ok)
-//           throw new Error(`HTTP error! status: ${response.status}`);
-//         const data = await response.json();
-
-//         // ✅ Normalize to array
-//         const coursesArray = Array.isArray(data) ? data : data.courses;
-//         setAllCourses(coursesArray || []);
-//       } catch (error) {
-//         console.error("Error fetching courses:", error);
-//         toast.error("Failed to load courses");
-//       } finally {
-//         setLoadingCourses(false);
-//       }
-//     };
-
-//     fetchCourses();
-//   }, [token]);
-
-//   const handleSelect = (course: Course) => {
-//     const alreadyAdded = selectedCourses.find(
-//       (c) => c.courseName === course.courseName
-//     );
-//     if (alreadyAdded) {
-//       toast.error("Course already selected");
-//       return;
-//     }
-
-//     setSelectedCourses((prev) => [...prev, course]);
-//     toast.success(`${course.courseName} added`);
-//     setOpen(false);
-//   };
-
-//   const removeCourse = (courseName: string) => {
-//     setSelectedCourses((prev) =>
-//       prev.filter((c) => c.courseName !== courseName)
-//     );
-//   };
-
-//   // ✅ Publish selected courses
-//   const handlePublish = async () => {
-//     if (selectedCourses.length === 0) {
-//       toast.error("No courses selected to publish");
-//       return;
-//     }
-
-//     setIsPublishing(true);
-//     try {
-//       for (const course of selectedCourses) {
-//         await fetch(`${import.meta.env.VITE_BACKEND_URL}/publish-attendance`, {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//           body: JSON.stringify({
-//             courseName: course.courseName,
-//             courseTitle: course.courseTitle,
-//             courseId: course.courseId,
-//             courseDays: course.courseDays,
-//             venueName: course.venueName,
-//             lecturers: course.lecturers,
-//             lat: course.lat,
-//             long: course.long,
-//             isActive: true,
-//           }),
-//         });
-//       }
-
-//       setSelectedCourses([]);
-//       toast.success("Courses published successfully!");
-//     } catch (error) {
-//       console.error("Error publishing courses:", error);
-//       toast.error("Failed to publish courses");
-//     } finally {
-//       setIsPublishing(false);
-//     }
-//   };
-
-//   if (isInitializing) {
-//     return (
-//       <div className="flex items-center justify-center h-screen gap-x-3">
-//         <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
-//         <p className="text-lg font-semibold">Loading dashboard...</p>
-//       </div>
-//     );
-//   }
-
-//   if (!token) {
-//     return <SignedOutLecturerDashboard />;
-//   }
-
-//   return (
-//     <motion.div
-//       className="max-w-3xl mx-auto py-10 px-4 space-y-10"
-//       initial={{ opacity: 0, y: 20 }}
-//       animate={{ opacity: 1, y: 0 }}
-//       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-//     >
-//       {/* Header */}
-//       <div className="space-y-2 text-center">
-//         <h2 className="text-3xl font-bold">Attendance Dashboard</h2>
-//         <p className="text-muted-foreground">
-//           Select courses to publish for attendance.
-//         </p>
-//       </div>
-
-//       {/* Course Selection */}
-//       <div className="space-y-4">
-//         <Popover open={open} onOpenChange={setOpen}>
-//           <PopoverTrigger asChild>
-//             <Button
-//               variant="outline"
-//               className="w-full justify-start"
-//               disabled={loadingCourses}
-//             >
-//               {loadingCourses ? (
-//                 <span className="flex items-center gap-2">
-//                   <Loader2 className="animate-spin w-4 h-4" /> Loading
-//                   courses...
-//                 </span>
-//               ) : (
-//                 "Select a course..."
-//               )}
-//             </Button>
-//           </PopoverTrigger>
-//           <PopoverContent className="w-[300px] p-0">
-//             <Command className="w-full dark:text-white">
-//               <CommandInput placeholder="Search courses..." />
-//               <CommandList>
-//                 <CommandEmpty>No results found.</CommandEmpty>
-//                 <CommandGroup heading="Courses">
-//                   {allCourses.map((course) => (
-//                     <CommandItem
-//                       key={course.courseId}
-//                       value={course.courseName + " " + course.courseTitle}
-//                       onSelect={() => handleSelect(course)}
-//                     >
-//                       <div>
-//                         <p className="font-medium">{course.courseName}</p>
-//                         <p className="text-sm text-muted-foreground">
-//                           {course.courseTitle}
-//                         </p>
-//                       </div>
-//                     </CommandItem>
-//                   ))}
-//                 </CommandGroup>
-//               </CommandList>
-//             </Command>
-//           </PopoverContent>
-//         </Popover>
-
-//         {/* Selected Courses */}
-//         <div className="space-y-3">
-//           <h3 className="text-lg font-semibold">Selected Courses</h3>
-//           {selectedCourses.length === 0 ? (
-//             <p className="text-muted-foreground">No courses selected yet.</p>
-//           ) : (
-//             <div className="space-y-2">
-//               {selectedCourses.map((course) => (
-//                 <motion.div
-//                   key={course.courseId}
-//                   className="flex items-center justify-between p-3 border rounded-md bg-accent shadow-sm"
-//                   initial={{ opacity: 0, y: 10 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ type: "spring" }}
-//                 >
-//                   <div>
-//                     <p className="font-medium">{course.courseName}</p>
-//                     <p className="text-sm text-muted-foreground">
-//                       {course.courseTitle}
-//                     </p>
-//                   </div>
-//                   <Button
-//                     variant="ghost"
-//                     size="icon"
-//                     onClick={() => removeCourse(course.courseName)}
-//                   >
-//                     <X className="w-4 h-4" />
-//                   </Button>
-//                 </motion.div>
-//               ))}
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Publish Button */}
-//         {selectedCourses.length > 0 && (
-//           <Button
-//             className="w-full mt-4"
-//             onClick={handlePublish}
-//             disabled={isPublishing}
-//           >
-//             {isPublishing ? (
-//               <span className="flex items-center gap-2">
-//                 <Loader2 className="animate-spin w-4 h-4" /> Publishing...
-//               </span>
-//             ) : (
-//               "Publish Courses"
-//             )}
-//           </Button>
-//         )}
-//       </div>
-//     </motion.div>
-//   );
-// }
-
-
-import { useState, useEffect } from "react";
-import { X, Loader2, Users, BookOpen } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { useEffect, useState } from "react";
+import { Loader2, Users, BookOpen } from "lucide-react";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../../components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/ui/popover";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../components/ui/dialog";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import SignedOutLecturerDashboard from "./SignedOutLecturer";
 
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // delay between children animations
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+};
+
+
 interface Course {
   courseName: string;
   courseTitle: string;
   courseId: string;
-  courseDays: [];
-  lecturers: string[];
-  venueName: string;
-  lat: number;
-  long: number;
   isActive: boolean;
 }
 
-export default function AttendanceDashboard() {
-  const { token, isInitializing } = useAuthContext();
-  const [allCourses, setAllCourses] = useState<Course[]>([]);
-  const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
-  const [activeCourses, setActiveCourses] = useState<Course[]>([]); // store published
-  const [open, setOpen] = useState(false);
-  const [loadingCourses, setLoadingCourses] = useState(false);
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [activeDialogOpen, setActiveDialogOpen] = useState(false);
+export default function LecturerDashboard() {
+  const { token, isInitializing, user } = useAuthContext();
+  const [activeCourses, setActiveCourses] = useState<Course[]>([]);
+  const [totalStudents, setTotalStudents] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      setLoadingCourses(true);
+    const fetchStats = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/courses`,
+        // ✅ Fetch active (published) courses
+        const resCourses = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/publish-attendance`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-        if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
+        if (!resCourses.ok) throw new Error("Failed to fetch active courses");
+        const coursesData = await resCourses.json();
+        setActiveCourses(coursesData || []);
 
-        // ✅ Normalize to array
-        const coursesArray = Array.isArray(data) ? data : data.courses;
-        setAllCourses(coursesArray || []);
+        // ✅ Fetch student attendance stats
+        const resStudents = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/students/attendance-count`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!resStudents.ok) throw new Error("Failed to fetch student stats");
+        const { total } = await resStudents.json();
+        setTotalStudents(total || 0);
       } catch (error) {
-        console.error("Error fetching courses:", error);
-        toast.error("Failed to load courses");
+        console.error(error);
+        toast.error("Failed to load dashboard statistics");
       } finally {
-        setLoadingCourses(false);
+        setLoading(false);
       }
     };
 
-    fetchCourses();
+    if (token) fetchStats();
   }, [token]);
-
-  const handleSelect = (course: Course) => {
-    const alreadyAdded = selectedCourses.find(
-      (c) => c.courseName === course.courseName
-    );
-    if (alreadyAdded) {
-      toast.error("Course already selected");
-      return;
-    }
-
-    setSelectedCourses((prev) => [...prev, course]);
-    toast.success(`${course.courseName} added`);
-    setOpen(false);
-  };
-
-  const removeCourse = (courseName: string) => {
-    setSelectedCourses((prev) =>
-      prev.filter((c) => c.courseName !== courseName)
-    );
-  };
-
-  // ✅ Publish selected courses
-  const handlePublish = async () => {
-    if (selectedCourses.length === 0) {
-      toast.error("No courses selected to publish");
-      return;
-    }
-
-    setIsPublishing(true);
-    try {
-      for (const course of selectedCourses) {
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/publish-attendance`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            ...course,
-            isActive: true,
-          }),
-        });
-      }
-
-      // mock storing active courses
-      setActiveCourses((prev) => [...prev, ...selectedCourses]);
-
-      setSelectedCourses([]);
-      toast.success("Courses published successfully!");
-    } catch (error) {
-      console.error("Error publishing courses:", error);
-      toast.error("Failed to publish courses");
-    } finally {
-      setIsPublishing(false);
-    }
-  };
 
   if (isInitializing) {
     return (
@@ -411,179 +94,96 @@ export default function AttendanceDashboard() {
 
   return (
     <motion.div
-      className="max-w-3xl mx-auto py-10 px-4 space-y-10"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      className="max-w-4xl mx-auto py-12 px-4 space-y-12"
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
     >
-      {/* Header */}
-      <div className="space-y-2 text-center">
-        <h2 className="text-3xl font-bold">Attendance Dashboard</h2>
-        <p className="text-muted-foreground">
-          Select courses to publish for attendance.
+      {/* Welcome Section */}
+      <motion.div className="text-center space-y-3" variants={itemVariants}>
+        <h1 className="text-4xl font-bold">Hello {user?.fullName}!</h1>
+        <p className="text-lg text-muted-foreground">
+          Manage your classes, track attendance, and stay connected with
+          students.
         </p>
-      </div>
+      </motion.div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Active Courses Card */}
-        <Card
-          className="cursor-pointer hover:shadow-md transition"
-          onClick={() => setActiveDialogOpen(true)}
-        >
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Active Courses</CardTitle>
-            <BookOpen className="w-6 h-6 text-cyan-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{activeCourses.length}</p>
-            <p className="text-sm text-muted-foreground">
-              Published & running
-            </p>
-          </CardContent>
-        </Card>
+      {/* Statistics Cards */}
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        variants={containerVariants}
+      >
+        {/* Active Courses */}
+        <motion.div variants={itemVariants}>
+          <Card className="hover:shadow-md transition">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Active Courses</CardTitle>
+              <BookOpen className="w-6 h-6 text-cyan-600" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold">
+                {loading ? "…" : activeCourses.length}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Courses currently running attendance
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        {/* Total Students Card */}
-        <Card
-          className="cursor-pointer hover:shadow-md transition"
-          onClick={() => navigate("/lecturer/students")}
-        >
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Total Students</CardTitle>
-            <Users className="w-6 h-6 text-cyan-600" />
-          </CardHeader>
-          <CardContent>
-            {/* mock value */}
-            <p className="text-2xl font-bold">128</p>
-            <p className="text-sm text-muted-foreground">
-              Have marked attendance
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Course Selection */}
-      <div className="space-y-4">
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              disabled={loadingCourses}
-            >
-              {loadingCourses ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="animate-spin w-4 h-4" /> Loading
-                  courses...
-                </span>
-              ) : (
-                "Select a course..."
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[300px] p-0">
-            <Command className="w-full dark:text-white">
-              <CommandInput placeholder="Search courses..." />
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup heading="Courses">
-                  {allCourses.map((course) => (
-                    <CommandItem
-                      key={course.courseId}
-                      value={course.courseName + " " + course.courseTitle}
-                      onSelect={() => handleSelect(course)}
-                    >
-                      <div>
-                        <p className="font-medium">{course.courseName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {course.courseTitle}
-                        </p>
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-
-        {/* Selected Courses */}
-        <div className="space-y-3">
-          <h3 className="text-lg font-semibold">Selected Courses</h3>
-          {selectedCourses.length === 0 ? (
-            <p className="text-muted-foreground">No courses selected yet.</p>
-          ) : (
-            <div className="space-y-2">
-              {selectedCourses.map((course) => (
-                <motion.div
-                  key={course.courseId}
-                  className="flex items-center justify-between p-3 border rounded-md bg-accent shadow-sm"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ type: "spring" }}
-                >
-                  <div>
-                    <p className="font-medium">{course.courseName}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {course.courseTitle}
-                    </p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeCourse(course.courseName)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Publish Button */}
-        {selectedCourses.length > 0 && (
-          <Button
-            className="w-full mt-4"
-            onClick={handlePublish}
-            disabled={isPublishing}
+        {/* Students */}
+        <motion.div variants={itemVariants}>
+          <Card
+            className="cursor-pointer hover:shadow-md transition"
+            onClick={() => navigate("/lecturer/students")}
           >
-            {isPublishing ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="animate-spin w-4 h-4" /> Publishing...
-              </span>
-            ) : (
-              "Publish Courses"
-            )}
-          </Button>
-        )}
-      </div>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Total Students</CardTitle>
+              <Users className="w-6 h-6 text-cyan-600" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold">
+                {loading ? "…" : totalStudents}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Have marked attendance
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
 
-      {/* Active Courses Dialog */}
-      <Dialog open={activeDialogOpen} onOpenChange={setActiveDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Recently Published Courses</DialogTitle>
-          </DialogHeader>
-          {activeCourses.length === 0 ? (
-            <p className="text-muted-foreground">No active courses yet.</p>
-          ) : (
-            <ul className="space-y-2">
-              {activeCourses.map((c) => (
-                <li
-                  key={c.courseId}
-                  className="p-2 border rounded-md bg-accent shadow-sm"
-                >
-                  <p className="font-medium">{c.courseName}</p>
+      {/* Quick Overview of Active Courses */}
+      <motion.div className="space-y-4" variants={itemVariants}>
+        <h3 className="text-xl font-semibold">Currently Running Courses</h3>
+        {activeCourses.length === 0 ? (
+          <p className="text-muted-foreground">
+            No active courses at the moment.
+          </p>
+        ) : (
+          <motion.ul
+            className="space-y-2"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {activeCourses.map((course) => (
+              <motion.li
+                key={course.courseId}
+                className="p-3 border rounded-md bg-accent shadow-sm flex justify-between"
+                variants={itemVariants}
+              >
+                <div>
+                  <p className="font-medium">{course.courseName}</p>
                   <p className="text-sm text-muted-foreground">
-                    {c.courseTitle}
+                    {course.courseTitle}
                   </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </DialogContent>
-      </Dialog>
+                </div>
+              </motion.li>
+            ))}
+          </motion.ul>
+        )}
+      </motion.div>
     </motion.div>
   );
 }

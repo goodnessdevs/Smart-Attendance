@@ -8,7 +8,7 @@ import {
   LogIn,
   Loader2,
   BookOpen,
-  Pencil,
+  BookOpenCheck,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const items = [
   {
     title: "Register Courses",
     href: "/register-courses",
-    icon: Pencil,
+    icon: BookOpenCheck,
   },
   {
     title: "All Courses",

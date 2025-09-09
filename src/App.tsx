@@ -10,7 +10,7 @@ import CheckAttendance from "./pages/student-pages/CheckAttendance";
 import CalendarPage from "./pages/student-pages/Calendar";
 import InboxPage from "./pages/student-pages/Inbox";
 import Support from "./pages/student-pages/Support";
-import AttendanceViewer from "./pages/lecturer-pages/AttendanceViewer";
+import PublishAttendance from "./pages/lecturer-pages/PublishAttendance";
 import Calendar from "./pages/lecturer-pages/Calendar";
 import AllCourses from "./pages/student-pages/AllCourses";
 
@@ -135,7 +135,7 @@ function App() {
           path="/lecturer/attendance"
           element={
             <LecturerRouteProtection>
-              <AttendanceViewer />
+              <PublishAttendance />
             </LecturerRouteProtection>
           }
         />

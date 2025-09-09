@@ -10,7 +10,7 @@ import {
   LogIn,
   Loader2,
   BookOpen,
-  Pencil,
+  BookOpenCheck,
 } from "lucide-react";
 
 import {
@@ -40,7 +40,7 @@ const items = [
     {
     title: "Register Courses",
     href: "/register-courses",
-    icon: Pencil,
+    icon: BookOpenCheck,
   },
   {
     title: "All Courses",
