@@ -134,9 +134,9 @@ function App() {
         <Route
           path="/lecturer/publish-attendance"
           element={
-            <LecturerRouteProtection>
+            // <LecturerRouteProtection>
               <PublishAttendance />
-            </LecturerRouteProtection>
+            // </LecturerRouteProtection>
           }
         />
         <Route
