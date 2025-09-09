@@ -25,6 +25,7 @@ type Course = {
   _id: string;
   courseName: string;
   courseTitle: string;
+  courseId: string;
   courseDescription: string;
   isActive: boolean;
 };
