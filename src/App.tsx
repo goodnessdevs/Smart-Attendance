@@ -140,8 +140,8 @@ function App() {
             </LecturerRouteProtection>
           }
         />
-        <Route path="/students" element={<StudentsPage />} />
-        <Route path="/students/:courseId" element={<CourseStudentsPage />} />
+        <Route path="/lecturer/students" element={<StudentsPage />} />
+        <Route path="/lecturer/students/:courseId" element={<CourseStudentsPage />} />
         <Route
           path="/lecturer/calendar"
           element={
