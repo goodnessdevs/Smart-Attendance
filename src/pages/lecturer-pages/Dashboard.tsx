@@ -20,7 +20,6 @@ import { useAuthContext } from "../../hooks/use-auth";
 import SignedOutLecturerDashboard from "./SignedOutLecturer";
 
 interface Course {
-  _id: string;
   courseName: string;
   courseTitle: string;
   courseId: string;
@@ -29,6 +28,7 @@ interface Course {
   venueName: string;
   lat: number;
   long: number;
+  isActive: boolean;
 }
 
 export default function AttendanceDashboard() {
@@ -106,7 +106,7 @@ export default function AttendanceDashboard() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            courseCode: course.courseName,
+            courseName: course.courseName,
             courseTitle: course.courseTitle,
             courseId: course.courseId,
             courseDays: course.courseDays,
@@ -184,7 +184,7 @@ export default function AttendanceDashboard() {
                 <CommandGroup heading="Courses">
                   {allCourses.map((course) => (
                     <CommandItem
-                      key={course._id}
+                      key={course.courseId}
                       value={course.courseName + " " + course.courseTitle}
                       onSelect={() => handleSelect(course)}
                     >
@@ -211,7 +211,7 @@ export default function AttendanceDashboard() {
             <div className="space-y-2">
               {selectedCourses.map((course) => (
                 <motion.div
-                  key={course._id}
+                  key={course.courseId}
                   className="flex items-center justify-between p-3 border rounded-md bg-accent shadow-sm"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
