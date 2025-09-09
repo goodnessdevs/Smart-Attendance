@@ -34,8 +34,7 @@ import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
 import LecturerRouteProtection from "./pages/lecturer-pages/LecturerRouteProtection";
 import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
 import CourseRegistration from "./pages/student-pages/CourseRegistration";
-import StudentsPage from "./pages/lecturer-pages/AttendancePage";
-import CourseStudentsPage from "./pages/lecturer-pages/CourseAttendance";
+import LecturerCourseRegistration from "./pages/lecturer-pages/LecturerCourseRegistration";
 
 function App() {
   return (
@@ -128,7 +127,7 @@ function App() {
           path="/lecturer"
           element={
             // <LecturerRouteProtection>
-              <AttendanceDashboard />
+            <AttendanceDashboard />
             // </LecturerRouteProtection>
           }
         />
@@ -140,8 +139,14 @@ function App() {
             </LecturerRouteProtection>
           }
         />
-        <Route path="/lecturer/students" element={<StudentsPage />} />
-        <Route path="/lecturer/students/:courseId" element={<CourseStudentsPage />} />
+        <Route
+          path="/lecturer/register-courses"
+          element={
+            <LecturerRouteProtection>
+              <LecturerCourseRegistration />
+            </LecturerRouteProtection>
+          }
+        />
         <Route
           path="/lecturer/calendar"
           element={
@@ -190,7 +195,7 @@ function App() {
           path="/admin"
           element={
             // <AdminRouteProtection>
-              <AdminDashboard />
+            <AdminDashboard />
             // </AdminRouteProtection>
           }
         />

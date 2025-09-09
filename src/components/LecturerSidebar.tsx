@@ -8,6 +8,8 @@ import {
   CheckIcon,
   LogIn,
   Loader2,
+  EditIcon,
+  Edit3,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -32,6 +34,16 @@ const items = [
     title: "Dashboard",
     href: "/lecturer",
     icon: LayoutDashboardIcon,
+  },
+  {
+    title: "Register Courses",
+    href: "/lecturer/register-courses",
+    icon: EditIcon,
+  },
+  {
+    title: "Publish Attendance",
+    href: "/lecturer/publish-attendance",
+    icon: Edit3,
   },
   {
     title: "Attendance",
