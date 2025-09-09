@@ -44,7 +44,7 @@ export default function AttendanceDashboard() {
       setLoadingCourses(true);
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/courses`,
+          `${import.meta.env.VITE_BACKEND_URL}/courses`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
