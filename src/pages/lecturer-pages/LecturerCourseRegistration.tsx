@@ -9,6 +9,7 @@ import {
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "../../components/ui/input";
+import { useAuthContext } from "../../hooks/use-auth";
 
 interface Course {
   _id: string;
@@ -27,10 +28,10 @@ const LecturerCourseRegistration = () => {
   const [loading, setLoading] = useState(true);
   const [selecting, setSelecting] = useState<string | null>(null); // track course being selected
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const { token } = useAuthContext();
 
   // Fetch all courses
   useEffect(() => {
-    const token = localStorage.getItem("jwt_token");
     const fetchCourses = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/courses`, {
@@ -49,11 +50,10 @@ const LecturerCourseRegistration = () => {
       }
     };
     fetchCourses();
-  }, []);
+  }, [token]);
 
   // Lecturer selects a course
   const handleSelect = async (courseId: string) => {
-    const token = localStorage.getItem("jwt_token");
     setSelecting(courseId);
 
     try {

@@ -105,7 +105,7 @@ export function LecturerSidebar() {
           </SidebarGroupLabel>
           <Separator className="mb-4" />
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-6 font-semibold text-sidebar-accent">
+            <SidebarMenu className="space-y-4 font-semibold text-sidebar-accent">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>

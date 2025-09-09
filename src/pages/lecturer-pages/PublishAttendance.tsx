@@ -8,6 +8,7 @@ import {
 } from "../../components/ui/card";
 import { Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { useAuthContext } from "../../hooks/use-auth";
 
 interface Course {
   _id: string;
@@ -15,6 +16,8 @@ interface Course {
   courseId: string;
   courseTitle: string;
   venueName: string;
+  lat: number;
+  long: number;
   courseDays: string[];
   lecturers: string[];
   unit: string;
@@ -24,14 +27,14 @@ const LecturerPublishCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState<string | null>(null);
+  const { token } = useAuthContext();
 
   // Fetch courses registered by the lecturer
   useEffect(() => {
-    const token = localStorage.getItem("jwt_token");
     const fetchCourses = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/lecturer-course`,
+          `${import.meta.env.VITE_BACKEND_URL}/lecturer-courses`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -49,11 +52,10 @@ const LecturerPublishCourses = () => {
       }
     };
     fetchCourses();
-  }, []);
+  }, [token]);
 
   // Publish a course for attendance
   const handlePublish = async (course: Course) => {
-    const token = localStorage.getItem("jwt_token");
     setPublishing(course.courseId);
 
     try {
@@ -71,6 +73,8 @@ const LecturerPublishCourses = () => {
             courseId: course.courseId,
             courseDays: course.courseDays,
             venueName: course.venueName,
+            lat: course.lat,
+            long: course.long,
             lecturers: course.lecturers,
             isActive: true,
           }),
@@ -131,9 +135,7 @@ const LecturerPublishCourses = () => {
                   ) : (
                     <Upload className="h-3 w-3 mr-1" />
                   )}
-                  {publishing === course.courseId
-                    ? "Publishing..."
-                    : "Publish"}
+                  {publishing === course.courseId ? "Publishing..." : "Publish"}
                 </Button>
               </CardContent>
             </Card>
