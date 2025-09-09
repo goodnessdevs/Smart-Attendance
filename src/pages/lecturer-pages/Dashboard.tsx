@@ -446,7 +446,7 @@ export default function AttendanceDashboard() {
         {/* Total Students Card */}
         <Card
           className="cursor-pointer hover:shadow-md transition"
-          onClick={() => navigate("/students")}
+          onClick={() => navigate("/lecturer/students")}
         >
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Total Students</CardTitle>

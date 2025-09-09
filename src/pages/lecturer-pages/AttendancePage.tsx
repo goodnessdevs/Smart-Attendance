@@ -35,7 +35,7 @@ export default function StudentsPage() {
                   <TableCell>
                     <Button
                       variant="outline"
-                      onClick={() => navigate(`/students/${course.courseId}`)}
+                      onClick={() => navigate(`/lecturer/students/${course.courseId}`)}
                     >
                       View Students
                     </Button>
