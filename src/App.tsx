@@ -34,6 +34,8 @@ import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
 import LecturerRouteProtection from "./pages/lecturer-pages/LecturerRouteProtection";
 import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
 import CourseRegistration from "./pages/student-pages/CourseRegistration";
+import StudentsPage from "./pages/lecturer-pages/AttendancePage";
+import CourseStudentsPage from "./pages/lecturer-pages/CourseAttendance";
 
 function App() {
   return (
@@ -138,6 +140,8 @@ function App() {
             </LecturerRouteProtection>
           }
         />
+        <Route path="/students" element={<StudentsPage />} />
+        <Route path="/students/:courseId" element={<CourseStudentsPage />} />
         <Route
           path="/lecturer/calendar"
           element={
