@@ -3,13 +3,54 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
+import { Loader2 } from "lucide-react";
+
+// type Course = {
+//   id: string;
+//   courseName: string;
+//   courseTitle: string;
+//   courseDescription: string;
+//   courseId: string;
+//   lecturers: string[];
+//   unit: string;
+//   venues: string[];
+//   days: string[];
+//   isActive: boolean;
+// };
 
 function CheckAttendance() {
   const { courseId } = useParams<{ courseId: string }>();
   const { token, user } = useAuthContext();
 
+  // const [course, setCourse] = useState<Course | null>(null);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Fetch the course details
+  // useEffect(() => {
+  //   const fetchActiveCourses = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         `${import.meta.env.VITE_BACKEND_URL}/active-courses`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       if (!res.ok) throw new Error("Failed to fetch active courses");
+  //       const data = await res.json();
+  //       setCourse(data.courses);
+  //       // console.log(data, data.courses);
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchActiveCourses();
+  // }, [token]);
 
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
@@ -28,7 +69,7 @@ function CheckAttendance() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            courseId,
+            courseId: courseId,
             day: dayName,
             date: today.toLocaleDateString(),
             fullName: user?.fullName,
@@ -54,6 +95,19 @@ function CheckAttendance() {
     }
   };
 
+//   if (loading && !course) {
+//     return (
+//       <p className="text-center flex flex-col">
+//         <Loader2 className="animate-spin w-4 h-4" />
+//         Loading course...
+//       </p>
+//     );
+//   }
+
+//   if (!course) {
+//   return <p className="text-center">No active course found.</p>;
+// }
+
   return (
     <motion.div
       className="max-w-2xl mx-auto px-4 py-8"
@@ -61,23 +115,38 @@ function CheckAttendance() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* <h2 className="text-3xl font-bold mb-2 text-primary">
+        {course?.courseTitle}
+      </h2>
+      <p className="dark:text-gray-400 text-gray-700 text-2xs mb-6 font-semibold">
+        {course?.courseName}
+      </p> */}
+
       <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
         <p>
           <span className="font-medium">CourseId:</span> {courseId}
         </p>
+        {/* <p>
+          <span className="font-medium">Venues:</span>{" "}
+          {course?.venues.join(", ")}
+        </p> */}
         <p>
           <span className="font-medium">Day:</span> {dayName}
         </p>
         <p>
-          <span className="font-medium">Status:</span>{" "}
-          {attendanceMarked ? (
-            <span className="text-green-600 font-bold">Marked</span>
-          ) : (
-            <span className="text-yellow-600">Pending</span>
-          )}
+          <p>
+  <span className="font-medium">Status:</span>{" "}
+  {attendanceMarked ? (
+    <span className="text-green-600 font-bold">Marked</span>
+  ) : course?.isActive ? (
+    <span className="text-yellow-600">Pending</span>
+  ) : (
+    <span className="text-gray-500">Closed</span>
+  )}
+</p>
         </p>
 
-        {!attendanceMarked && (
+        {!attendanceMarked && course?.isActive && (
           <button
             onClick={handleMarkAttendance}
             disabled={loading}

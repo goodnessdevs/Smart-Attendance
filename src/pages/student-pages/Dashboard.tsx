@@ -359,8 +359,8 @@ export default function Dashboard() {
               <div className="grid md:grid-cols-2 gap-4">
                 {activeCourses.map((course) => (
                   <Link
-                    key={course._id}
-                    to={`/course/${course._id}`}
+                    key={course.courseId}
+                    to={`/course/${course.courseId}`}
                     className={`block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 ${
                       course.isActive
                         ? "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20"

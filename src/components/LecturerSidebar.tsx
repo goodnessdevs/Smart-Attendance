@@ -83,7 +83,7 @@ export function LecturerSidebar() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
       logout();
-      navigate("/lecturer/login");
+      navigate("/lecturer");
     } finally {
       setLoading(false);
     }
@@ -137,7 +137,7 @@ export function LecturerSidebar() {
                     className="bg-sidebar-accent text-sidebar"
                     asChild
                   >
-                    <Link to="/login">
+                    <Link to="/lecturer/login">
                       <LogIn />
                       <span>Login</span>
                     </Link>
