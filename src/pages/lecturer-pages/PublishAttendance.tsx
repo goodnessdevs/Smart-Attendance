@@ -45,6 +45,9 @@ const LecturerPublishCourses = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [ending, setEnding] = useState(false);
+  const [publishedCourseId, setPublishedCourseId] = useState<string | null>(
+    null
+  );
   const { token } = useAuthContext();
 
   // Fetch courses registered by the lecturer
@@ -75,6 +78,12 @@ const LecturerPublishCourses = () => {
 
   // Publish a course for attendance
   const handlePublish = async (course: Course) => {
+    // If this course is already published
+    if (publishedCourseId === course.courseId) {
+      toast.info(`${course.courseName} is already published.`);
+      return;
+    }
+
     setPublishing(course.courseId);
 
     try {
@@ -95,10 +104,11 @@ const LecturerPublishCourses = () => {
       if (!res.ok) throw new Error("Failed to publish course");
       const data = await res.json();
       console.log(data);
+      setPublishedCourseId(course.courseId);
       toast.success(`${course.courseName} published successfully!`);
     } catch (error) {
       console.error(error);
-      toast.error(`Error publishing ${course.courseName}`);
+      toast.error(`Error publishing ${course.courseName}. Please try again`);
     } finally {
       setPublishing(null);
     }
@@ -125,10 +135,13 @@ const LecturerPublishCourses = () => {
       const data = await res.json();
       console.log(data);
       toast.success(`${selectedCourse.courseName} attendance ended!`);
+      setPublishedCourseId(null);
       setDialogOpen(false);
     } catch (error) {
       console.error(error);
-      toast.error(`Error ending attendance for ${selectedCourse.courseName}. Please try again`);
+      toast.error(
+        `Error ending attendance for ${selectedCourse.courseName}. Please try again`
+      );
     } finally {
       setEnding(false);
     }
@@ -136,7 +149,7 @@ const LecturerPublishCourses = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between my-3">
         <div>
           <h1 className="text-xl font-bold">Publish Attendance</h1>
           <p className="text-sm text-muted-foreground">
@@ -146,22 +159,26 @@ const LecturerPublishCourses = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" disabled={!publishedCourseId}>
               <MoreVertical className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {courses.map((course) => (
+            {publishedCourseId && (
               <DropdownMenuItem
-                key={course._id}
                 onClick={() => {
-                  setSelectedCourse(course);
-                  setDialogOpen(true);
+                  const course = courses.find(
+                    (c) => c.courseId === publishedCourseId
+                  );
+                  if (course) {
+                    setSelectedCourse(course);
+                    setDialogOpen(true);
+                  }
                 }}
               >
-                End Attendance – {course.courseName}
+                End Attendance Session
               </DropdownMenuItem>
-            ))}
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -193,16 +210,30 @@ const LecturerPublishCourses = () => {
                 </p>
                 <Button
                   size="sm"
-                  className="w-full h-7 text-xs"
-                  disabled={publishing === course.courseId}
+                  className={`w-full h-7 text-xs ${
+                    publishedCourseId === course.courseId
+                      ? "bg-green-600 hover:bg-green-700 text-white"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
+                  disabled={
+                    publishing === course.courseId ||
+                    (publishedCourseId !== null &&
+                      publishedCourseId !== course.courseId)
+                  }
                   onClick={() => handlePublish(course)}
                 >
                   {publishing === course.courseId ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                  ) : publishedCourseId === course.courseId ? (
+                    <Upload className="h-3 w-3 mr-1" />
                   ) : (
                     <Upload className="h-3 w-3 mr-1" />
                   )}
-                  {publishing === course.courseId ? "Publishing..." : "Publish"}
+                  {publishing === course.courseId
+                    ? "Publishing..."
+                    : publishedCourseId === course.courseId
+                    ? "Published"
+                    : "Publish"}
                 </Button>
               </CardContent>
             </Card>
