@@ -21,7 +21,7 @@ import {
   DialogFooter,
 } from "../../components/ui/dialog";
 
-import { Loader2, Upload, MoreVertical } from "lucide-react";
+import { Loader2, Upload, MoreVertical, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
 
@@ -226,7 +226,7 @@ const LecturerPublishCourses = () => {
                   {publishing === course.courseId ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
                   ) : publishedCourseId === course.courseId ? (
-                    <Upload className="h-3 w-3 mr-1" />
+                    <Check className="h-3 w-3 mr-1" />
                   ) : (
                     <Upload className="h-3 w-3 mr-1" />
                   )}
