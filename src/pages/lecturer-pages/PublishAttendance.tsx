@@ -6,7 +6,22 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Loader2, Upload } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "../../components/ui/dialog";
+
+import { Loader2, Upload, MoreVertical } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
 
@@ -27,6 +42,9 @@ const LecturerPublishCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState<string | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [ending, setEnding] = useState(false);
   const { token } = useAuthContext();
 
   // Fetch courses registered by the lecturer
@@ -86,12 +104,67 @@ const LecturerPublishCourses = () => {
     }
   };
 
+  const handleEndAttendance = async () => {
+    if (!selectedCourse) return;
+
+    setEnding(true);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/end-attendance`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ courseId: selectedCourse.courseId }),
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to end attendance");
+      const data = await res.json();
+      console.log(data);
+      toast.success(`${selectedCourse.courseName} attendance ended!`);
+      setDialogOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast.error(`Error ending attendance for ${selectedCourse.courseName}. Please try again`);
+    } finally {
+      setEnding(false);
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-6">
-      <h1 className="text-xl font-bold">Publish Attendance</h1>
-      <p className="text-sm text-muted-foreground">
-        Select from your registered courses to publish attendance.
-      </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">Publish Attendance</h1>
+          <p className="text-sm text-muted-foreground">
+            Select from your registered courses to publish attendance.
+          </p>
+        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoreVertical className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {courses.map((course) => (
+              <DropdownMenuItem
+                key={course._id}
+                onClick={() => {
+                  setSelectedCourse(course);
+                  setDialogOpen(true);
+                }}
+              >
+                End Attendance – {course.courseName}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       {loading ? (
         <div className="flex justify-center py-10">
@@ -106,7 +179,9 @@ const LecturerPublishCourses = () => {
           {courses.map((course) => (
             <Card key={course._id} className="flex flex-col gap-y-0 p-2">
               <CardHeader className="p-2">
-                <CardTitle className="text-sm font-semibold">{course.courseName}</CardTitle>
+                <CardTitle className="text-sm font-semibold">
+                  {course.courseName}
+                </CardTitle>
                 <p className="text-xs text-muted-foreground line-clamp-2">
                   {course.courseTitle}
                 </p>
@@ -134,6 +209,34 @@ const LecturerPublishCourses = () => {
           ))}
         </div>
       )}
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>End Attendance Session</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to end attendance for{" "}
+              <span className="font-semibold">
+                {selectedCourse?.courseName}
+              </span>
+              ?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleEndAttendance}
+              disabled={ending}
+            >
+              {ending && <Loader2 className="h-4 w-4 animate-spin mr-1" />}
+              End Session
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
