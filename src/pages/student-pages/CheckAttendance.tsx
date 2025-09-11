@@ -170,7 +170,7 @@ function CheckAttendance() {
           <button
             onClick={handleMarkAttendance}
             disabled={loading}
-            className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
+            className="mt-4 w-full text-center bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
           >
             {loading ? (<span className="flex items-center gap-x-2"><Loader2 className="animate-spin w-4 h-4" /> Marking...</span>) : "Mark Attendance"}
           </button>
