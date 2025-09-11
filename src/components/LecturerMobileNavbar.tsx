@@ -116,7 +116,7 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[350px] sm:w-[350px] md:hidden bg-card"
+          className="w-[350px] sm:w-[350px] md:hidden bg-black"
         >
           <SheetHeader>
             <SheetTitle className="text-2xl">Menu</SheetTitle>

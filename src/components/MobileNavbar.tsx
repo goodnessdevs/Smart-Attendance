@@ -127,7 +127,7 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[310px] sm:w-[280px] md:hidden bg-card afacad-flux"
+          className="w-[310px] sm:w-[300px] md:hidden bg-zinc-100 dark:bg-black afacad-flux"
         >
           <SheetHeader>
             <SheetTitle className="text-md flex items-center gap-x-2">
@@ -140,7 +140,7 @@ function SheetNavbar() {
                 className="w-12 h-12"
               >
                 <AvatarImage src={user?.profilePic} alt="User Avatar" />
-                <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
+                <AvatarFallback className="bg-accent">{getAvatarFallback()}</AvatarFallback>
               </MotionAvatar>
               <span className="font-semibold">{user?.fullName}</span>
             </SheetTitle>
@@ -154,7 +154,7 @@ function SheetNavbar() {
             {items.map((item, index) => (
               <Link
                 key={index}
-                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#145c4d9f] hover:text-white transition"
+                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] darkhover:bg-[#145c269f] hover:text-white transition"
                 to={item.href}
                 onClick={handleNavClick}
               >

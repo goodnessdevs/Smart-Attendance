@@ -117,7 +117,7 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[310px] sm:w-[280px] md:hidden bg-card afacad-flux"
+          className="w-[310px] sm:w-[310px] md:hidden bg-cyan-900 dark:bg-black afacad-flux"
         >
           <SheetHeader>
             <SheetTitle className="text-md flex items-center gap-x-2">
@@ -132,9 +132,9 @@ function SheetNavbar() {
                 <AvatarImage src={user?.profilePic} alt="User Avatar" />
                 <AvatarFallback>{getAvatarFallback()}</AvatarFallback>
               </MotionAvatar>
-              <span className="font-semibold">{user?.fullName}</span>
+              <span className="font-semibold text-white">{user?.fullName}</span>
             </SheetTitle>
-            <SheetDescription>
+            <SheetDescription className="dark:text-gray-200 text-gray-100">
               Access your courses, mark your attendance, and view notifications.
             </SheetDescription>
             <Separator />
@@ -144,7 +144,7 @@ function SheetNavbar() {
             {items.map((item, index) => (
               <Link
                 key={index}
-                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#145c4d9f] hover:text-white transition"
+                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold text-white dark:text-cyan-600 hover:bg-gray-900 darK:hover:text-cyan-600 transition"
                 to={item.href}
                 onClick={handleNavClick}
               >

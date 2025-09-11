@@ -26,10 +26,11 @@ export default function SignedOutAdminDashboard() {
           transition={{ duration: 0.8 }}
           className="text-6xl font-bold tracking-tight mb-10"
         >
-          Welcome Admin{" "}
-          <span className="text-cyan-700 dark:text-cyan-300">
-            Smart Attendance
+          Welcome{" "}
+          <span className="bg-gradient-to-r from-cyan-500 to-blue-800 dark:from-cyan-300 dark:to-blue-500 bg-clip-text text-transparent">
+            Admin
           </span>
+          <span className="text-cyan-700 dark:text-cyan-300"></span>
         </motion.h1>
 
         <motion.p

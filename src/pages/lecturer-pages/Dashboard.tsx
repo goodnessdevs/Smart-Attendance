@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { motion, type Variants } from "framer-motion";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import SignedOutLecturerDashboard from "./SignedOutLecturer";
@@ -70,7 +70,7 @@ export default function LecturerDashboard() {
         setTotalStudents(total || 0);
       } catch (error) {
         console.error(error);
-        toast.error("Failed to load dashboard statistics");
+        // toast.error("Failed to load dashboard statistics");
       } finally {
         setLoading(false);
       }

@@ -138,7 +138,6 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchActiveCourses = async () => {
       try {
-        const token = localStorage.getItem("jwt_token");
         const res = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/active-courses`,
           {
@@ -150,7 +149,7 @@ export default function Dashboard() {
         if (!res.ok) throw new Error("Failed to fetch active courses");
         const data = await res.json();
         console.log(data, data.courses);
-        setActiveCourses(data.courses); // 🔹 assuming backend returns { courses: [...] }
+        setActiveCourses(data.courses);
       } catch (error) {
         console.error(error);
       } finally {
@@ -159,7 +158,7 @@ export default function Dashboard() {
     };
 
     fetchActiveCourses();
-  }, []);
+  }, [token]);
 
   // --- Persist states with localStorage ---
   const [locationGranted, setLocationGranted] = useState<boolean>(
