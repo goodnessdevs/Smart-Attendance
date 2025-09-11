@@ -149,9 +149,9 @@ const LecturerPublishCourses = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-6">
-      <div className="flex items-center justify-between my-3">
+      <div className="flex items-center justify-between my-5">
         <div>
-          <h1 className="text-xl font-bold">Publish Attendance</h1>
+          <h1 className="text-2xl font-bold">Publish Attendance</h1>
           <p className="text-sm text-muted-foreground">
             Select from your registered courses to publish attendance.
           </p>
@@ -159,13 +159,14 @@ const LecturerPublishCourses = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" disabled={!publishedCourseId}>
-              <MoreVertical className="h-5 w-5" />
+            <Button variant="outline" size="icon" disabled={!publishedCourseId}>
+              <MoreVertical className="h-6 w-6" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {publishedCourseId && (
               <DropdownMenuItem
+              className="text-foreground hover:bg-ring"
                 onClick={() => {
                   const course = courses.find(
                     (c) => c.courseId === publishedCourseId

@@ -46,9 +46,9 @@ export default function LecturerDashboard() {
     );
   }
 
-  // if (!token) {
-  //   return <SignedOutLecturerDashboard />;
-  // }
+  if (!token) {
+    return <SignedOutLecturerDashboard />;
+  }
 
   return (
     <motion.div
