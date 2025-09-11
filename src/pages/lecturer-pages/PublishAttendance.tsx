@@ -44,7 +44,7 @@ const LecturerPublishCourses = () => {
         if (!res.ok) throw new Error("Failed to fetch lecturer courses");
         const data = await res.json();
         setCourses(data || []);
-        console.log(data)
+        console.log(data);
       } catch (error) {
         console.error(error);
         toast.error("Error fetching lecturer courses");
@@ -69,15 +69,7 @@ const LecturerPublishCourses = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            // courseName: course.courseName,
-            // courseTitle: course.courseTitle,
             courseId: course.courseId,
-            // courseDays: course.courseDays,
-            // venueName: course.venueName,
-            // lat: course.lat,
-            // long: course.long,
-            // lecturers: course.lecturers,
-            // isActive: true,
           }),
         }
       );
@@ -95,9 +87,9 @@ const LecturerPublishCourses = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Publish Attendance</h1>
-      <p className="text-muted-foreground">
+    <div className="max-w-5xl mx-auto p-4 space-y-6">
+      <h1 className="text-xl font-bold">Publish Attendance</h1>
+      <p className="text-sm text-muted-foreground">
         Select from your registered courses to publish attendance.
       </p>
 
@@ -110,24 +102,23 @@ const LecturerPublishCourses = () => {
           You haven’t registered for any courses yet.
         </p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
           {courses.map((course) => (
             <Card key={course._id} className="flex flex-col gap-y-0 p-2">
               <CardHeader className="p-2">
-                <CardTitle className="text-base">{course.courseName}</CardTitle>
-                <p className="text-xs text-muted-foreground">
+                <CardTitle className="text-sm font-semibold">{course.courseName}</CardTitle>
+                <p className="text-xs text-muted-foreground line-clamp-2">
                   {course.courseTitle}
                 </p>
               </CardHeader>
               <CardContent className="space-y-2 p-2">
-                <p className="text-xs">{course.courseId}</p>
                 <p className="text-xs">{course.venueName}</p>
                 <p className="text-xs text-muted-foreground">
                   Units: {course.unit}
                 </p>
                 <Button
                   size="sm"
-                  className="w-full h-8 text-sm"
+                  className="w-full h-7 text-xs"
                   disabled={publishing === course.courseId}
                   onClick={() => handlePublish(course)}
                 >
