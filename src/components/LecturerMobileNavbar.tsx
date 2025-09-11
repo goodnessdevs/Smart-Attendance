@@ -36,7 +36,7 @@ const items = [
     href: "/lecturer",
     icon: LayoutDashboardIcon,
   },
-    {
+  {
     title: "Register Courses",
     href: "/lecturer/register-courses",
     icon: BookOpenCheck,
@@ -116,7 +116,7 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[350px] sm:w-[350px] md:hidden bg-black"
+          className="w-[350px] sm:w-[310px] md:hidden bg-black"
         >
           <SheetHeader>
             <SheetTitle className="text-2xl">Menu</SheetTitle>
