@@ -129,12 +129,12 @@ function CheckAttendance() {
       confetti();
       toast.success("🎉 Attendance marked successfully!");
     } catch (error) {
-      toast.error("Location access is required to mark attendance");
-      setLoading(false);
-      return;
-      // toast.error(
-      //   error instanceof Error ? error.message : "Something went wrong"
-      // );
+      // toast.error("Location access is required to mark attendance");
+      // setLoading(false);
+      // return;
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }
@@ -172,7 +172,7 @@ function CheckAttendance() {
             disabled={loading}
             className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
           >
-            {loading ? (<><Loader2 className="animate-spin w-4 h-4" /> Marking...</>) : "Mark Attendance"}
+            {loading ? (<span className="flex items-center gap-x-2"><Loader2 className="animate-spin w-4 h-4" /> Marking...</span>) : "Mark Attendance"}
           </button>
         )}
 
