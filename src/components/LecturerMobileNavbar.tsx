@@ -28,6 +28,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 import { Separator } from "./ui/separator";
 import { useAuthContext } from "../hooks/use-auth";
+import { motion } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 // Menu items.
 const items = [
@@ -75,7 +77,7 @@ const items = [
 
 function SheetNavbar() {
   const [open, setOpen] = React.useState(false);
-  const { logout, token } = useAuthContext();
+  const { logout, token, user } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -104,6 +106,17 @@ function SheetNavbar() {
     return () => media.removeEventListener("change", handler);
   }, []);
 
+  const getAvatarFallback = () => {
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
+    return names
+      .map((n) => n[0]?.toUpperCase())
+      .slice(0, 2)
+      .join(" ");
+  };
+
+  const MotionAvatar = motion.create(Avatar);
+
   return (
     <div>
       {/* Trigger Button */}
@@ -116,10 +129,25 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[350px] sm:w-[310px] md:hidden bg-black"
+          className="w-[35=10px] sm:w-[300px] md:hidden bg-black"
         >
           <SheetHeader>
-            <SheetTitle className="text-2xl">Menu</SheetTitle>
+            <SheetTitle className="text-2xl">
+              <MotionAvatar
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.25 }}
+                transition={{
+                  ease: "easeOut",
+                }}
+                className="w-12 h-12"
+              >
+                <AvatarImage src={user?.profilePic} alt="User Avatar" />
+                <AvatarFallback className="bg-accent">
+                  {getAvatarFallback()}
+                </AvatarFallback>
+              </MotionAvatar>
+              <span className="font-semibold">{user?.fullName}</span>
+            </SheetTitle>
             <SheetDescription>
               Access your students attendance list, check the session
               attendance, and view notifications.
@@ -139,32 +167,32 @@ function SheetNavbar() {
                 {item.title}
               </Link>
             ))}
-          </nav>
 
-          <>
-            {token ? (
-              <Button onClick={handleLogout} disabled={loading} asChild>
-                {loading ? (
-                  <div className="flex items-center gap-x-2">
-                    <Loader2 className="animate-spin w-4 h-4" />
-                    <span>Logging out...</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-x-2">
-                    <LogOut className="w-4 h-4" />
-                    <span>Log out</span>
-                  </div>
-                )}
-              </Button>
-            ) : (
-              <Button asChild>
-                <Link to="/login">
-                  <LogIn />
-                  <span>Login</span>
-                </Link>
-              </Button>
-            )}
-          </>
+            <>
+              {token ? (
+                <Button onClick={handleLogout} disabled={loading} asChild>
+                  {loading ? (
+                    <div className="flex items-center gap-x-2">
+                      <Loader2 className="animate-spin w-4 h-4" />
+                      <span>Logging out...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-x-2">
+                      <LogOut className="w-4 h-4" />
+                      <span>Log out</span>
+                    </div>
+                  )}
+                </Button>
+              ) : (
+                <Button asChild>
+                  <Link to="/login">
+                    <LogIn />
+                    <span>Login</span>
+                  </Link>
+                </Button>
+              )}
+            </>
+          </nav>
 
           <div className="mx-4 mt-2">
             <ModeToggle />
