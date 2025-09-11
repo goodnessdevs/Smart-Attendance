@@ -78,7 +78,7 @@ export function AdminSidebar() {
   };
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="bg-cyan-700 dark:bg-zinc-900 flex flex-col h-full justify-between">
+      <SidebarContent className="bg-cyan-700 dark:bg-zinc-900 afacad-flux flex flex-col h-full justify-between">
         <SidebarGroup>
           <SidebarGroupLabel className="my-2 text-2xs flex gap-x-2 items-center text-white tracking-wider">
             <div className="w-10">
