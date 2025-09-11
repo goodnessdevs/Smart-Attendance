@@ -1,8 +1,22 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
+import { GeolocationService } from "../../lib/geolocation";
+import confetti from "canvas-confetti";
+import { getDeviceInfo } from "../../utils/deviceUtils";
+import { Loader2 } from "lucide-react";
+
+type ActiveCourse = {
+  courseTitle: string;
+  courseName: string;
+  courseId: string;
+  venueName: string;
+  lat: number;
+  long: number;
+  isActive: boolean;
+};
 
 function CheckAttendance() {
   const { courseId } = useParams<{ courseId: string }>();
@@ -10,15 +24,83 @@ function CheckAttendance() {
 
   const [attendanceMarked, setAttendanceMarked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [courseVenue, setCourseVenue] = useState<ActiveCourse | null>(null);
 
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
 
+  // ✅ Fetch venue details for this course
+  useEffect(() => {
+    const fetchVenue = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/active-courses`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!res.ok) throw new Error("Failed to fetch course venues");
+
+        const data = await res.json();
+        const course = data.courses.find(
+          (c: ActiveCourse) => c.courseId === courseId
+        );
+
+        if (course) {
+          setCourseVenue(course);
+        }
+      } catch (error) {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Unable to load venue details"
+        );
+      }
+    };
+
+    fetchVenue();
+  }, [courseId, token]);
+
   // Mark attendance handler
   const handleMarkAttendance = async () => {
+    if (!courseVenue) {
+      toast.error("Venue not loaded yet");
+      return;
+    }
+
     setLoading(true);
 
     try {
+      // --- Check geolocation ---
+      const pos = await GeolocationService.getCurrentPosition();
+      const { isWithin, distance } = GeolocationService.isWithinRadius(
+        pos.coords.latitude,
+        pos.coords.longitude,
+        courseVenue.lat,
+        courseVenue.long,
+        30 // 30m radius check
+      );
+
+      if (!isWithin) {
+        toast.error(
+          `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
+        );
+        setLoading(false);
+        return;
+      }
+
+      // --- Check device identity ---
+      const { device_uuid, fingerprint } = await getDeviceInfo();
+
+      if (
+        user?.device_uuid !== device_uuid || // 👈 replace with value from backend
+        user?.fingerprint !== fingerprint
+      ) {
+        toast.error("Device authentication failed.");
+        setLoading(false);
+        return;
+      }
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/mark-attendance`,
         {
@@ -44,11 +126,15 @@ function CheckAttendance() {
       }
 
       setAttendanceMarked(true);
+      confetti();
       toast.success("🎉 Attendance marked successfully!");
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
-      );
+      toast.error("Location access is required to mark attendance");
+      setLoading(false);
+      return;
+      // toast.error(
+      //   error instanceof Error ? error.message : "Something went wrong"
+      // );
     } finally {
       setLoading(false);
     }
@@ -63,7 +149,10 @@ function CheckAttendance() {
     >
       <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
         <p>
-          <span className="font-medium">CourseId:</span> {courseId}
+          <span className="font-medium">Course Title:</span> {courseVenue?.courseTitle}
+        </p>
+        <p>
+          <span className="font-medium">Course Code:</span> {courseVenue?.courseName}
         </p>
         <p>
           <span className="font-medium">Day:</span> {dayName}
@@ -83,7 +172,7 @@ function CheckAttendance() {
             disabled={loading}
             className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
           >
-            {loading ? "Marking..." : "Mark Attendance"}
+            {loading ? (<><Loader2 className="animate-spin w-4 h-4" /> Marking...</>) : "Mark Attendance"}
           </button>
         )}
 

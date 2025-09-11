@@ -7,8 +7,8 @@ import {
   type State,
   type User,
 } from "./AuthContext";
-import { clearDeviceData, getOrCreateFingerprint } from "../utils/indexedDB";
 import { Loader2 } from "lucide-react";
+import { getOrCreateFingerprint } from "../utils/indexedDB";
 import { getOrCreateUUID } from "../utils/browserfingerprint";
 
 const authReducer = (state: State, action: Action): State => {
@@ -102,7 +102,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         if (!isCancelled) {
           localStorage.removeItem("jwt_token");
-          await clearDeviceData();
           dispatch({ type: "LOGOUT" });
         }
       } finally {

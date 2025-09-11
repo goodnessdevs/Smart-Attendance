@@ -25,11 +25,8 @@ import { motion } from "framer-motion";
 import { colleges } from "../../components/CollegeData";
 import { Loader2 } from "lucide-react";
 import { useAuthContext } from "../../hooks/use-auth"; // ✅ Use the hook consistently
-import {
-  getOrCreateUUID,
-  getBrowserFingerprint,
-} from "../../utils/browserfingerprint";
 import confetti from "canvas-confetti";
+import { getDeviceInfo } from "../../utils/deviceUtils";
 
 const MotionCard = motion.create(Card);
 
@@ -55,8 +52,7 @@ function Onboarding() {
   useEffect(() => {
     async function initDevice() {
       try {
-        const device_uuid = await getOrCreateUUID();
-        const fingerprint = getBrowserFingerprint();
+        const { device_uuid, fingerprint } = await getDeviceInfo();
 
         setFormData((prev) => ({
           ...prev,
@@ -72,7 +68,9 @@ function Onboarding() {
     initDevice();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -80,8 +78,13 @@ function Onboarding() {
     e.preventDefault();
 
     // ✅ Validate required fields
-    if (!formData.matricNumber || !formData.college || !formData.department || 
-        !formData.level || !formData.phoneNumber) {
+    if (
+      !formData.matricNumber ||
+      !formData.college ||
+      !formData.department ||
+      !formData.level ||
+      !formData.phoneNumber
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -135,10 +138,10 @@ function Onboarding() {
 
           if (userResponse.ok) {
             const userData = await userResponse.json();
-            
+
             // ✅ Update AuthContext with complete user data
             login(userData, token);
-            
+
             // Navigate to main dashboard
             navigate("/");
           } else {
@@ -151,7 +154,6 @@ function Onboarding() {
           // Still navigate, the context initialization will handle it
           navigate("/");
         }
-
       } else {
         toast.error(data.message || "Registration Failed");
         console.error("Onboarding failed:", data);
@@ -326,7 +328,9 @@ function Onboarding() {
             <Button
               type="submit"
               className="w-full text-white bg-black hover:bg-gray-800"
-              disabled={loading || !formData.device_uuid || !formData.fingerprint}
+              disabled={
+                loading || !formData.device_uuid || !formData.fingerprint
+              }
             >
               {loading ? (
                 <>

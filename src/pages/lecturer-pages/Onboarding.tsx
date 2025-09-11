@@ -39,7 +39,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
-import { getBrowserFingerprint, getOrCreateUUID } from "../../utils/browserfingerprint";
+import { getDeviceInfo } from "../../utils/deviceUtils";
 
 const MotionCard = motion.create(Card);
 
@@ -102,8 +102,7 @@ function LecturerOnboarding() {
     useEffect(() => {
       async function initDevice() {
         try {
-          const device_uuid = await getOrCreateUUID();
-          const fingerprint = getBrowserFingerprint();
+          const { device_uuid, fingerprint } = await getDeviceInfo();
   
           setFormData((prev) => ({
             ...prev,

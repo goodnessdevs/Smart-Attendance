@@ -16,6 +16,8 @@ export type User = {
   college: string;
   googleId: string;
   phoneNumber: string;
+  device_uuid: string;
+  fingerprint: string;
 };
 
 export type State = {

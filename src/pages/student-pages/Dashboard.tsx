@@ -1,24 +1,11 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "../../components/ui/card";
 import { useState, useEffect } from "react";
-import { Loader2, MapPin } from "lucide-react";
-import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+// import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
 import SignedOutDashboard from "./SignedOutDashboard";
-
-// --- Venue type ---
-type Venue = {
-  id: string;
-  name: string;
-  lat: number;
-  lng: number;
-  radius: number;
-  building?: string;
-  floor?: string;
-  capacity?: number;
-  isActive: boolean;
-};
 
 // --- Course type ---
 type Course = {
@@ -27,107 +14,11 @@ type Course = {
   courseTitle: string;
   courseId: string;
   courseDescription: string;
+  venueName: string;
+  lat: number;
+  long: number;
   isActive: boolean;
 };
-
-// --- Mock venues ---
-const availableVenues: Venue[] = [
-  {
-    id: "lh-a",
-    name: "Lecture Hall A",
-    lat: 7.2162,
-    lng: 3.4531,
-    radius: 25,
-    building: "Academic Block",
-    floor: "Ground Floor",
-    capacity: 200,
-    isActive: true,
-  },
-  {
-    id: "main-aud",
-    name: "Main Auditorium",
-    lat: 7.2185,
-    lng: 3.4542,
-    radius: 30,
-    building: "Main Building",
-    floor: "First Floor",
-    capacity: 500,
-    isActive: true,
-  },
-  {
-    id: "sci-301",
-    name: "Science Block 301",
-    lat: 7.2158,
-    lng: 3.4529,
-    radius: 20,
-    building: "Science Block",
-    floor: "Third Floor",
-    capacity: 50,
-    isActive: true,
-  },
-  {
-    id: "eng-lh",
-    name: "Engineering Lecture Hall",
-    lat: 7.2177,
-    lng: 3.455,
-    radius: 35,
-    building: "Engineering Block",
-    floor: "Second Floor",
-    capacity: 150,
-    isActive: true,
-  },
-];
-
-// --- Geolocation utility service ---
-class GeolocationService {
-  private static readonly EARTH_RADIUS_METERS = 6371000;
-
-  static calculateDistance(
-    lat1: number,
-    lng1: number,
-    lat2: number,
-    lng2: number
-  ): number {
-    const toRadians = (degrees: number) => degrees * (Math.PI / 180);
-    const dLat = toRadians(lat2 - lat1);
-    const dLng = toRadians(lng2 - lng1);
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLng / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return this.EARTH_RADIUS_METERS * c;
-  }
-
-  static getCurrentPosition(
-    options?: PositionOptions
-  ): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) {
-        reject(new Error("Geolocation is not supported by this browser."));
-        return;
-      }
-      const defaultOptions: PositionOptions = {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 60000,
-        ...options,
-      };
-      navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
-    });
-  }
-
-  static isWithinVenue(userLat: number, userLng: number, venue: Venue) {
-    const distance = this.calculateDistance(
-      userLat,
-      userLng,
-      venue.lat,
-      venue.lng
-    );
-    return { isWithin: distance <= venue.radius, distance };
-  }
-}
 
 export default function Dashboard() {
   const { token, user, isInitializing } = useAuthContext();
@@ -160,80 +51,60 @@ export default function Dashboard() {
     fetchActiveCourses();
   }, [token]);
 
-  // --- Persist states with localStorage ---
-  const [locationGranted, setLocationGranted] = useState<boolean>(
-    () => localStorage.getItem("locationGranted") === "true"
-  );
-  const [userLocation, setUserLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(() => {
-    const saved = localStorage.getItem("userLocation");
-    return saved ? JSON.parse(saved) : null;
-  });
-  const [locationStatus, setLocationStatus] = useState<
-    "idle" | "loading" | "granted" | "denied"
-  >(locationGranted ? "granted" : "idle");
-  const [nearbyVenues, setNearbyVenues] = useState<
-    Array<Venue & { distance: number; isWithin: boolean }>
-  >([]);
+  // // --- Persist states with localStorage ---
+  // const [locationGranted, setLocationGranted] = useState<boolean>(
+  //   () => localStorage.getItem("locationGranted") === "true"
+  // );
+  // const [userLocation, setUserLocation] = useState<{
+  //   lat: number;
+  //   lng: number;
+  // } | null>(() => {
+  //   const saved = localStorage.getItem("userLocation");
+  //   return saved ? JSON.parse(saved) : null;
+  // });
+  // const [locationStatus, setLocationStatus] = useState<
+  //   "idle" | "loading" | "granted" | "denied"
+  // >(locationGranted ? "granted" : "idle");
+  // const [nearbyVenues, setNearbyVenues] = useState<
+  //   Array<Venue & { distance: number; isWithin: boolean }>
+  // >([]);
 
-  useEffect(() => {
-    localStorage.setItem("locationGranted", String(locationGranted));
-  }, [locationGranted]);
+  // useEffect(() => {
+  //   localStorage.setItem("locationGranted", String(locationGranted));
+  // }, [locationGranted]);
 
-  useEffect(() => {
-    if (userLocation) {
-      localStorage.setItem("userLocation", JSON.stringify(userLocation));
-    }
-  }, [userLocation]);
+  // useEffect(() => {
+  //   if (userLocation) {
+  //     localStorage.setItem("userLocation", JSON.stringify(userLocation));
+  //   }
+  // }, [userLocation]);
 
-  useEffect(() => {
-    if (userLocation) {
-      const venuesWithDistance = availableVenues.map((venue) => {
-        const result = GeolocationService.isWithinVenue(
-          userLocation.lat,
-          userLocation.lng,
-          venue
-        );
-        return {
-          ...venue,
-          distance: result.distance,
-          isWithin: result.isWithin,
-        };
-      });
-      setNearbyVenues(
-        venuesWithDistance.sort((a, b) => a.distance - b.distance)
-      );
-    }
-  }, [userLocation]);
-
-  const handleGrantLocation = async () => {
-    setLocationStatus("loading");
-    try {
-      const position = await GeolocationService.getCurrentPosition();
-      const location = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-      setUserLocation(location);
-      setLocationGranted(true);
-      setLocationStatus("granted");
-      toast.success(
-        `Location verified! (±${Math.round(
-          position.coords.accuracy
-        )}m accuracy)`
-      );
-    } catch (error: unknown) {
-      setLocationStatus("denied");
-      setLocationGranted(false);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Unable to retrieve your location."
-      );
-    }
-  };
+  // const handleGrantLocation = async () => {
+  //   setLocationStatus("loading");
+  //   try {
+  //     const position = await GeolocationService.getCurrentPosition();
+  //     const location = {
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude,
+  //     };
+  //     setUserLocation(location);
+  //     setLocationGranted(true);
+  //     setLocationStatus("granted");
+  //     toast.success(
+  //       `Location verified! (±${Math.round(
+  //         position.coords.accuracy
+  //       )}m accuracy)`
+  //     );
+  //   } catch (error: unknown) {
+  //     setLocationStatus("denied");
+  //     setLocationGranted(false);
+  //     toast.error(
+  //       error instanceof Error
+  //         ? error.message
+  //         : "Unable to retrieve your location."
+  //     );
+  //   }
+  // };
 
   // --- Auth loading ---
   if (isInitializing) {
@@ -267,7 +138,7 @@ export default function Dashboard() {
       </div>
 
       {/* Location Section */}
-      <Card className="mb-10 shadow-lg border-cyan-100 dark:border-cyan-900">
+      {/* <Card className="mb-10 shadow-lg border-cyan-100 dark:border-cyan-900">
         <CardContent className="p-6 space-y-4">
           <div className="flex justify-between items-center">
             <div>
@@ -335,7 +206,7 @@ export default function Dashboard() {
             </div>
           )}
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Courses Section */}
       <motion.div

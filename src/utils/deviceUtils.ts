@@ -18,12 +18,3 @@ export async function getDeviceInfo(): Promise<DeviceInfo> {
     fingerprint,
   };
 }
-
-// Helper function to add device info to any request body
-export async function addDeviceInfoToBody<T extends object>(body: T): Promise<T & DeviceInfo> {
-  const deviceInfo = await getDeviceInfo();
-  return {
-    ...body,
-    ...deviceInfo,
-  };
-}
