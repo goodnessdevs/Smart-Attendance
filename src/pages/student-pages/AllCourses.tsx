@@ -57,16 +57,16 @@ const AllCourses = () => {
       {courses.length === 0 ? (
         <p>No courses available.</p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
           {courses.map((course) => (
             <div
               key={course._id}
-              className="p-4 rounded-xl shadow-md border hover:shadow-lg transition"
+              className="p-4 rounded-xl shadow-md border-2 border-green-500 dark:border-cyan-500 hover:shadow-lg transition"
             >
               <h3 className="text-xl font-semibold mb-2">
                 {course.courseTitle}
               </h3>
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="text-sm text-primary mb-2">
                 {course.courseDescription}
               </p>
               <p className="text-sm font-medium">

@@ -108,7 +108,7 @@ const CourseRegistration = () => {
           <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
           {filteredCourse.map((course) => (
             <Card key={course._id} className="flex flex-col gap-y-0 p-2">
               <CardHeader className="p-2">
