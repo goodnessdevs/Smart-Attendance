@@ -42,6 +42,7 @@ const LecturerCourseRegistration = () => {
         });
         if (!res.ok) throw new Error("Failed to fetch courses");
         const data = await res.json();
+        console.log("Courses from backend:", data.courses);
         setCourses(data.courses);
       } catch (error) {
         console.error(error);
