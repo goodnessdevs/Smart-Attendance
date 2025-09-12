@@ -71,7 +71,7 @@ const LecturerCourseRegistration = () => {
 
       if (!res.ok) throw new Error("Failed to select course");
       const data = await res.json();
-      console.log(data);
+      console.log("from lecturer registration", data);
       toast.success("Course selected successfully!");
     } catch (error) {
       console.error(error);

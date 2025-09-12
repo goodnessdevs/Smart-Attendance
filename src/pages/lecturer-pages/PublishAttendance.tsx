@@ -106,18 +106,13 @@ const LecturerPublishCourses = () => {
       );
 
       if (!res.ok) throw new Error("Failed to publish course");
-      setCourses((prev) => {
-        const updated = prev.map((c) =>
-          c.courseId === course.courseId
-            ? { ...c, isActive: true }
-            : { ...c, isActive: false }
-        );
+      setPublishedCourseId(course.courseId);
 
-        return updated.sort((a, b) => {
-          if (a.isActive && !b.isActive) return -1;
-          if (!a.isActive && b.isActive) return 1;
-          return 0;
-        });
+      // Move published course to the top of the list for better UX
+      setCourses((prev) => {
+        const published = prev.find((c) => c.courseId === course.courseId);
+        const others = prev.filter((c) => c.courseId !== course.courseId);
+        return published ? [published, ...others] : prev;
       });
       setPublishedCourseId(course.courseId);
       toast.success(`${course.courseName} published successfully!`);
