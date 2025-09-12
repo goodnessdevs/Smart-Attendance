@@ -52,8 +52,8 @@ const AllCourses = () => {
   if (error) return <p className="p-4 text-red-600">{error}</p>;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">All Courses</h2>
+    <div className="p-10">
+      <h2 className="text-2xl font-bold mb-6 text-center">All Courses</h2>
       {courses.length === 0 ? (
         <p>No courses available.</p>
       ) : (
@@ -61,7 +61,7 @@ const AllCourses = () => {
           {courses.map((course) => (
             <div
               key={course._id}
-              className="p-4 rounded-xl shadow-md border-2 border-green-500 dark:border-cyan-500 hover:shadow-lg transition"
+              className="p-2.5 rounded-xl shadow-md border-2 border-green-500 dark:border-cyan-500 hover:shadow-lg transition"
             >
               <h3 className="text-xl font-semibold mb-2">
                 {course.courseTitle}
