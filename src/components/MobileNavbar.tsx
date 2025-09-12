@@ -43,7 +43,7 @@ const items = [
     icon: BookOpenCheck,
   },
   {
-    title: "All Courses",
+    title: "My Courses",
     href: "/all-courses",
     icon: BookOpen,
   },
