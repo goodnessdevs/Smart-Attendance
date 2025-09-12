@@ -56,14 +56,14 @@ const LecturerCourseRegistration = () => {
 
   // Lecturer selects a course
   const handleSelect = async (courseId: string) => {
-    // find the course in state
-    const course = courses.find((c) => c.courseId === courseId);
+    // // find the course in state
+    // const course = courses.find((c) => c.courseId === courseId);
 
-    // prevent selecting if it's already active
-    if (course?.isActive) {
-      toast.error(`${course.courseName} is already active for attendance.`);
-      return;
-    }
+    // // prevent selecting if it's already active
+    // if (course?.isActive) {
+    //   toast.error(`${course.courseName} is already active for attendance.`);
+    //   return;
+    // }
 
     setSelecting(courseId);
 
