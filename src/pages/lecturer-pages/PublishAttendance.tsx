@@ -66,10 +66,10 @@ const LecturerPublishCourses = () => {
         if (!res.ok) throw new Error("Failed to fetch lecturer courses");
         const data = await res.json();
         setCourses(data || []);
-        const published = data.find((c: Course) => c.isActive);
-        if (published) {
-          setPublishedCourseId(published.courseId);
-        }
+        // const published = data.find((c: Course) => c.isActive);
+        // if (published) {
+        //   setPublishedCourseId(published.courseId);
+        // }
       } catch (error) {
         console.error(error);
         toast.error("Error fetching lecturer courses");
@@ -178,7 +178,7 @@ const LecturerPublishCourses = () => {
               <MoreVertical className="h-6 w-6" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="p-2">
             {publishedCourseId && (
               <DropdownMenuItem
                 className="text-foreground hover:bg-ring"
@@ -227,7 +227,7 @@ const LecturerPublishCourses = () => {
                 <Button
                   size="sm"
                   className={`w-full h-7 text-xs ${
-                    publishedCourseId === course.courseId && course.isActive
+                    publishedCourseId === course.courseId
                       ? "bg-green-600 hover:bg-green-700 text-white"
                       : "bg-blue-600 hover:bg-blue-700 text-white"
                   }`}
@@ -240,15 +240,14 @@ const LecturerPublishCourses = () => {
                 >
                   {publishing === course.courseId ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                  ) : publishedCourseId === course.courseId &&
-                    course.isActive ? (
+                  ) : publishedCourseId === course.courseId ? (
                     <Check className="h-3 w-3 mr-1" />
                   ) : (
                     <Upload className="h-3 w-3 mr-1" />
                   )}
                   {publishing === course.courseId
                     ? "Publishing..."
-                    : publishedCourseId === course.courseId && course.isActive
+                    : publishedCourseId === course.courseId
                     ? "Published"
                     : "Publish"}
                 </Button>

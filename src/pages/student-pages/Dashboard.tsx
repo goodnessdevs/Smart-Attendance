@@ -249,15 +249,12 @@ export default function Dashboard() {
         {/* Stats Card */}
         <Card className="shadow-lg">
           <CardContent className="p-6 space-y-3">
-            <h3 className="text-xl font-semibold mb-4">📊 Attendance Overview</h3>
-            <p className="text-sm">✅ Total Courses: {totalCourses}</p>
-            <p className="text-sm">🟢 Attendances Marked: {attendancesMarked}</p>
-            <p className="text-sm">🔴 Missed Classes: {missedClasses}</p>
+            <h3 className="text-xl font-semibold mb-4">Attendance Overview</h3>
+            <p className="text-sm">Total Courses: {totalCourses}</p>
+            <p className="text-sm">Attendances Marked: {attendancesMarked}</p>
+            <p className="text-sm">Missed Classes: {missedClasses}</p>
             <p className="text-sm text-muted-foreground">
-              📅 Last attendance:{" "} <span>{new Date().toLocaleDateString()}</span>
-              {/* {lastMarkedAt
-                ? new Date(lastMarkedAt).toLocaleDateString()
-                : "Not available"} */}
+              Last attendance:{" "} <span>{new Date().toLocaleDateString()}</span>
             </p>
           </CardContent>
         </Card>
