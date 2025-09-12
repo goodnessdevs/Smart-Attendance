@@ -7,7 +7,6 @@ import {
   Inbox,
   LogOut,
   Contact,
-  CheckIcon,
   Loader2,
   LogIn,
   BookOpenCheck,
@@ -47,11 +46,6 @@ const items = [
     title: "Publish Attendance",
     href: "/lecturer/publish-attendance",
     icon: Megaphone,
-  },
-  {
-    title: "Attendance",
-    href: "/lecturer/attendance",
-    icon: CheckIcon,
   },
   {
     title: "Inbox",
@@ -129,10 +123,10 @@ function SheetNavbar() {
 
         <SheetContent
           side="left"
-          className="w-[35=10px] sm:w-[300px] md:hidden bg-black"
+          className="w-[310px] sm:w-[300px] md:hidden bg-zinc-100 dark:bg-black afacad-flux"
         >
           <SheetHeader>
-            <SheetTitle className="text-2xl">
+            <SheetTitle className="text-md flex items-center gap-x-2">
               <MotionAvatar
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.25 }}
@@ -155,11 +149,11 @@ function SheetNavbar() {
             <Separator />
           </SheetHeader>
 
-          <nav className="md:hidden flex flex-col mx-4 gap-4">
+          <nav className="md:hidden flex flex-col gap-y-2 mx-4 gap-4">
             {items.map((item, index) => (
               <Link
                 key={index}
-                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#145c4d9f] hover:text-white transition"
+                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] darkhover:bg-[#145c269f] hover:text-white transition"
                 to={item.href}
                 onClick={handleNavClick}
               >

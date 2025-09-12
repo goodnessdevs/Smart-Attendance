@@ -5,7 +5,6 @@ import {
   Inbox,
   LogOut,
   Contact,
-  CheckIcon,
   LogIn,
   Loader2,
   BookOpenCheck,
@@ -44,11 +43,6 @@ const items = [
     title: "Publish Attendance",
     href: "/lecturer/publish-attendance",
     icon: Megaphone,
-  },
-  {
-    title: "Attendance",
-    href: "lecturer/attendance",
-    icon: CheckIcon,
   },
   {
     title: "Inbox",
