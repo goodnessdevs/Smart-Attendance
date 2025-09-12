@@ -135,17 +135,17 @@ function CheckAttendance() {
       // toast.error(
       //   error instanceof Error ? error.message : "Something went wrong"
       // );
-      let message = "Something went wrong";
+      console.error("Attendance marking error:", error);
 
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === "string") {
-        message = error;
-      } else if (typeof error === "object" && error !== null) {
-        message = JSON.stringify(error); // fallback for plain objects
+      if (error instanceof GeolocationPositionError) {
+        toast.error("Location access is required to mark attendance");
+      } else if (error.message?.includes("fetch")) {
+        toast.error("Network error. Please check your connection.");
+      } else {
+        toast.error(
+          error instanceof Error ? error.message : "Something went wrong"
+        );
       }
-
-      toast.error(message);
     } finally {
       setLoading(false);
     }
