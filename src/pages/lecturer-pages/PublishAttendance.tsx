@@ -46,7 +46,9 @@ const LecturerPublishCourses = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [ending, setEnding] = useState(false);
-  const [publishedCourseId, setPublishedCourseId] = useState<string | null>(null);
+  const [publishedCourseId, setPublishedCourseId] = useState<string | null>(
+    null
+  );
   const { token } = useAuthContext();
 
   // Fetch courses registered by the lecturer
@@ -104,13 +106,19 @@ const LecturerPublishCourses = () => {
       );
 
       if (!res.ok) throw new Error("Failed to publish course");
-      setCourses((prev) =>
-      prev.map((c) =>
-        c.courseId === course.courseId
-          ? { ...c, isPublished: true }
-          : { ...c, isPublished: false }
-      )
-    );
+      setCourses((prev) => {
+        const updated = prev.map((c) =>
+          c.courseId === course.courseId
+            ? { ...c, isActive: true }
+            : { ...c, isActive: false }
+        );
+
+        return updated.sort((a, b) => {
+          if (a.isActive && !b.isActive) return -1;
+          if (!a.isActive && b.isActive) return 1;
+          return 0;
+        });
+      });
       setPublishedCourseId(course.courseId);
       toast.success(`${course.courseName} published successfully!`);
     } catch (error) {
@@ -232,7 +240,8 @@ const LecturerPublishCourses = () => {
                 >
                   {publishing === course.courseId ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                  ) : publishedCourseId === course.courseId && course.isActive ? (
+                  ) : publishedCourseId === course.courseId &&
+                    course.isActive ? (
                     <Check className="h-3 w-3 mr-1" />
                   ) : (
                     <Upload className="h-3 w-3 mr-1" />
