@@ -24,9 +24,6 @@ export default function Dashboard() {
   const [activeCourses, setActiveCourses] = useState<Course[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
 
-  localStorage.removeItem("userLocation");
-  localStorage.removeItem("locationGranted");
-
   // Fetch active courses
   useEffect(() => {
     const fetchActiveCourses = async () => {

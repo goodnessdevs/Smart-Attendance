@@ -259,7 +259,7 @@ const LecturerPublishCourses = () => {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="bg-accent">
           <DialogHeader>
             <DialogTitle>End Attendance Session</DialogTitle>
             <DialogDescription>
@@ -275,7 +275,7 @@ const LecturerPublishCourses = () => {
               Cancel
             </Button>
             <Button
-              variant="destructive"
+              variant="default"
               onClick={handleEndAttendance}
               disabled={ending}
             >
