@@ -36,6 +36,7 @@ interface Course {
   courseDays: string[];
   lecturers: string[];
   unit: string;
+  isActive: boolean;
 }
 
 const LecturerPublishCourses = () => {
@@ -45,9 +46,7 @@ const LecturerPublishCourses = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [ending, setEnding] = useState(false);
-  const [publishedCourseId, setPublishedCourseId] = useState<string | null>(
-    null
-  );
+  const [publishedCourseId, setPublishedCourseId] = useState<string | null>(null);
   const { token } = useAuthContext();
 
   // Fetch courses registered by the lecturer
@@ -65,7 +64,10 @@ const LecturerPublishCourses = () => {
         if (!res.ok) throw new Error("Failed to fetch lecturer courses");
         const data = await res.json();
         setCourses(data || []);
-        console.log(data);
+        const published = data.find((c: Course) => c.isActive);
+        if (published) {
+          setPublishedCourseId(published.courseId);
+        }
       } catch (error) {
         console.error(error);
         toast.error("Error fetching lecturer courses");
@@ -102,8 +104,13 @@ const LecturerPublishCourses = () => {
       );
 
       if (!res.ok) throw new Error("Failed to publish course");
-      const data = await res.json();
-      console.log(data);
+      setCourses((prev) =>
+      prev.map((c) =>
+        c.courseId === course.courseId
+          ? { ...c, isPublished: true }
+          : { ...c, isPublished: false }
+      )
+    );
       setPublishedCourseId(course.courseId);
       toast.success(`${course.courseName} published successfully!`);
     } catch (error) {
@@ -166,7 +173,7 @@ const LecturerPublishCourses = () => {
           <DropdownMenuContent align="end">
             {publishedCourseId && (
               <DropdownMenuItem
-              className="text-foreground hover:bg-ring"
+                className="text-foreground hover:bg-ring"
                 onClick={() => {
                   const course = courses.find(
                     (c) => c.courseId === publishedCourseId
@@ -212,7 +219,7 @@ const LecturerPublishCourses = () => {
                 <Button
                   size="sm"
                   className={`w-full h-7 text-xs ${
-                    publishedCourseId === course.courseId
+                    publishedCourseId === course.courseId && course.isActive
                       ? "bg-green-600 hover:bg-green-700 text-white"
                       : "bg-blue-600 hover:bg-blue-700 text-white"
                   }`}
@@ -225,14 +232,14 @@ const LecturerPublishCourses = () => {
                 >
                   {publishing === course.courseId ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                  ) : publishedCourseId === course.courseId ? (
+                  ) : publishedCourseId === course.courseId && course.isActive ? (
                     <Check className="h-3 w-3 mr-1" />
                   ) : (
                     <Upload className="h-3 w-3 mr-1" />
                   )}
                   {publishing === course.courseId
                     ? "Publishing..."
-                    : publishedCourseId === course.courseId
+                    : publishedCourseId === course.courseId && course.isActive
                     ? "Published"
                     : "Publish"}
                 </Button>
