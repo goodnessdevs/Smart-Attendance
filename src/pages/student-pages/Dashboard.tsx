@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "../../components/ui/card";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-// import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
 import SignedOutDashboard from "./SignedOutDashboard";
@@ -24,6 +23,9 @@ export default function Dashboard() {
   const { token, user, isInitializing } = useAuthContext();
   const [activeCourses, setActiveCourses] = useState<Course[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
+
+  localStorage.removeItem("userLocation");
+  localStorage.removeItem("locationGranted");
 
   // Fetch active courses
   useEffect(() => {
@@ -50,61 +52,6 @@ export default function Dashboard() {
 
     fetchActiveCourses();
   }, [token]);
-
-  // // --- Persist states with localStorage ---
-  // const [locationGranted, setLocationGranted] = useState<boolean>(
-  //   () => localStorage.getItem("locationGranted") === "true"
-  // );
-  // const [userLocation, setUserLocation] = useState<{
-  //   lat: number;
-  //   lng: number;
-  // } | null>(() => {
-  //   const saved = localStorage.getItem("userLocation");
-  //   return saved ? JSON.parse(saved) : null;
-  // });
-  // const [locationStatus, setLocationStatus] = useState<
-  //   "idle" | "loading" | "granted" | "denied"
-  // >(locationGranted ? "granted" : "idle");
-  // const [nearbyVenues, setNearbyVenues] = useState<
-  //   Array<Venue & { distance: number; isWithin: boolean }>
-  // >([]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("locationGranted", String(locationGranted));
-  // }, [locationGranted]);
-
-  // useEffect(() => {
-  //   if (userLocation) {
-  //     localStorage.setItem("userLocation", JSON.stringify(userLocation));
-  //   }
-  // }, [userLocation]);
-
-  // const handleGrantLocation = async () => {
-  //   setLocationStatus("loading");
-  //   try {
-  //     const position = await GeolocationService.getCurrentPosition();
-  //     const location = {
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude,
-  //     };
-  //     setUserLocation(location);
-  //     setLocationGranted(true);
-  //     setLocationStatus("granted");
-  //     toast.success(
-  //       `Location verified! (±${Math.round(
-  //         position.coords.accuracy
-  //       )}m accuracy)`
-  //     );
-  //   } catch (error: unknown) {
-  //     setLocationStatus("denied");
-  //     setLocationGranted(false);
-  //     toast.error(
-  //       error instanceof Error
-  //         ? error.message
-  //         : "Unable to retrieve your location."
-  //     );
-  //   }
-  // };
 
   // --- Auth loading ---
   if (isInitializing) {
@@ -136,77 +83,6 @@ export default function Dashboard() {
           </h1>
         </motion.div>
       </div>
-
-      {/* Location Section */}
-      {/* <Card className="mb-10 shadow-lg border-cyan-100 dark:border-cyan-900">
-        <CardContent className="p-6 space-y-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold text-lg flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-cyan-600" /> Location Status
-              </h3>
-              {locationStatus === "granted" && userLocation && (
-                <p className="text-sm text-muted-foreground">
-                  Lat: {userLocation.lat.toFixed(6)}, Lng:{" "}
-                  {userLocation.lng.toFixed(6)}
-                </p>
-              )}
-              {locationStatus === "denied" && (
-                <p className="text-sm text-red-600">Location access denied</p>
-              )}
-              {locationStatus === "idle" && (
-                <p className="text-sm text-muted-foreground">
-                  Location not requested
-                </p>
-              )}
-            </div>
-            <button
-              onClick={handleGrantLocation}
-              disabled={locationStatus === "loading"}
-              className={`px-5 py-2 rounded-xl font-medium shadow ${
-                locationStatus === "granted"
-                  ? "bg-green-600 hover:bg-green-700 text-white"
-                  : "bg-cyan-600 hover:bg-cyan-700 text-white dark:bg-cyan-300 dark:text-black dark:hover:bg-cyan-400"
-              } disabled:opacity-50`}
-            >
-              {locationStatus === "loading"
-                ? "Locating..."
-                : locationStatus === "granted"
-                ? "Refresh Location"
-                : "Grant Location"}
-            </button>
-          </div>
-
-          <p className="text-sm">
-            Location granted:{" "}
-            <span
-              className={locationGranted ? "text-green-600" : "text-red-600"}
-            >
-              {locationGranted ? "Yes" : "No"}
-            </span>
-          </p>
-
-          {nearbyVenues.length > 0 && (
-            <div>
-              <h4 className="font-semibold mb-2">Nearby Venues</h4>
-              <div className="flex flex-wrap gap-2">
-                {nearbyVenues.map((venue) => (
-                  <span
-                    key={venue.id}
-                    className={`px-3 py-1 rounded-full text-xs font-medium shadow ${
-                      venue.isWithin
-                        ? "bg-green-100 text-green-700 border border-green-300"
-                        : "bg-gray-100 text-gray-600 border border-gray-300 dark:bg-gray-800 dark:text-gray-300"
-                    }`}
-                  >
-                    {venue.name} • {venue.distance.toFixed(1)}m
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card> */}
 
       {/* Courses Section */}
       <motion.div
