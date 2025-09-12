@@ -132,9 +132,20 @@ function CheckAttendance() {
       // toast.error("Location access is required to mark attendance");
       // setLoading(false);
       // return;
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
-      );
+      // toast.error(
+      //   error instanceof Error ? error.message : "Something went wrong"
+      // );
+      let message = "Something went wrong";
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === "string") {
+        message = error;
+      } else if (typeof error === "object" && error !== null) {
+        message = JSON.stringify(error); // fallback for plain objects
+      }
+
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -149,10 +160,12 @@ function CheckAttendance() {
     >
       <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
         <p>
-          <span className="font-medium">Course Title:</span> {courseVenue?.courseTitle}
+          <span className="font-medium">Course Title:</span>{" "}
+          {courseVenue?.courseTitle}
         </p>
         <p>
-          <span className="font-medium">Course Code:</span> {courseVenue?.courseName}
+          <span className="font-medium">Course Code:</span>{" "}
+          {courseVenue?.courseName}
         </p>
         <p>
           <span className="font-medium">Day:</span> {dayName}
@@ -172,7 +185,13 @@ function CheckAttendance() {
             disabled={loading}
             className="mt-4 w-full  bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
           >
-            {loading ? (<span className="flex justify-center items-center gap-x-2"><Loader2 className="animate-spin w-4 h-4" /> Marking...</span>) : "Mark Attendance"}
+            {loading ? (
+              <span className="flex justify-center items-center gap-x-2">
+                <Loader2 className="animate-spin w-4 h-4" /> Marking...
+              </span>
+            ) : (
+              "Mark Attendance"
+            )}
           </button>
         )}
 
