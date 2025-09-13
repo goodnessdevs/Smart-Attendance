@@ -1,7 +1,262 @@
-import { Route, Routes } from "react-router-dom";
-import { RequireAuthDialog } from "./components/AuthDialog";
+// import { Route, Routes } from "react-router-dom";
+// import { RequireAuthDialog } from "./components/AuthDialog";
 
+// import Layout from "./layouts/Layout";
+// import Dashboard from "./pages/student-pages/Dashboard";
+// import Account from "./pages/student-pages/Account";
+// import Login from "./pages/student-pages/Login";
+// import Onboarding from "./pages/student-pages/Onboarding";
+// import CheckAttendance from "./pages/student-pages/CheckAttendance";
+// import CalendarPage from "./pages/student-pages/Calendar";
+// import InboxPage from "./pages/student-pages/Inbox";
+// import Support from "./pages/student-pages/Support";
+// import PublishAttendance from "./pages/lecturer-pages/PublishAttendance";
+// import Calendar from "./pages/lecturer-pages/Calendar";
+// import AllCourses from "./pages/student-pages/AllCourses";
+
+// import LecturerLayout from "./layouts/LecturerLayout";
+// import LecturerInbox from "./pages/lecturer-pages/Inbox";
+// import LecturerAuth from "./pages/lecturer-pages/PasswordAuth";
+// import AttendanceDashboard from "./pages/lecturer-pages/Dashboard";
+// import LecturerAccount from "./pages/lecturer-pages/Account";
+// import LecturerLogin from "./pages/lecturer-pages/Login";
+// import StudentSupportPage from "./pages/lecturer-pages/StudentSupportPage";
+
+// import AdminLayout from "./layouts/AdminLayout";
+// import AdminAccount from "./pages/admin/Account";
+// import AdminDashboard from "./pages/admin/page";
+// import CreatedCourses from "./pages/admin/CreatedCourses";
+// import AdminLogin from "./pages/admin/Login";
+// import AdminCalendarPage from "./pages/admin/Calendar";
+// import EditCoursesPage from "./pages/admin/EditCourses";
+// import AdminSupportPage from "./pages/admin/Support";
+// import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
+// import LecturerRouteProtection from "./pages/lecturer-pages/LecturerRouteProtection";
+// import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
+// import CourseRegistration from "./pages/student-pages/CourseRegistration";
+// import LecturerCourseRegistration from "./pages/lecturer-pages/LecturerCourseRegistration";
+
+// function App() {
+//   return (
+//     <Routes>
+//       {/* Student routes */}
+//       <Route element={<Layout />}>
+//         <Route path="/" element={<Dashboard />} />
+//         {/* Protected routes */}
+//         <Route
+//           path="/register-courses"
+//           element={
+//             <RequireAuthDialog>
+//               <CourseRegistration />
+//             </RequireAuthDialog>
+//           }
+//         />
+//         <Route
+//           path="/calendar"
+//           element={
+//             <RequireAuthDialog>
+//               <CalendarPage />
+//             </RequireAuthDialog>
+//           }
+//         />
+//         <Route
+//           path="/inbox"
+//           element={
+//             <RequireAuthDialog>
+//               <InboxPage />
+//             </RequireAuthDialog>
+//           }
+//         />
+//         <Route
+//           path="/account-profile"
+//           element={
+//             <RequireAuthDialog>
+//               <Account />
+//             </RequireAuthDialog>
+//           }
+//         />
+//         <Route
+//           path="/support"
+//           element={
+//             <RequireAuthDialog>
+//               <Support />
+//             </RequireAuthDialog>
+//           }
+//         />
+//         <Route
+//           path="/course/:courseId"
+//           element={
+//             <RequireAuthDialog>
+//               <CheckAttendance />
+//             </RequireAuthDialog>
+//           }
+//         />
+//         <Route
+//           path="/all-courses"
+//           element={
+//             <RequireAuthDialog>
+//               <AllCourses />
+//             </RequireAuthDialog>
+//           }
+//         />
+
+//         {/* Public routes */}
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/onboarding" element={<Onboarding />} />
+//       </Route>
+
+//       {/* Lecturer routes */}
+//       <Route path="/lecturer" element={<LecturerLayout />}>
+//         <Route
+//           path="/lecturer/login"
+//           element={
+//               <LecturerLogin />
+//           }
+//         />
+//         <Route
+//           path="/lecturer/auth"
+//           element={
+//               <LecturerAuth />
+//           }
+//         />
+//         <Route
+//           path="/lecturer"
+//           element={
+//             <LecturerRouteProtection>
+//               <AttendanceDashboard />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/publish-attendance"
+//           element={
+//             <LecturerRouteProtection>
+//               <PublishAttendance />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/register-courses"
+//           element={
+//             <LecturerRouteProtection>
+//               <LecturerCourseRegistration />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/calendar"
+//           element={
+//             <LecturerRouteProtection>
+//               <Calendar />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/inbox"
+//           element={
+//             <LecturerRouteProtection>
+//               <LecturerInbox />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/account-profile"
+//           element={
+//             <LecturerRouteProtection>
+//               <LecturerAccount />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/support"
+//           element={
+//             <LecturerRouteProtection>
+//               <StudentSupportPage />
+//             </LecturerRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/lecturer/onboarding"
+//           element={
+//               <LecturerOnboarding />
+//           }
+//         />
+//       </Route>
+
+//       {/* Admin routes */}
+//       <Route path="/admin" element={<AdminLayout />}>
+//         <Route
+//           path="/admin"
+//           element={
+//             <AdminRouteProtection>
+//             <AdminDashboard />
+//             </AdminRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/admin/created-courses"
+//           element={
+//             <AdminRouteProtection>
+//               <CreatedCourses />
+//             </AdminRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/admin/edit-courses"
+//           element={
+//             <AdminRouteProtection>
+//               <EditCoursesPage />
+//             </AdminRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/admin/support"
+//           element={
+//             <AdminRouteProtection>
+//               <AdminSupportPage />
+//             </AdminRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/admin/calendar"
+//           element={
+//             <AdminRouteProtection>
+//               <AdminCalendarPage />
+//             </AdminRouteProtection>
+//           }
+//         />
+//         <Route
+//           path="/admin/account-profile"
+//           element={
+//             <AdminRouteProtection>
+//               <AdminAccount />
+//             </AdminRouteProtection>
+//           }
+//         />
+
+//         <Route
+//           path="/admin/login"
+//           element={
+//               <AdminLogin />
+//           }
+//         />
+//       </Route>
+//     </Routes>
+//   );
+// }
+
+// export default App;
+
+
+import { Route, Routes } from "react-router-dom";
+import RouteProtection from "./components/RouteProtection";
+
+// Layouts
 import Layout from "./layouts/Layout";
+import LecturerLayout from "./layouts/LecturerLayout";
+import AdminLayout from "./layouts/AdminLayout";
+
+// Student pages
 import Dashboard from "./pages/student-pages/Dashboard";
 import Account from "./pages/student-pages/Account";
 import Login from "./pages/student-pages/Login";
@@ -10,19 +265,22 @@ import CheckAttendance from "./pages/student-pages/CheckAttendance";
 import CalendarPage from "./pages/student-pages/Calendar";
 import InboxPage from "./pages/student-pages/Inbox";
 import Support from "./pages/student-pages/Support";
+import AllCourses from "./pages/student-pages/AllCourses";
+import CourseRegistration from "./pages/student-pages/CourseRegistration";
+
+// Lecturer pages
 import PublishAttendance from "./pages/lecturer-pages/PublishAttendance";
 import Calendar from "./pages/lecturer-pages/Calendar";
-import AllCourses from "./pages/student-pages/AllCourses";
-
-import LecturerLayout from "./layouts/LecturerLayout";
 import LecturerInbox from "./pages/lecturer-pages/Inbox";
 import LecturerAuth from "./pages/lecturer-pages/PasswordAuth";
 import AttendanceDashboard from "./pages/lecturer-pages/Dashboard";
 import LecturerAccount from "./pages/lecturer-pages/Account";
 import LecturerLogin from "./pages/lecturer-pages/Login";
 import StudentSupportPage from "./pages/lecturer-pages/StudentSupportPage";
+import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
+import LecturerCourseRegistration from "./pages/lecturer-pages/LecturerCourseRegistration";
 
-import AdminLayout from "./layouts/AdminLayout";
+// Admin pages
 import AdminAccount from "./pages/admin/Account";
 import AdminDashboard from "./pages/admin/page";
 import CreatedCourses from "./pages/admin/CreatedCourses";
@@ -30,222 +288,201 @@ import AdminLogin from "./pages/admin/Login";
 import AdminCalendarPage from "./pages/admin/Calendar";
 import EditCoursesPage from "./pages/admin/EditCourses";
 import AdminSupportPage from "./pages/admin/Support";
-import AdminRouteProtection from "./pages/admin/AdminRouteProtection";
-import LecturerRouteProtection from "./pages/lecturer-pages/LecturerRouteProtection";
-import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
-import CourseRegistration from "./pages/student-pages/CourseRegistration";
-import LecturerCourseRegistration from "./pages/lecturer-pages/LecturerCourseRegistration";
 
 function App() {
   return (
     <Routes>
-      {/* Student routes */}
+      {/* ---------------- Student Routes ---------------- */}
       <Route element={<Layout />}>
-        <Route path="/" element={<Dashboard />} />
-        {/* Protected routes */}
+        {/* Public */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+
+        {/* Protected */}
+        <Route
+          path="/"
+          element={
+            <RouteProtection requiredRole="student">
+              <Dashboard />
+            </RouteProtection>
+          }
+        />
         <Route
           path="/register-courses"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <CourseRegistration />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
         <Route
           path="/calendar"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <CalendarPage />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
         <Route
           path="/inbox"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <InboxPage />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
         <Route
           path="/account-profile"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <Account />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
         <Route
           path="/support"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <Support />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
         <Route
           path="/course/:courseId"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <CheckAttendance />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
         <Route
           path="/all-courses"
           element={
-            <RequireAuthDialog>
+            <RouteProtection requiredRole="student">
               <AllCourses />
-            </RequireAuthDialog>
+            </RouteProtection>
           }
         />
-
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/onboarding" element={<Onboarding />} />
       </Route>
 
-      {/* Lecturer routes */}
+      {/* ---------------- Lecturer Routes ---------------- */}
       <Route path="/lecturer" element={<LecturerLayout />}>
+        {/* Public */}
+        <Route path="/lecturer/login" element={<LecturerLogin />} />
+        <Route path="/lecturer/auth" element={<LecturerAuth />} />
+        <Route path="/lecturer/onboarding" element={<LecturerOnboarding />} />
+
+        {/* Protected */}
         <Route
-          path="/lecturer/login"
+          index
           element={
-            <LecturerRouteProtection>
-              <LecturerLogin />
-            </LecturerRouteProtection>
-          }
-        />
-        <Route
-          path="/lecturer/auth"
-          element={
-            <LecturerRouteProtection>
-              <LecturerAuth />
-            </LecturerRouteProtection>
-          }
-        />
-        <Route
-          path="/lecturer"
-          element={
-            // <LecturerRouteProtection>
-            <AttendanceDashboard />
-            // </LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
+              <AttendanceDashboard />
+            </RouteProtection>
           }
         />
         <Route
           path="/lecturer/publish-attendance"
           element={
-            // <LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
               <PublishAttendance />
-            // </LecturerRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/lecturer/register-courses"
           element={
-            // <LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
               <LecturerCourseRegistration />
-            // </LecturerRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/lecturer/calendar"
           element={
-            <LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
               <Calendar />
-            </LecturerRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/lecturer/inbox"
           element={
-            <LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
               <LecturerInbox />
-            </LecturerRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/lecturer/account-profile"
           element={
-            <LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
               <LecturerAccount />
-            </LecturerRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/lecturer/support"
           element={
-            <LecturerRouteProtection>
+            <RouteProtection requiredRole="lecturer">
               <StudentSupportPage />
-            </LecturerRouteProtection>
-          }
-        />
-        <Route
-          path="/lecturer/onboarding"
-          element={
-            <LecturerRouteProtection>
-              <LecturerOnboarding />
-            </LecturerRouteProtection>
+            </RouteProtection>
           }
         />
       </Route>
 
-      {/* Admin routes */}
+      {/* ---------------- Admin Routes ---------------- */}
       <Route path="/admin" element={<AdminLayout />}>
+        {/* Public */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* Protected */}
         <Route
-          path="/admin"
+          index
           element={
-            // <AdminRouteProtection>
-            <AdminDashboard />
-            // </AdminRouteProtection>
+            <RouteProtection requiredRole="admin">
+              <AdminDashboard />
+            </RouteProtection>
           }
         />
         <Route
           path="/admin/created-courses"
           element={
-            <AdminRouteProtection>
+            <RouteProtection requiredRole="admin">
               <CreatedCourses />
-            </AdminRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/admin/edit-courses"
           element={
-            <AdminRouteProtection>
+            <RouteProtection requiredRole="admin">
               <EditCoursesPage />
-            </AdminRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/admin/support"
           element={
-            <AdminRouteProtection>
+            <RouteProtection requiredRole="admin">
               <AdminSupportPage />
-            </AdminRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/admin/calendar"
           element={
-            <AdminRouteProtection>
+            <RouteProtection requiredRole="admin">
               <AdminCalendarPage />
-            </AdminRouteProtection>
+            </RouteProtection>
           }
         />
         <Route
           path="/admin/account-profile"
           element={
-            <AdminRouteProtection>
+            <RouteProtection requiredRole="admin">
               <AdminAccount />
-            </AdminRouteProtection>
-          }
-        />
-
-        <Route
-          path="/admin/login"
-          element={
-            <AdminRouteProtection>
-              <AdminLogin />
-            </AdminRouteProtection>
+            </RouteProtection>
           }
         />
       </Route>

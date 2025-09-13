@@ -7,7 +7,8 @@ import {
 import { motion, type Variants } from "framer-motion";
 import { useAuthContext } from "../../hooks/use-auth";
 import { Link } from "react-router-dom";
-import SignedOutLecturerDashboard from "./SignedOutLecturer";
+import SignedOutDashboard from "../../components/SignedOutDashboard";
+// import SignedOutLecturerDashboard from "./SignedOutLecturer";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -47,7 +48,7 @@ export default function LecturerDashboard() {
   }
 
   if (!token) {
-    return <SignedOutLecturerDashboard />;
+    return <SignedOutDashboard />;
   }
 
   return (

@@ -34,13 +34,14 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import SignedOutAdminDashboard from "./SignedOutAdmin";
+// import SignedOutAdminDashboard from "./SignedOutAdmin";
 import { useAuthContext } from "../../hooks/use-auth";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
+import SignedOutDashboard from "../../components/SignedOutDashboard";
 
 interface CourseFormData {
   courseId: string;
@@ -213,7 +214,7 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!token) return <SignedOutAdminDashboard />;
+  if (!token) return <SignedOutDashboard />;
 
   return (
     <motion.div

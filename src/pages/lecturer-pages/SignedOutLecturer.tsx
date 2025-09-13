@@ -26,7 +26,7 @@ export default function SignedOutLecturerDashboard() {
           transition={{ duration: 0.8 }}
           className="text-6xl font-bold tracking-tight mb-10"
         >
-          Welcome Lecturer{" "}
+          Welcome to{" "}
           <span className="text-green-700 dark:text-green-300">
             Smart Attendance
           </span>
@@ -54,7 +54,7 @@ export default function SignedOutLecturerDashboard() {
           onClick={() => navigate("/lecturer/login")}
           className="w-fit text-center mx-auto animate-bounce flex items-center gap-2 cursor-pointer"
         >
-          <GraduationCap size={18} /> Lecturer Sign In
+          <GraduationCap size={18} /> Sign In
         </MotionButton>
       </div>
     </div>

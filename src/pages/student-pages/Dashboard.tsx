@@ -159,7 +159,7 @@ import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
-import SignedOutDashboard from "./SignedOutDashboard";
+import SignedOutDashboard from "../../components/SignedOutDashboard";
 
 // --- Course type ---
 type Course = {
