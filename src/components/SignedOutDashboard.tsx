@@ -64,19 +64,28 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { GraduationCap, Users, Shield } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { AutoPlayCarousel } from "./AutoPlayCarousel";
 import Footer from "./Footer";
+import { useAuthContext } from "../hooks/use-auth";
 
 export default function SignedOutDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+  const {token, user} = useAuthContext();
 
   // Decide role from URL
   const path = location.pathname;
   let role: "student" | "lecturer" | "admin" = "student";
   if (path.startsWith("/lecturer")) role = "lecturer";
   if (path.startsWith("/admin")) role = "admin";
+
+  // If already signed in → redirect them
+  if (token) {
+    if (user?.isAdmin) return <Navigate to="/admin/dashboard" replace />;
+    if (!user?.isAdmin) return <Navigate to="/lecturer/dashboard" replace />;
+    return <Navigate to="/student/dashboard" replace />;
+  }
 
   // Role-based content
   const roleConfig = {
