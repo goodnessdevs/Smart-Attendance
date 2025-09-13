@@ -74,7 +74,7 @@ function Login() {
             // Use context login method (it handles localStorage)
             login(userData.user, token);
             toast.success("Welcome back!");
-            navigate("/");
+            navigate("/dashboard");
           } else {
             // User not onboarded - go to onboarding
             // localStorage.setItem("jwt_token", token);
