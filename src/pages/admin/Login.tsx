@@ -80,7 +80,7 @@ const AdminLogin = () => {
 
         // Step 5: Success - navigate to admin dashboard
         toast.success(`Welcome back, ${userData.user?.fullName || "Admin"}!`);
-        navigate("/admin");
+        navigate("/admin/dashboard");
       } catch (err) {
         console.error("Admin authentication error:", err);
 

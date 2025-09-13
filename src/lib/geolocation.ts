@@ -31,7 +31,7 @@ export class GeolocationService {
       }
       const defaultOptions: PositionOptions = {
         enableHighAccuracy: true,
-        timeout: 15000,
+        timeout: 5000,
         maximumAge: 60000,
         ...options,
       };

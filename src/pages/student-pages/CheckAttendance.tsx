@@ -71,8 +71,17 @@ function CheckAttendance() {
     setLoading(true);
 
     try {
+      // Run geolocation + device info in parallel
+      const [pos, deviceInfo] = await Promise.all([
+        GeolocationService.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 5000, // shorter timeout for responsiveness
+          maximumAge: 60000,
+        }),
+        getDeviceInfo(),
+      ]);
+
       // --- Check geolocation ---
-      const pos = await GeolocationService.getCurrentPosition();
       const { isWithin, distance } = GeolocationService.isWithinRadius(
         pos.coords.latitude,
         pos.coords.longitude,
@@ -90,11 +99,9 @@ function CheckAttendance() {
       }
 
       // --- Check device identity ---
-      const { device_uuid, fingerprint } = await getDeviceInfo();
-
       if (
-        user?.device_uuid !== device_uuid || // 👈 replace with value from backend
-        user?.fingerprint !== fingerprint
+        user?.device_uuid !== deviceInfo.device_uuid || // 👈 replace with value from backend
+        user?.fingerprint !== deviceInfo.fingerprint
       ) {
         toast.error("Device authentication failed.");
         setLoading(false);

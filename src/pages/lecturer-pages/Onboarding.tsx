@@ -177,7 +177,7 @@ function LecturerOnboarding() {
           login(userData, token);
         }
 
-        navigate("/lecturer");
+        navigate("/lecturer/dashboard");
       } else {
         toast.error(data.message || "Registration Failed");
       }
