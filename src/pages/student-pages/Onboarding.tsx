@@ -143,16 +143,16 @@ function Onboarding() {
             login(userData, token);
 
             // Navigate to main dashboard
-            navigate("/");
+            navigate("/dashboard");
           } else {
-            console.error("Failed to fetch updated user details");
+            console.error("Failed to fetch updated user details. Please reload the page.");
             // Still navigate but user might need to refresh
-            navigate("/");
+            navigate("/dashboard");
           }
         } catch (userError) {
           console.error("Error fetching user details:", userError);
           // Still navigate, the context initialization will handle it
-          navigate("/");
+          navigate("/dashboard");
         }
       } else {
         toast.error(data.message || "Registration Failed");

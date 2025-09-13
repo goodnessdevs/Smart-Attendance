@@ -74,7 +74,7 @@
 //   return children;
 // }
 
-
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -83,7 +83,10 @@ type Props = {
   requiredRole?: "student" | "lecturer" | "admin";
 };
 
-export default function RouteProtection({ children, requiredRole = "student" }: Props) {
+export default function RouteProtection({
+  children,
+  requiredRole = "student",
+}: Props) {
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
 
@@ -97,9 +100,12 @@ export default function RouteProtection({ children, requiredRole = "student" }: 
       }
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/check-status`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/check-status`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (!res.ok) throw new Error("Failed to check status");
         const data = await res.json();
@@ -127,11 +133,18 @@ export default function RouteProtection({ children, requiredRole = "student" }: 
     checkStatus();
   }, [requiredRole]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen gap-x-3">
+        <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
+        <p className="text-lg font-semibold">Loading dashboard...</p>
+      </div>
+    );
 
   if (!authorized) {
     // Redirect unauthenticated users to the correct login page
-    if (requiredRole === "lecturer") return <Navigate to="/lecturer/login" replace />;
+    if (requiredRole === "lecturer")
+      return <Navigate to="/lecturer/login" replace />;
     if (requiredRole === "admin") return <Navigate to="/admin/login" replace />;
     return <Navigate to="/login" replace />; // default → student
   }
