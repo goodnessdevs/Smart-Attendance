@@ -7,8 +7,6 @@ import {
 import { motion, type Variants } from "framer-motion";
 import { useAuthContext } from "../../hooks/use-auth";
 import { Link } from "react-router-dom";
-import SignedOutDashboard from "../../components/SignedOutDashboard";
-// import SignedOutLecturerDashboard from "./SignedOutLecturer";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -36,7 +34,7 @@ const MotionCard = motion(Card);
 // }
 
 export default function LecturerDashboard() {
-  const { token, isInitializing, user } = useAuthContext();
+  const { isInitializing, user } = useAuthContext();
 
   if (isInitializing) {
     return (
@@ -45,10 +43,6 @@ export default function LecturerDashboard() {
         <p className="text-lg font-semibold">Loading dashboard...</p>
       </div>
     );
-  }
-
-  if (!token) {
-    return <SignedOutDashboard />;
   }
 
   return (

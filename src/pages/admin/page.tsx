@@ -34,14 +34,12 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-// import SignedOutAdminDashboard from "./SignedOutAdmin";
 import { useAuthContext } from "../../hooks/use-auth";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
-import SignedOutDashboard from "../../components/SignedOutDashboard";
 
 interface CourseFormData {
   courseId: string;
@@ -58,7 +56,7 @@ interface CourseFormData {
 }
 
 export default function AdminDashboard() {
-  const { token, isInitializing } = useAuthContext();
+  const { isInitializing } = useAuthContext();
   const [totalCourses, setTotalCourses] = useState<number>(12);
 
   const [formData, setFormData] = useState<CourseFormData>({
@@ -213,8 +211,6 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
-  if (!token) return <SignedOutDashboard />;
 
   return (
     <motion.div

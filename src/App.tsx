@@ -247,7 +247,6 @@
 
 // export default App;
 
-
 import { Route, Routes } from "react-router-dom";
 import RouteProtection from "./components/RouteProtection";
 
@@ -288,10 +287,16 @@ import AdminLogin from "./pages/admin/Login";
 import AdminCalendarPage from "./pages/admin/Calendar";
 import EditCoursesPage from "./pages/admin/EditCourses";
 import AdminSupportPage from "./pages/admin/Support";
+import SignedOutDashboard from "./components/SignedOutDashboard";
 
 function App() {
   return (
     <Routes>
+      {/* ---------------- Signed-out landing pages ---------------- */}
+      <Route path="/" element={<SignedOutDashboard />} />
+      <Route path="/lecturer" element={<SignedOutDashboard />} />
+      <Route path="/admin" element={<SignedOutDashboard />} />
+
       {/* ---------------- Student Routes ---------------- */}
       <Route element={<Layout />}>
         {/* Public */}
@@ -300,11 +305,11 @@ function App() {
 
         {/* Protected */}
         <Route
-          path="/"
+          path="/dashboard"
           element={
-            // <RouteProtection requiredRole="student">
+            <RouteProtection requiredRole="student">
               <Dashboard />
-            // </RouteProtection>
+            </RouteProtection>
           }
         />
         <Route
@@ -366,7 +371,7 @@ function App() {
       </Route>
 
       {/* ---------------- Lecturer Routes ---------------- */}
-      <Route path="/lecturer" element={<LecturerLayout />}>
+      <Route element={<LecturerLayout />}>
         {/* Public */}
         <Route path="/lecturer/login" element={<LecturerLogin />} />
         <Route path="/lecturer/auth" element={<LecturerAuth />} />
@@ -374,7 +379,7 @@ function App() {
 
         {/* Protected */}
         <Route
-          index
+          path="/lecturer/dashboard"
           element={
             <RouteProtection requiredRole="lecturer">
               <AttendanceDashboard />
@@ -432,13 +437,13 @@ function App() {
       </Route>
 
       {/* ---------------- Admin Routes ---------------- */}
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route element={<AdminLayout />}>
         {/* Public */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Protected */}
         <Route
-          index
+          path="/admin/dashboard"
           element={
             <RouteProtection requiredRole="admin">
               <AdminDashboard />

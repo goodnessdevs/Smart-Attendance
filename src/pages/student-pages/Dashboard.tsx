@@ -159,7 +159,6 @@ import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
-import SignedOutDashboard from "../../components/SignedOutDashboard";
 
 // --- Course type ---
 type Course = {
@@ -222,8 +221,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  if (!token) return <SignedOutDashboard />;
 
   return (
     <div className="px-4 md:px-8 mb-12">
