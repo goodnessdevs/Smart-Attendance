@@ -166,19 +166,11 @@ export default function SignedOutDashboard() {
         <Button
           size="lg"
           onClick={() => navigate(loginPath)}
-          className="w-fit text-center flex items-center gap-2 cursor-pointer"
+          className="text-center flex items-center gap-2 cursor-pointer"
         >
           {icon} {buttonText}
         </Button>
       </motion.div>
-
-      {/* Animated background */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3 }}
-        transition={{ duration: 1.5 }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15),transparent_70%)]"
-      />
 
       {/* Content */}
       <AutoPlayCarousel items={slides} />
