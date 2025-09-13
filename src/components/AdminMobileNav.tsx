@@ -75,7 +75,7 @@ function SheetNavbar() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
       logout();
-      navigate("/admin/login");
+      navigate("/admin");
     } finally {
       setLoading(false);
     }

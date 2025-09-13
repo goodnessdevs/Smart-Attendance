@@ -77,7 +77,7 @@ export function AppSidebar() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
       logout();
-      navigate("/login");
+      navigate("/");
     } finally {
       setLoading(false);
     }
