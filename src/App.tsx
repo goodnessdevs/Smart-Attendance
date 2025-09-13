@@ -302,9 +302,9 @@ function App() {
         <Route
           path="/"
           element={
-            <RouteProtection requiredRole="student">
+            // <RouteProtection requiredRole="student">
               <Dashboard />
-            </RouteProtection>
+            // </RouteProtection>
           }
         />
         <Route
