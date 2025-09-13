@@ -83,7 +83,7 @@ export default function SignedOutDashboard() {
   // If already signed in → redirect them
   if (token) {
     if (user?.isAdmin) return <Navigate to="/admin/dashboard" replace />;
-    if (!user?.isAdmin) return <Navigate to="/lecturer/dashboard" replace />;
+    if (!user?.isAdmin) return <Navigate to="/dashboard" replace />;
     return <Navigate to="/student/dashboard" replace />;
   }
 
