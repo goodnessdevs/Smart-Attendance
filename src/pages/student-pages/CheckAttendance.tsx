@@ -75,7 +75,7 @@ function CheckAttendance() {
       const [pos, deviceInfo] = await Promise.all([
         GeolocationService.getCurrentPosition({
           enableHighAccuracy: true,
-          timeout: 10000, // shorter timeout for responsiveness
+          timeout: 15000, // shorter timeout for responsiveness
           maximumAge: 60000,
         }),
         getDeviceInfo(),
@@ -147,7 +147,7 @@ function CheckAttendance() {
             toast.error("Position unavailable. Try again.");
             break;
           case 3:
-            toast.error("Request timed out. Please retry.");
+            toast.error("Request timed out. Please retry or try changing your browser.");
             break;
         }
       } else if (error instanceof Error) {
