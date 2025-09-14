@@ -149,9 +149,11 @@ function CheckAttendance() {
           case 3:
             toast.error("Request timed out. Please retry.");
             break;
-          default:
-            toast.error("Location error occurred.");
         }
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);
