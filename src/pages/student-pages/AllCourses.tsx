@@ -53,7 +53,7 @@ const AllCourses = () => {
 
   return (
     <div className="p-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">All Courses</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">My Semester Courses</h2>
       {courses.length === 0 ? (
         <p>No courses available.</p>
       ) : (
