@@ -75,7 +75,7 @@ function CheckAttendance() {
       const [pos, deviceInfo] = await Promise.all([
         GeolocationService.getCurrentPosition({
           enableHighAccuracy: true,
-          timeout: 5000, // shorter timeout for responsiveness
+          timeout: 10000, // shorter timeout for responsiveness
           maximumAge: 60000,
         }),
         getDeviceInfo(),
