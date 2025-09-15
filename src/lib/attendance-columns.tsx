@@ -139,7 +139,7 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     cell: ({ row }) => (
       <div
         className={
-          row.getValue("isPresent") ? "text-green-500" : "text-red-500"
+          row.getValue("isPresent") ? "text-green-500 font-semibold tracking-wide" : "text-red-500 font-semibold tracking-wide"
         }
       >
         {row.getValue("isPresent") ? "Present" : "Absent"}
