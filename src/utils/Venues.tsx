@@ -22,8 +22,8 @@ export const venues: Venue[] = [
   },
   {
     venueName: "Goodness'",
-    lat: 6.4474,
-    long: 3.3903,
+    lat: 6.5568768,
+    long: 3.3488896,
   },
   {
     venueName: "Taiwo's location'",
