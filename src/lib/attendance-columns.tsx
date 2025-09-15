@@ -107,7 +107,7 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     accessorKey: "fullName",
     header: ({ column }) => (
       <Button
-        variant="ghost"
+        variant="default"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Full Name
@@ -120,7 +120,7 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     accessorKey: "email",
     header: ({ column }) => (
       <Button
-        variant="ghost"
+        variant="default"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Email
@@ -138,7 +138,7 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     accessorKey: "isPresent",
     header: "Present",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("isPresent")}</div>
+      <div className="capitalize">`${row.getValue("isPresent")}`</div>
     ),
   },
   {

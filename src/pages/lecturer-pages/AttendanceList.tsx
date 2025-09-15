@@ -119,7 +119,7 @@ const AttendanceList = () => {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-red-700">
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : (header.column.columnDef.header as React.ReactNode)}
@@ -148,7 +148,7 @@ const AttendanceList = () => {
                   colSpan={attendanceColumns.length}
                   className="h-24 text-center"
                 >
-                  {loading ? <><Loader2 className="animate-spin w-4 h-4" /> </> : <>No results.</>}
+                  {loading ? <span className="flex justify-center"><Loader2 className="animate-spin w-4 h-4" /> </span> : <>No results.</>}
                 </TableCell>
               </TableRow>
             )}
