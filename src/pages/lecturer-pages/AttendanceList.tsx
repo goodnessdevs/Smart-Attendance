@@ -366,7 +366,7 @@ const AttendanceList = () => {
   });
 
   return (
-    <div className="w-full p-8">
+    <div className="w-full p-6 md:p-8">
       <div className="flex items-center gap-x-2 py-4">
         <Input
           placeholder="Filter emails..."
@@ -382,7 +382,7 @@ const AttendanceList = () => {
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="dark:text-white">
             {table
               .getAllColumns()
               .filter((col) => col.getCanHide())
