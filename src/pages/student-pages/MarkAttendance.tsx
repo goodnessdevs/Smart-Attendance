@@ -19,18 +19,6 @@ type ActiveCourse = {
   isActive: boolean;
 };
 
-async function logMyCoordinates() {
-  try {
-    const pos = await GeolocationService.getCurrentPosition();
-    console.log("Latitude:", pos.coords.latitude);
-    console.log("Longitude:", pos.coords.longitude);
-  } catch (error) {
-    console.error("Could not get location:", error);
-  }
-}
-
-logMyCoordinates();
-
 function MarkAttendance() {
   const { courseId } = useParams<{ courseId: string }>();
   const { token, user } = useAuthContext();
@@ -110,6 +98,9 @@ function MarkAttendance() {
         setLoading(false);
         return;
       }
+
+      console.log("Backend:", user?.device_uuid, user?.fingerprint);
+      console.log("Client:", deviceInfo.device_uuid, deviceInfo.fingerprint);
 
       // --- Check device identity ---
       if (
