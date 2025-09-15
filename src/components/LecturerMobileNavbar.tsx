@@ -34,7 +34,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 const items = [
   {
     title: "Dashboard",
-    href: "/lecturer",
+    href: "/lecturer/dashboard",
     icon: LayoutDashboardIcon,
   },
   {

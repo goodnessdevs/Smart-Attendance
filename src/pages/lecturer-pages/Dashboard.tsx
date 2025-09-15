@@ -128,9 +128,8 @@ export default function LecturerDashboard() {
         );
 
         const data = await res.json();
-        console.log(data)
         if (res.ok) {
-          setAttendances(data);
+          setAttendances(data.courses);
         } else {
           console.error(data.message || "Failed to fetch attendances");
         }
