@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import { GeolocationService } from "../../lib/geolocation";
 import confetti from "canvas-confetti";
 import { getDeviceInfo } from "../../utils/deviceUtils";
 import { Loader2 } from "lucide-react";
+import { Button } from "../../components/ui/button";
 
 type ActiveCourse = {
   courseTitle: string;
@@ -147,7 +148,9 @@ function MarkAttendance() {
             toast.error("Position unavailable. Try again.");
             break;
           case 3:
-            toast.error("Request timed out. Please retry or try changing your browser.");
+            toast.error(
+              "Request timed out. Please retry or try changing your browser."
+            );
             break;
         }
       } else if (error instanceof Error) {
@@ -161,60 +164,68 @@ function MarkAttendance() {
   };
 
   return (
-    <motion.div
-      className="max-w-2xl mx-auto px-4 py-8"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
-        <p>
-          <span className="font-medium">Course Title:</span>{" "}
-          {courseVenue?.courseTitle}
-        </p>
-        <p>
-          <span className="font-medium">Course Code:</span>{" "}
-          {courseVenue?.courseName}
-        </p>
-        <p>
-          <span className="font-medium">Day:</span> {dayName}
-        </p>
-        <p>
-          <span className="font-medium">Status:</span>{" "}
-          {attendanceMarked ? (
-            <span className="text-green-600 font-bold">Marked</span>
-          ) : (
-            <span className="text-yellow-600">Pending</span>
-          )}
-        </p>
-
-        {!attendanceMarked && (
-          <button
-            onClick={handleMarkAttendance}
-             disabled={loading || attendanceMarked}
-            className="mt-4 w-full  bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
-          >
-            {loading ? (
-              <span className="flex justify-center items-center gap-x-2">
-                <Loader2 className="animate-spin w-4 h-4" /> Verifying...
-              </span>
+    <div>
+      <motion.div
+        className="max-w-2xl mx-auto px-4 py-8"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
+          <p>
+            <span className="font-medium">Course Title:</span>{" "}
+            {courseVenue?.courseTitle}
+          </p>
+          <p>
+            <span className="font-medium">Course Code:</span>{" "}
+            {courseVenue?.courseName}
+          </p>
+          <p>
+            <span className="font-medium">Day:</span> {dayName}
+          </p>
+          <p>
+            <span className="font-medium">Status:</span>{" "}
+            {attendanceMarked ? (
+              <span className="text-green-600 font-bold">Marked</span>
             ) : (
-              "Mark Attendance"
+              <span className="text-yellow-600">Pending</span>
             )}
-          </button>
-        )}
+          </p>
 
-        {attendanceMarked && (
-          <motion.div
-            className="mt-6 text-center text-green-700 font-semibold"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            🎉 Your attendance has been marked successfully!
-          </motion.div>
-        )}
+          {!attendanceMarked && (
+            <button
+              onClick={handleMarkAttendance}
+              disabled={loading || attendanceMarked}
+              className="mt-4 w-full  bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
+            >
+              {loading ? (
+                <span className="flex justify-center items-center gap-x-2">
+                  <Loader2 className="animate-spin w-4 h-4" /> Verifying...
+                </span>
+              ) : (
+                "Mark Attendance"
+              )}
+            </button>
+          )}
+
+          {attendanceMarked && (
+            <motion.div
+              className="mt-6 text-center text-green-700 font-semibold"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              🎉 Your attendance has been marked successfully!
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
+
+      <div className="mx-auto mt-8">
+        <Link to={`/attendance/${courseId}`}>
+          <Button>View Your Attendance</Button>
+        </Link>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

@@ -170,7 +170,7 @@ export default function LecturerDashboard() {
 
       {/* Attendance List Section */}
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
         variants={containerVariants}
       >
         {attendances.length > 0 ? (

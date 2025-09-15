@@ -40,6 +40,7 @@ import EditCoursesPage from "./pages/admin/EditCourses";
 import AdminSupportPage from "./pages/admin/Support";
 import SignedOutDashboard from "./components/SignedOutDashboard";
 import AttendanceList from "./pages/lecturer-pages/AttendanceList";
+import ViewAttendance from "./pages/student-pages/ViewAttendance";
 
 function App() {
   return (
@@ -109,6 +110,14 @@ function App() {
           element={
             <RouteProtection requiredRole="student">
               <MarkAttendance />
+            </RouteProtection>
+          }
+        />
+        <Route
+          path="/attendance/:courseId"
+          element={
+            <RouteProtection requiredRole="student">
+              <ViewAttendance />
             </RouteProtection>
           }
         />
