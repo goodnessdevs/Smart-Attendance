@@ -26,13 +26,6 @@ const itemVariants: Variants = {
 
 const MotionCard = motion(Card);
 
-// interface Course {
-//   courseName: string;
-//   courseTitle: string;
-//   courseId: string;
-//   isActive: boolean;
-// }
-
 export default function LecturerDashboard() {
   const { isInitializing, user } = useAuthContext();
 

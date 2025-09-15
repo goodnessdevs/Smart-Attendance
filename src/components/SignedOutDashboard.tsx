@@ -115,7 +115,7 @@ export default function SignedOutDashboard() {
           <Button
             size="lg"
             onClick={() => navigate(loginPath)}
-            className="text-center flex items-center gap-2 cursor-pointer bg-white text-black"
+            className="text-center flex items-center gap-2 cursor-pointer bg-white hover:bg-zinc-200 text-black"
           >
             {icon} {buttonText}
           </Button>
