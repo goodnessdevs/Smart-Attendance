@@ -19,6 +19,18 @@ type ActiveCourse = {
   isActive: boolean;
 };
 
+async function logMyCoordinates() {
+  try {
+    const pos = await GeolocationService.getCurrentPosition();
+    console.log("Latitude:", pos.coords.latitude);
+    console.log("Longitude:", pos.coords.longitude);
+  } catch (error) {
+    console.error("Could not get location:", error);
+  }
+}
+
+logMyCoordinates();
+
 function MarkAttendance() {
   const { courseId } = useParams<{ courseId: string }>();
   const { token, user } = useAuthContext();
@@ -220,7 +232,7 @@ function MarkAttendance() {
         </div>
       </motion.div>
 
-      <div className="mx-auto mt-8">
+      <div className="flex justify-center w-full mt-8">
         <Link to={`/attendance/${courseId}`}>
           <Button>View Your Attendance</Button>
         </Link>

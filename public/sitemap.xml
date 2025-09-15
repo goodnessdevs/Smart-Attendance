@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Signed-out pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/admin</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Student public pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/login</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/onboarding</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Student protected pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/dashboard</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/register-courses</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/calendar</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/inbox</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/account-profile</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/support</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/all-courses</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Lecturer public pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/login</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/auth</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/onboarding</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Lecturer protected pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/dashboard</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/publish-attendance</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/attendance</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/register-courses</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/calendar</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/inbox</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/account-profile</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/lecturer/support</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Admin public pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/admin/login</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Admin protected pages -->
+  <url>
+    <loc>https://smartendance.vercel.app/admin/dashboard</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/admin/created-courses</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/admin/edit-courses</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/admin/support</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/admin/calendar</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://smartendance.vercel.app/admin/account-profile</loc>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
