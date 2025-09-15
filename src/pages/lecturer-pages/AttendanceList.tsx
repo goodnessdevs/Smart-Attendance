@@ -360,7 +360,7 @@ const AttendanceList = () => {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full p-10">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
