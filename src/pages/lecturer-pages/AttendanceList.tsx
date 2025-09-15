@@ -330,6 +330,8 @@ const AttendanceList = () => {
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const { courseId } = useParams();
 
+  console.log(courseId)
+
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
@@ -364,8 +366,8 @@ const AttendanceList = () => {
   });
 
   return (
-    <div className="w-full p-10">
-      <div className="flex items-center py-4">
+    <div className="w-full p-8">
+      <div className="flex items-center gap-x-2 py-4">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
