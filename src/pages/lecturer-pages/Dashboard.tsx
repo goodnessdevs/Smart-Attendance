@@ -128,6 +128,7 @@ export default function LecturerDashboard() {
         );
 
         const data = await res.json();
+        console.log(data)
         if (res.ok) {
           setAttendances(data);
         } else {
