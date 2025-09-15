@@ -170,7 +170,7 @@ export default function LecturerDashboard() {
 
       {/* Attendance List Section */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        className="grid grid-cols-2 md:grid-cols-3 gap-6"
         variants={containerVariants}
       >
         {attendances.length > 0 ? (
@@ -197,7 +197,7 @@ export default function LecturerDashboard() {
                 </p>
               </CardContent>
               <CardFooter>
-                <Link to={`/attendance/${attendance.courseId}`}>
+                <Link to={`/lecturer/attendance/${attendance.courseId}`}>
                   <Button>View</Button>
                 </Link>
               </CardFooter>
