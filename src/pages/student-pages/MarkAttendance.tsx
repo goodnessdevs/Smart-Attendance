@@ -18,7 +18,7 @@ type ActiveCourse = {
   isActive: boolean;
 };
 
-function CheckAttendance() {
+function MarkAttendance() {
   const { courseId } = useParams<{ courseId: string }>();
   const { token, user } = useAuthContext();
 
@@ -218,4 +218,4 @@ function CheckAttendance() {
   );
 }
 
-export default CheckAttendance;
+export default MarkAttendance;

@@ -483,7 +483,7 @@ const LecturerPublishCourses = () => {
           You haven’t registered for any courses yet.
         </p>
       ) : (
-        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
           {courses.map((course) => (
             <Card key={course._id} className="flex flex-col gap-y-0 p-2">
               <CardHeader className="p-2">

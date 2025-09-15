@@ -11,7 +11,7 @@ import Dashboard from "./pages/student-pages/Dashboard";
 import Account from "./pages/student-pages/Account";
 import Login from "./pages/student-pages/Login";
 import Onboarding from "./pages/student-pages/Onboarding";
-import CheckAttendance from "./pages/student-pages/CheckAttendance";
+import MarkAttendance from "./pages/student-pages/MarkAttendance";
 import CalendarPage from "./pages/student-pages/Calendar";
 import InboxPage from "./pages/student-pages/Inbox";
 import Support from "./pages/student-pages/Support";
@@ -32,7 +32,7 @@ import LecturerCourseRegistration from "./pages/lecturer-pages/LecturerCourseReg
 
 // Admin pages
 import AdminAccount from "./pages/admin/Account";
-import AdminDashboard from "./pages/admin/page";
+import AdminDashboard from "./pages/admin/Dashboard";
 import CreatedCourses from "./pages/admin/CreatedCourses";
 import AdminLogin from "./pages/admin/Login";
 import AdminCalendarPage from "./pages/admin/Calendar";
@@ -108,7 +108,7 @@ function App() {
           path="/course/:courseId"
           element={
             <RouteProtection requiredRole="student">
-              <CheckAttendance />
+              <MarkAttendance />
             </RouteProtection>
           }
         />
@@ -147,7 +147,7 @@ function App() {
           }
         />
         <Route
-          path="/lecturer/attendance-list"
+          path="/lecturer/attendance/:courseId"
           element={
             <RouteProtection requiredRole="lecturer">
               <AttendanceList />

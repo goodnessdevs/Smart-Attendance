@@ -57,7 +57,7 @@ const AllCourses = () => {
       {courses.length === 0 ? (
         <p>No courses available.</p>
       ) : (
-        <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
           {courses.map((course) => (
             <div
               key={course._id}

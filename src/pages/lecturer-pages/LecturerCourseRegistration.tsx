@@ -103,9 +103,10 @@ const LecturerCourseRegistration = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Lecturer Course Registration</h1>
+      <h1 className="text-2xl font-bold">Course Registration</h1>
+      <p className="text-md text-primary">Register your courses for this semester.</p>
 
-      <div className="my-4 mb-6 md:w-md w-[250px]">
+      <div className="my-4 mb-6 md:w-md w-[250px] md:mx-0 mx-auto">
         <Input
           type="text"
           placeholder="Search courses..."
@@ -119,7 +120,7 @@ const LecturerCourseRegistration = () => {
           <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
           {filteredCourses.map((course) => (
             <Card key={course._id} className="flex flex-col gap-y-0 p-2">
               <CardHeader className="p-2">

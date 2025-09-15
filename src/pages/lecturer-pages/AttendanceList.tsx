@@ -294,7 +294,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/use-auth";
 import {
-    flexRender,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -323,10 +323,12 @@ import {
   attendanceColumns,
   type Attendance,
 } from "../../lib/attendance-columns";
+import { useParams } from "react-router-dom";
 
 const AttendanceList = () => {
   const { token } = useAuthContext();
   const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const { courseId } = useParams();
 
   useEffect(() => {
     const fetchAttendance = async () => {
@@ -334,9 +336,11 @@ const AttendanceList = () => {
         const res = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/attendance`,
           {
+            method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
             },
+            body: JSON.stringify({ courseId }),
           }
         );
 
@@ -348,7 +352,7 @@ const AttendanceList = () => {
     };
 
     fetchAttendance();
-  }, [token]);
+  }, [courseId, token]);
 
   const table = useReactTable({
     data: attendance,
