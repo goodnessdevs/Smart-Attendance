@@ -33,7 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 const items = [
   {
     title: "Dashboard",
-    href: "/admin",
+    href: "/admin/dashboard",
     icon: LayoutDashboardIcon,
   },
   {

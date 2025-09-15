@@ -31,7 +31,7 @@ import { useState } from "react";
 const items = [
   {
     title: "Dashboard",
-    href: "/lecturer",
+    href: "/lecturer/dashboard",
     icon: LayoutDashboardIcon,
   },
   {

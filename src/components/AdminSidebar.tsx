@@ -30,7 +30,7 @@ import { useAuthContext } from "../hooks/use-auth";
 const items = [
   {
     title: "Dashboard",
-    href: "/admin",
+    href: "/admin/dashboard",
     icon: LayoutDashboardIcon,
   },
   {
