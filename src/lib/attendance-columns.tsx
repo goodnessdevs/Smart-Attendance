@@ -130,15 +130,15 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "matricNumber",
+    accessorKey: "matricNo",
     header: "Matric Number",
-    cell: ({ row }) => <div>{row.getValue("matricNumber")}</div>,
+    cell: ({ row }) => <div>{row.getValue("matricNo")}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "isPresent",
+    header: "Present",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("isPresent")}</div>
     ),
   },
   {
