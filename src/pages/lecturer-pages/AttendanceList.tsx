@@ -330,7 +330,7 @@ const AttendanceList = () => {
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const { courseId } = useParams();
 
-  console.log(courseId)
+  console.log(courseId);
 
   useEffect(() => {
     const fetchAttendance = async () => {
@@ -340,6 +340,7 @@ const AttendanceList = () => {
           {
             method: "POST",
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ courseId }),
@@ -347,7 +348,10 @@ const AttendanceList = () => {
         );
 
         const data = await res.json();
-        if (res.ok) setAttendance(data);
+        if (res.ok) {
+          console.log(data);
+          setAttendance(data);
+        }
       } catch (error) {
         console.error(error);
       }
