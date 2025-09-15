@@ -99,7 +99,7 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     enableHiding: false,
   },
   {
-    id: "sn",
+    id: "S/N",
     header: "S/N",
     cell: ({ row }) => <div>{row.index + 1}</div>, // auto serial number
   },
