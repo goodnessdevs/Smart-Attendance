@@ -60,20 +60,19 @@
 //   },
 // ]
 
-
-import { type ColumnDef } from "@tanstack/react-table"
-import { Checkbox } from "../components/ui/checkbox"
-import { Button } from "../components/ui/button"
-import { ArrowUpDown } from "lucide-react"
+import { type ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "../components/ui/checkbox";
+import { Button } from "../components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 export type Attendance = {
-  id: string
-  fullName: string
-  email: string
-  matricNumber: string
-  status: "present" | "absent" | "late"
-  date: string
-}
+  id: string;
+  fullName: string;
+  email: string;
+  matricNumber: string;
+  status: "present" | "absent" | "late";
+  date: string;
+};
 
 export const attendanceColumns: ColumnDef<Attendance>[] = [
   {
@@ -107,7 +106,7 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     accessorKey: "fullName",
     header: ({ column }) => (
       <Button
-        variant="default"
+        variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Full Name
@@ -120,14 +119,14 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     accessorKey: "email",
     header: ({ column }) => (
       <Button
-        variant="default"
+        variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Email
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div>{row.getValue("email")}</div>,
   },
   {
     accessorKey: "matricNo",
@@ -136,9 +135,15 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
   },
   {
     accessorKey: "isPresent",
-    header: "Present",
+    header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize">`${row.getValue("isPresent")}`</div>
+      <div
+        className={
+          row.getValue("isPresent") ? "text-green-500" : "text-red-500"
+        }
+      >
+        {row.getValue("isPresent") ? "Present" : "Absent"}
+      </div>
     ),
   },
   {
@@ -146,4 +151,4 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     header: "Date",
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
-]
+];

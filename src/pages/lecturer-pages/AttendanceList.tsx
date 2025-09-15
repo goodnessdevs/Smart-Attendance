@@ -122,7 +122,10 @@ const AttendanceList = () => {
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : (header.column.columnDef.header as React.ReactNode)}
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -148,7 +151,13 @@ const AttendanceList = () => {
                   colSpan={attendanceColumns.length}
                   className="h-24 text-center"
                 >
-                  {loading ? <span className="flex justify-center"><Loader2 className="animate-spin w-4 h-4" /> </span> : <>No results.</>}
+                  {loading ? (
+                    <span className="flex justify-center">
+                      <Loader2 className="animate-spin w-4 h-4" />{" "}
+                    </span>
+                  ) : (
+                    <>No results.</>
+                  )}
                 </TableCell>
               </TableRow>
             )}
