@@ -146,6 +146,7 @@ function MarkAttendance() {
           courseName: course.courseName,
           courseTitle: course.courseTitle,
           venueName: course.venueName,
+          matricNumber: user?.matricNumber,
         })
       );
 
