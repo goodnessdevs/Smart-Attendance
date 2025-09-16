@@ -1,41 +1,49 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "../components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { Badge } from "../components/ui/badge";
 
 export type StudentAttendance = {
-  courseTitle: string;
-  courseCode: string;
-  status: "present" | "absent" | "late";
+  courseName: string;
+  venueName: string;
+  isPresent: boolean;
   date: string;
 };
 
 export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
   {
-    accessorKey: "courseId",
+    id: "S/N",
+    header: "S/N",
+    cell: ({ row }) => <div>{row.index + 1}</div>, // auto serial number
+  },
+  {
+    accessorKey: "courseName",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Course Id
+        Course Code
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue("courseId")}</div>,
+    cell: ({ row }) => <div>{row.getValue("courseName")}</div>,
+  },
+  {
+    accessorKey: "venueName",
+    header: "Venue",
+    cell: ({ row }) => <div>{row.getValue("venueName")}</div>,
   },
   {
     accessorKey: "isPresent",
     header: "Status",
     cell: ({ row }) => (
-      <div
-        className={
-          row.getValue("isPresent")
-            ? "text-green-500 dark:text-green-700 font-semibold tracking-wide"
-            : "text-red-500 font-semibold tracking-wide"
-        }
+      <Badge
+        variant={row.getValue("isPresent") ? "success" : "destructive"}
+        className="tracking-wide"
       >
         {row.getValue("isPresent") ? "Present" : "Absent"}
-      </div>
+      </Badge>
     ),
   },
   {

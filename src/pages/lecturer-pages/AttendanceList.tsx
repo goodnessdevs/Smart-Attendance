@@ -107,7 +107,10 @@ const AttendanceList = () => {
                   checked={col.getIsVisible()}
                   onCheckedChange={(val) => col.toggleVisibility(!!val)}
                 >
-                  {col.id}
+                  {typeof col.columnDef.header === "string"
+                    ? col.columnDef.header
+                    : col.id}{" "}
+                  {/* fallback for non-string headers */}
                 </DropdownMenuCheckboxItem>
               ))}
           </DropdownMenuContent>

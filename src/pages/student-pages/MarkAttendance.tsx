@@ -25,7 +25,7 @@ function MarkAttendance() {
 
   const [attendanceMarked, setAttendanceMarked] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [courseVenue, setCourseVenue] = useState<ActiveCourse | null>(null);
+  const [course, setCourse] = useState<ActiveCourse | null>(null);
 
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
@@ -43,12 +43,12 @@ function MarkAttendance() {
         if (!res.ok) throw new Error("Failed to fetch course venues");
 
         const data = await res.json();
-        const course = data.courses.find(
+        const courseToMark = data.courses.find(
           (c: ActiveCourse) => c.courseId === courseId
         );
 
-        if (course) {
-          setCourseVenue(course);
+        if (courseToMark) {
+          setCourse(courseToMark);
         }
       } catch (error) {
         toast.error(
@@ -64,7 +64,7 @@ function MarkAttendance() {
 
   // Mark attendance handler
   const handleMarkAttendance = async () => {
-    if (!courseVenue) {
+    if (!course) {
       toast.error("Venue not loaded yet");
       return;
     }
@@ -86,8 +86,8 @@ function MarkAttendance() {
       const { isWithin, distance } = GeolocationService.isWithinRadius(
         pos.coords.latitude,
         pos.coords.longitude,
-        courseVenue.lat,
-        courseVenue.long,
+        course.lat,
+        course.long,
         30 // 30m radius check
       );
 
@@ -122,6 +122,8 @@ function MarkAttendance() {
           },
           body: JSON.stringify({
             courseId,
+            courseName: course.courseName,
+            venueName: course.venueName,
             day: dayName,
             date: today.toLocaleDateString(),
             fullName: user?.fullName,
@@ -177,11 +179,11 @@ function MarkAttendance() {
         <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
           <p>
             <span className="font-medium">Course Title:</span>{" "}
-            {courseVenue?.courseTitle}
+            {course?.courseTitle}
           </p>
           <p>
             <span className="font-medium">Course Code:</span>{" "}
-            {courseVenue?.courseName}
+            {course?.courseName}
           </p>
           <p>
             <span className="font-medium">Day:</span> {dayName}

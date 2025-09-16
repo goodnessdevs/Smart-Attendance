@@ -5,15 +5,17 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider.tsx";
 import { AuthContextProvider } from "./context/AuthContextProvider.tsx";
+import { ScrollToTop } from "./components/ScrollToTop.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-        <BrowserRouter>
-          <AuthContextProvider>
-            <App />
-          </AuthContextProvider>
-        </BrowserRouter>
-      </ThemeProvider>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <BrowserRouter>
+        <AuthContextProvider>
+          <ScrollToTop />
+          <App />
+        </AuthContextProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   </StrictMode>
 );

@@ -2,13 +2,13 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../components/ui/checkbox";
 import { Button } from "../components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { Badge } from "../components/ui/badge";
 
 export type Attendance = {
-  id: string;
   fullName: string;
   email: string;
   matricNumber: string;
-  status: "present" | "absent" | "late";
+  isPresent: boolean;
   date: string;
 };
 
@@ -75,13 +75,12 @@ export const attendanceColumns: ColumnDef<Attendance>[] = [
     accessorKey: "isPresent",
     header: "Status",
     cell: ({ row }) => (
-      <div
-        className={
-          row.getValue("isPresent") ? "text-green-500 dark:text-green-700 font-semibold tracking-wide" : "text-red-500 font-semibold tracking-wide"
-        }
+      <Badge
+        variant={row.getValue("isPresent") ? "success" : "destructive"}
+        className="tracking-wide"
       >
         {row.getValue("isPresent") ? "Present" : "Absent"}
-      </div>
+      </Badge>
     ),
   },
   {
