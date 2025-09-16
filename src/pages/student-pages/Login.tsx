@@ -12,7 +12,7 @@ import { Button } from "../../components/ui/button";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/use-auth";
 import { toast } from "sonner";
-import { useSEO } from "../../hooks/useSeo";
+import { useSEO } from "../../hooks/useSEO";
 
 const MotionCard = motion.create(Card);
 

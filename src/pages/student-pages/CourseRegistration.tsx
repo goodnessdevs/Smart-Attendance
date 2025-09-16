@@ -9,7 +9,7 @@ import {
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "../../components/ui/input";
-import { useSEO } from "../../hooks/useSeo";
+import { useSEO } from "../../hooks/useSEO";
 
 interface Course {
   _id: string;

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
-import { useSEO } from "../../hooks/useSeo";
+import { useSEO } from "../../hooks/useSEO";
 
 // --- Course type ---
 type Course = {
