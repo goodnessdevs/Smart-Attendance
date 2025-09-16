@@ -104,18 +104,8 @@ const ViewAttendance = () => {
 
   return (
     <div className="w-full p-6 md:p-8">
-      <h1 className="text-2xl font-bold mb-4">Attendance Record</h1>
-      <div className="flex justify-center items-center py-4">
-        {/* <Input
-          placeholder="Filter course title..."
-          value={
-            (table.getColumn("courseTitle")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(e) =>
-            table.getColumn("courseTitle")?.setFilterValue(e.target.value)
-          }
-          className="max-w-sm"
-        /> */}
+      <div className="flex gap-x-2 items-center py-4">
+        <h1 className="text-2xl font-bold mb-4">Attendance Record</h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
