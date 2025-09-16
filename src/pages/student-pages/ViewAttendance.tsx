@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Input } from "../../components/ui/input";
+// import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -56,6 +56,7 @@ const ViewAttendance = () => {
           courseName: attendanceData.courseName,
           courseTitle: attendanceData.courseTitle,
           venueName: attendanceData.venueName,
+          matricNumber: attendanceData.matricNumber, // ✅ make sure it’s saved
         },
       ]);
     }
@@ -103,11 +104,9 @@ const ViewAttendance = () => {
 
   return (
     <div className="w-full p-6 md:p-8">
-      <h1 className="text-2xl font-bold mb-4">
-        {attendance.length > 0 ? attendance[0].courseName : "Attendance"}
-      </h1>
-      <div className="flex items-center gap-x-2 py-4">
-        <Input
+      <h1 className="text-2xl font-bold mb-4">Attendance Record</h1>
+      <div className="flex justify-center items-center py-4">
+        {/* <Input
           placeholder="Filter course title..."
           value={
             (table.getColumn("courseTitle")?.getFilterValue() as string) ?? ""
@@ -116,7 +115,7 @@ const ViewAttendance = () => {
             table.getColumn("courseTitle")?.setFilterValue(e.target.value)
           }
           className="max-w-sm"
-        />
+        /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

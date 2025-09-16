@@ -9,6 +9,7 @@ export type StudentAttendance = {
   venueName: string;
   isPresent: boolean;
   date: string;
+  matricNumber: string; // ✅ add this
 };
 
 export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
