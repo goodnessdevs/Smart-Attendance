@@ -108,7 +108,7 @@ export default function SignedOutDashboard() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="flex justify-around items-center w-full mt-10"
         >
-          <h1 className="text-3xl font-bold text-green-900">
+          <h1 className="text-2xl font-bold text-green-900">
             Smart Attendance
           </h1>
 

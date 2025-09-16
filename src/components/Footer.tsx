@@ -3,7 +3,7 @@ import { Separator } from "./ui/separator";
 
 function Footer() {
   return (
-    <footer className="bg-zinc-900 text-white w-full afacad-flux md:ml-60">
+    <footer className="bg-black text-white afacad-flux md:ml-60">
       <div className="max-w-7xl mx-auto px-6 py-10 md:py-16 flex flex-col md:flex-row md:justify-between gap-10">
         {/* Logo and Title */}
         <div className="flex flex-col items-center md:items-start space-y-4">
