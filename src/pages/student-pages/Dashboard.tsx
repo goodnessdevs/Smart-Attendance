@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/use-auth";
+import { useSEO } from "../../hooks/useSeo";
 
 // --- Course type ---
 type Course = {
@@ -31,22 +32,13 @@ export default function Dashboard() {
   const attendancePercentage =
     totalCourses > 0 ? Math.round((attendancesMarked / totalCourses) * 100) : 0;
 
-  useEffect(() => {
-    document.title = "Student Dashboard | Smartendance";
-
-    const metaDescription = document.querySelector("meta[name='description']");
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "View your attendance dashboard in Smartendance."
-      );
-    } else {
-      const newMeta = document.createElement("meta");
-      newMeta.name = "description";
-      newMeta.content = "View your attendance dashboard in Smartendance.";
-      document.head.appendChild(newMeta);
-    }
-  }, []);
+  useSEO({
+    title: "Student Dashboard | Smartendance",
+    description:
+      "Track your attendance, view courses, and manage your student account with Smartendance.",
+    url: "https://smartendance.vercel.app/dashboard",
+    type: "website",
+  });
 
   // Fetch active courses
   useEffect(() => {

@@ -12,6 +12,7 @@ import { Button } from "../../components/ui/button";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/use-auth";
 import { toast } from "sonner";
+import { useSEO } from "../../hooks/useSeo";
 
 const MotionCard = motion.create(Card);
 
@@ -22,6 +23,14 @@ function Login() {
 
   const { login } = useAuthContext();
   const [loading, setLoading] = useState(false);
+
+  useSEO({
+    title: "Login | Smartendance",
+    description:
+      "Access your Smartendance account. Sign in to track attendance, manage courses, and stay on top of your studies.",
+    url: "https://smartendance.vercel.app/login",
+    type: "website",
+  });
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {

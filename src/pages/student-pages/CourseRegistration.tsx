@@ -9,6 +9,7 @@ import {
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "../../components/ui/input";
+import { useSEO } from "../../hooks/useSeo";
 
 interface Course {
   _id: string;
@@ -27,6 +28,14 @@ const CourseRegistration = () => {
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState<string | null>(null); // track course being registered
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  useSEO({
+    title: "Course Registration | Smartendance",
+    description:
+      "Register for courses quickly and easily with Smartendance. Manage your academic schedule, track attendance, and stay organized in one platform.",
+    url: "https://smartendance.vercel.app/register-courses",
+    type: "website"
+  });
 
   // Fetch courses from backend
   useEffect(() => {
