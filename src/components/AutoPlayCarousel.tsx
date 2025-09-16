@@ -19,7 +19,7 @@ export function AutoPlayCarousel({ items }: { items: Slide[] }) {
     >
       <CarouselContent>
         {items.map((slide, idx) => (
-          <CarouselItem key={idx} className="flex flex-col items-center justify-center px-6 py-12 text-center text-green-950" style={{textShadow: "3px 3px 3px rgba(256,256,0,0.25)"}}>
+          <CarouselItem key={idx} className="flex flex-col items-center justify-center px-6 py-12 text-center text-green-950" style={{textShadow: "3px 3px 3px rgba(0,220,220,0.25)"}}>
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
