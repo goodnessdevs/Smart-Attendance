@@ -124,6 +124,7 @@ function MarkAttendance() {
             courseId,
             courseName: course.courseName,
             venueName: course.venueName,
+            courseTitle: course.courseTitle,
             day: dayName,
             date: today.toLocaleDateString(),
             fullName: user?.fullName,
@@ -137,6 +138,16 @@ function MarkAttendance() {
       if (!res.ok) {
         throw new Error("Failed to mark attendance");
       }
+
+      localStorage.setItem(
+        `attendance-${courseId}-${today.toLocaleDateString()}`,
+        JSON.stringify({
+          isPresent: true,
+          courseName: course.courseName,
+          courseTitle: course.courseTitle,
+          venueName: course.venueName,
+        })
+      );
 
       setAttendanceMarked(true);
       confetti();

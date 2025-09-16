@@ -40,6 +40,28 @@ const ViewAttendance = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!courseId) return;
+
+    const saved = localStorage.getItem(
+      `attendance-${courseId}-${new Date().toLocaleDateString()}`
+    );
+
+    if (saved) {
+      const attendanceData = JSON.parse(saved);
+      setAttendance((prev) => [
+        ...prev,
+        {
+          isPresent: attendanceData.isPresent,
+          date: new Date().toLocaleDateString(),
+          courseName: attendanceData.courseName,
+          courseTitle: attendanceData.courseTitle,
+          venueName: attendanceData.venueName,
+        },
+      ]);
+    }
+  }, [courseId]);
+
+  useEffect(() => {
     const fetchAttendance = async () => {
       setLoading(true);
       try {
@@ -54,7 +76,7 @@ const ViewAttendance = () => {
             body: JSON.stringify({ courseId }),
           }
         );
-        
+
         const data = await res.json();
         if (res.ok) {
           console.log(data);
@@ -81,6 +103,9 @@ const ViewAttendance = () => {
 
   return (
     <div className="w-full p-6 md:p-8">
+      <h1 className="text-2xl font-bold mb-4">
+        {attendance.length > 0 ? attendance[0].courseName : "Attendance"}
+      </h1>
       <div className="flex items-center gap-x-2 py-4">
         <Input
           placeholder="Filter course title..."
