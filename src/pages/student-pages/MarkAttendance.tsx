@@ -6,7 +6,7 @@ import { useAuthContext } from "../../hooks/use-auth";
 import { GeolocationService } from "../../lib/geolocation";
 import confetti from "canvas-confetti";
 import { getDeviceInfo } from "../../utils/deviceUtils";
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 
 type ActiveCourse = {
@@ -181,14 +181,84 @@ function MarkAttendance() {
   };
 
   return (
-    <div>
+    // <div>
+    //   <motion.div
+    //     className="max-w-2xl mx-auto px-4 py-8"
+    //     initial={{ opacity: 0, y: 40 }}
+    //     animate={{ opacity: 1, y: 0 }}
+    //     transition={{ duration: 0.5 }}
+    //   >
+    //     <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
+    //       <p>
+    //         <span className="font-medium">Course Title:</span>{" "}
+    //         {course?.courseTitle}
+    //       </p>
+    //       <p>
+    //         <span className="font-medium">Course Code:</span>{" "}
+    //         {course?.courseName}
+    //       </p>
+    //       <p>
+    //         <span className="font-medium">Day:</span> {dayName}
+    //       </p>
+    //       <p>
+    //         <span className="font-medium">Status:</span>{" "}
+    //         {attendanceMarked ? (
+    //           <span className="text-green-600 font-bold">Marked</span>
+    //         ) : (
+    //           <span className="text-yellow-600">Pending</span>
+    //         )}
+    //       </p>
+
+    //       {!attendanceMarked && (
+    //         <button
+    //           onClick={handleMarkAttendance}
+    //           disabled={loading || attendanceMarked}
+    //           className="mt-4 w-full  bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
+    //         >
+    //           {loading ? (
+    //             <span className="flex justify-center items-center gap-x-2">
+    //               <Loader2 className="animate-spin w-4 h-4" /> Verifying...
+    //             </span>
+    //           ) : (
+    //             "Mark Attendance"
+    //           )}
+    //         </button>
+    //       )}
+
+    //       {attendanceMarked && (
+    //         <motion.div
+    //           className="mt-6 text-center text-green-700 font-semibold"
+    //           initial={{ opacity: 0 }}
+    //           animate={{ opacity: 1 }}
+    //         >
+    //           🎉 Your attendance has been marked successfully!
+    //         </motion.div>
+    //       )}
+    //     </div>
+    //   </motion.div>
+
+    //   <div className="flex justify-center w-full mt-8">
+    //     <Link to={`/attendance/${courseId}`}>
+    //       <Button>View Your Attendance</Button>
+    //     </Link>
+    //   </div>
+    // </div>
+
+    <div className="flex flex-col items-center px-4 py-10">
+      {/* Animated Card */}
       <motion.div
-        className="max-w-2xl mx-auto px-4 py-8"
+        className="w-full max-w-2xl bg-gradient-to-br from-white via-gray-50 to-gray-100 
+                   dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 
+                   rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 space-y-6"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="bg-accent rounded-xl p-5 shadow-md space-y-4">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-white tracking-tight">
+          📘 Attendance Details
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
           <p>
             <span className="font-medium">Course Title:</span>{" "}
             {course?.courseTitle}
@@ -205,41 +275,53 @@ function MarkAttendance() {
             {attendanceMarked ? (
               <span className="text-green-600 font-bold">Marked</span>
             ) : (
-              <span className="text-yellow-600">Pending</span>
+              <span className="text-yellow-600 font-medium">Pending</span>
             )}
           </p>
-
-          {!attendanceMarked && (
-            <button
-              onClick={handleMarkAttendance}
-              disabled={loading || attendanceMarked}
-              className="mt-4 w-full  bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-200 disabled:opacity-50"
-            >
-              {loading ? (
-                <span className="flex justify-center items-center gap-x-2">
-                  <Loader2 className="animate-spin w-4 h-4" /> Verifying...
-                </span>
-              ) : (
-                "Mark Attendance"
-              )}
-            </button>
-          )}
-
-          {attendanceMarked && (
-            <motion.div
-              className="mt-6 text-center text-green-700 font-semibold"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              🎉 Your attendance has been marked successfully!
-            </motion.div>
-          )}
         </div>
+
+        {/* Mark Attendance Button */}
+        {!attendanceMarked && (
+          <Button
+            onClick={handleMarkAttendance}
+            disabled={loading || attendanceMarked}
+            size="lg"
+            className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200 disabled:opacity-50"
+          >
+            {loading ? (
+              <span className="flex justify-center items-center gap-x-2">
+                <Loader2 className="animate-spin w-4 h-4" /> Verifying...
+              </span>
+            ) : (
+              "Mark My Attendance"
+            )}
+          </Button>
+        )}
+
+        {/* Success Animation */}
+        {attendanceMarked && (
+          <motion.div
+            className="flex flex-col items-center mt-6 text-green-700 dark:text-green-400 font-semibold"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            <CheckCircle2 className="w-12 h-12 mb-2" />
+             Your attendance has been marked successfully!
+          </motion.div>
+        )}
       </motion.div>
 
-      <div className="flex justify-center w-full mt-8">
+      {/* View Attendance Button */}
+      <div className="mt-10">
         <Link to={`/attendance/${courseId}`}>
-          <Button>View Your Attendance</Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900"
+          >
+            View Your Attendance
+          </Button>
         </Link>
       </div>
     </div>
