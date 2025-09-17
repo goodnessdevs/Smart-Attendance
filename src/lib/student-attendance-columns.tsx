@@ -2,6 +2,8 @@ import { type ColumnDef } from "@tanstack/react-table";
 // import { Button } from "../components/ui/button";
 // import { ArrowUpDown } from "lucide-react";
 import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 export type StudentAttendance = {
   courseName: string;
@@ -9,7 +11,6 @@ export type StudentAttendance = {
   venueName: string;
   isPresent: boolean;
   date: string;
-  matricNumber: string; // ✅ add this
 };
 
 export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
@@ -18,23 +19,18 @@ export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
     header: "S/N",
     cell: ({ row }) => <div>{row.index + 1}</div>, // auto serial number
   },
-  // {
-  //   accessorKey: "courseName",
-  //   header: ({ column }) => (
-  //     <Button
-  //       variant="ghost"
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //     >
-  //       Course Code
-  //       <ArrowUpDown className="ml-2 h-4 w-4" />
-  //     </Button>
-  //   ),
-  //   cell: ({ row }) => <div>{row.getValue("courseName")}</div>,
-  // },
   {
-    accessorKey: "matricNumber",
-    header: "Matric Number",
-    cell: ({ row }) => <div>{row.getValue("matricNumber")}</div>,
+    accessorKey: "courseName",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Course Code
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <div>{row.getValue("courseName")}</div>,
   },
   {
     accessorKey: "venueName",

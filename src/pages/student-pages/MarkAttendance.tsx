@@ -144,7 +144,6 @@ function MarkAttendance() {
             date: today.toLocaleDateString(),
             fullName: user?.fullName,
             email: user?.email,
-            matricNo: user?.matricNumber,
             isPresent: true,
           }),
         }
@@ -161,7 +160,6 @@ function MarkAttendance() {
           courseName: course.courseName,
           courseTitle: course.courseTitle,
           venueName: course.venueName,
-          matricNumber: user?.matricNumber,
         })
       );
 

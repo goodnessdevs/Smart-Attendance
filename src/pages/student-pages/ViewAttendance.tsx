@@ -56,7 +56,6 @@ const ViewAttendance = () => {
           courseName: attendanceData.courseName,
           courseTitle: attendanceData.courseTitle,
           venueName: attendanceData.venueName,
-          matricNumber: attendanceData.matricNumber, // ✅ make sure it’s saved
         },
       ]);
     }
@@ -82,7 +81,6 @@ const ViewAttendance = () => {
         if (res.ok) {
           console.log(data);
           setAttendance(data.records);
-          // setAttendance((prev) => [...prev, ...data.records]);
         }
       } catch (err) {
         console.error(err);
@@ -105,6 +103,7 @@ const ViewAttendance = () => {
 
   return (
     <div className="w-full p-6 md:p-8">
+      <h1 className="text-center">{attendance[0].courseTitle}</h1>
       <div className="flex gap-x-2 items-center py-4">
         <h1 className="text-2xl font-bold mb-4">Attendance Record</h1>
         <DropdownMenu>
