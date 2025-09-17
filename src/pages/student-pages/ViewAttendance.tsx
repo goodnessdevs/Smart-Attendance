@@ -41,8 +41,10 @@ const ViewAttendance = () => {
   useEffect(() => {
     if (!courseId) return;
 
+    const fullDateTime = new Date().toLocaleString()
+
     const saved = localStorage.getItem(
-      `attendance-${courseId}-${new Date().toLocaleString()}`
+      `attendance-${courseId}-${fullDateTime}`
     );
 
     if (saved) {
@@ -51,7 +53,7 @@ const ViewAttendance = () => {
         ...prev,
         {
           isPresent: attendanceData.isPresent,
-          date: new Date().toLocaleString(),
+          date: fullDateTime,
           courseName: attendanceData.courseName,
           courseTitle: attendanceData.courseTitle,
           venueName: attendanceData.venueName,

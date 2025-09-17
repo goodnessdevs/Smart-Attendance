@@ -27,15 +27,26 @@ function MarkAttendance() {
   const [loading, setLoading] = useState(false);
   const [course, setCourse] = useState<ActiveCourse | null>(null);
 
-  const today =  useMemo(() => new Date(), []);
-  const dayName = today.toLocaleString();
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  const today = useMemo(() => new Date(), []);
+  const dayOfTheWeek = days[today.getDay()];
+
+  const dateKey = today.toLocaleDateString(); // stable key for the day
+  const fullDateTime = today.toLocaleString(); // display with time
 
   useEffect(() => {
     if (!courseId) return;
 
-    const saved = localStorage.getItem(
-      `attendance-${courseId}-${today.toLocaleString()}`
-    );
+    const saved = localStorage.getItem(`attendance-${courseId}-${dateKey}`);
 
     if (saved) {
       const data = JSON.parse(saved);
@@ -43,7 +54,7 @@ function MarkAttendance() {
         setAttendanceMarked(true);
       }
     }
-  }, [courseId, today]);
+  }, [courseId, dateKey]);
 
   // ✅ Fetch venue details for this course
   useEffect(() => {
@@ -140,8 +151,8 @@ function MarkAttendance() {
             courseName: course.courseName,
             venueName: course.venueName,
             courseTitle: course.courseTitle,
-            day: dayName,
-            date: today.toLocaleString(),
+            day: dayOfTheWeek,
+            date: fullDateTime,
             fullName: user?.fullName,
             email: user?.email,
             isPresent: true,
@@ -154,12 +165,13 @@ function MarkAttendance() {
       }
 
       localStorage.setItem(
-        `attendance-${courseId}-${today.toLocaleString()}`,
+        `attendance-${courseId}-${dateKey}`,
         JSON.stringify({
           isPresent: true,
           courseName: course.courseName,
           courseTitle: course.courseTitle,
           venueName: course.venueName,
+          date: fullDateTime,
         })
       );
 
@@ -218,7 +230,7 @@ function MarkAttendance() {
             {course?.courseName}
           </p>
           <p>
-            <span className="font-medium">Day:</span> {dayName}
+            <span className="font-medium">Day:</span> {dayOfTheWeek}
           </p>
           <p>
             <span className="font-medium">Status:</span>{" "}
