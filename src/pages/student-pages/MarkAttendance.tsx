@@ -28,13 +28,13 @@ function MarkAttendance() {
   const [course, setCourse] = useState<ActiveCourse | null>(null);
 
   const today =  useMemo(() => new Date(), []);
-  const dayName = today.toLocaleString("en-US", { weekday: "long" });
+  const dayName = today.toLocaleString();
 
   useEffect(() => {
     if (!courseId) return;
 
     const saved = localStorage.getItem(
-      `attendance-${courseId}-${today.toLocaleDateString()}`
+      `attendance-${courseId}-${today.toLocaleString()}`
     );
 
     if (saved) {

@@ -163,7 +163,10 @@ export default function Dashboard() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <Card className="shadow-xl">
+        <Card
+          className="shadow-xl bg-gradient-to-br from-white via-gray-50 to-gray-100 
+                   dark:from-zinc-950 dark:via-zinc-800 dark:to-zinc-950"
+        >
           <CardContent className="p-6">
             <h3 className="text-xl font-semibold mb-5">Active Courses</h3>
 
@@ -181,7 +184,7 @@ export default function Dashboard() {
                   <Link
                     key={course.courseId}
                     to={`/course/${course.courseId}`}
-                    className="block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 bg-white dark:bg-slate-900"
+                    className="block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 bg-cyan-500 text-cyan-900 dark:bg-cyan-500 dark:text-white"
                   >
                     <div>
                       <h4 className="font-semibold text-lg">
