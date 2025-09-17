@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
@@ -27,8 +27,23 @@ function MarkAttendance() {
   const [loading, setLoading] = useState(false);
   const [course, setCourse] = useState<ActiveCourse | null>(null);
 
-  const today = new Date();
+  const today =  useMemo(() => new Date(), []);
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
+
+  useEffect(() => {
+    if (!courseId) return;
+
+    const saved = localStorage.getItem(
+      `attendance-${courseId}-${today.toLocaleDateString()}`
+    );
+
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.isPresent) {
+        setAttendanceMarked(true);
+      }
+    }
+  }, [courseId, today]);
 
   // ✅ Fetch venue details for this course
   useEffect(() => {

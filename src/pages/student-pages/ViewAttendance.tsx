@@ -81,8 +81,8 @@ const ViewAttendance = () => {
         const data = await res.json();
         if (res.ok) {
           console.log(data);
-          // setAttendance(data.records);
-          setAttendance((prev) => [...prev, ...data.records]);
+          setAttendance(data.records);
+          // setAttendance((prev) => [...prev, ...data.records]);
         }
       } catch (err) {
         console.error(err);
