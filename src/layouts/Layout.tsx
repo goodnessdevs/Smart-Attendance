@@ -25,7 +25,7 @@ export default function Layout() {
       <SidebarProvider>
         {!shouldHide && <AppSidebar />}
 
-        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-black mb-10">
+        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-black">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <MobileNavbar />}
           <Separator className="md:hidden" />
