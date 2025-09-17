@@ -1,6 +1,4 @@
 import { type ColumnDef } from "@tanstack/react-table";
-// import { Button } from "../components/ui/button";
-// import { ArrowUpDown } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { ArrowUpDown } from "lucide-react";

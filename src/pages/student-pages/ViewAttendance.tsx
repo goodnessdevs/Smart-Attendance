@@ -42,7 +42,7 @@ const ViewAttendance = () => {
     if (!courseId) return;
 
     const saved = localStorage.getItem(
-      `attendance-${courseId}-${new Date().toLocaleDateString()}`
+      `attendance-${courseId}-${new Date().toLocaleString()}`
     );
 
     if (saved) {

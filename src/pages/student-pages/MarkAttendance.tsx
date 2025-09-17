@@ -154,7 +154,7 @@ function MarkAttendance() {
       }
 
       localStorage.setItem(
-        `attendance-${courseId}-${today.toLocaleDateString()}`,
+        `attendance-${courseId}-${today.toLocaleString()}`,
         JSON.stringify({
           isPresent: true,
           courseName: course.courseName,
