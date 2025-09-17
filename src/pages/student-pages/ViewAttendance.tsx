@@ -102,9 +102,12 @@ const ViewAttendance = () => {
 
   return (
     <div className="w-full p-6 md:p-8">
-      <h1 className="text-center">{attendance[0].courseTitle}</h1>
+      <h1 className="text-center text-4xl font-bold">
+        {attendance[0]?.courseTitle ?? "Attendance"}
+      </h1>
+
       <div className="flex gap-x-2 items-center py-4">
-        <h1 className="text-2xl font-bold mb-4">Attendance Record</h1>
+        <h1 className="text-2xl font-semibold mb-4">Attendance Record</h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
