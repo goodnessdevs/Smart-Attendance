@@ -35,6 +35,11 @@ export const venues: Venue[] = [
     lat: 6.593243,
     long: 3.265121,
   },
+  {
+    venueName: "Ikeja",
+    lat: 6.4654,
+    long: 3.4064,
+  }
 ];
 
 // lat: 6.4474,

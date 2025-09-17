@@ -29,7 +29,7 @@ import {
   CommandItem,
   CommandEmpty,
 } from "../../components/ui/command";
-import { venues } from "../../utils/Venues";
+import { venues } from "../../lib/Venues";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
