@@ -184,16 +184,16 @@ export default function Dashboard() {
                   <Link
                     key={course.courseId}
                     to={`/course/${course.courseId}`}
-                    className="block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 bg-cyan-500 text-cyan-900 dark:bg-cyan-500 dark:text-white"
+                    className="block p-5 rounded-xl border shadow-sm hover:shadow-lg transition transform hover:-translate-y-1 bg-cyan-500 text-zinc-900 dark:bg-cyan-500 dark:text-white"
                   >
                     <div>
                       <h4 className="font-semibold text-lg">
                         {course.courseName}
                       </h4>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm">
                         {course.courseTitle}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs mt-1">
                         {course.courseDescription}
                       </p>
                     </div>

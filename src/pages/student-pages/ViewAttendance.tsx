@@ -51,7 +51,7 @@ const ViewAttendance = () => {
         ...prev,
         {
           isPresent: attendanceData.isPresent,
-          date: new Date().toLocaleDateString(),
+          date: new Date().toLocaleString(),
           courseName: attendanceData.courseName,
           courseTitle: attendanceData.courseTitle,
           venueName: attendanceData.venueName,

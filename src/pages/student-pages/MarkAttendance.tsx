@@ -141,7 +141,7 @@ function MarkAttendance() {
             venueName: course.venueName,
             courseTitle: course.courseTitle,
             day: dayName,
-            date: today.toLocaleDateString(),
+            date: today.toLocaleString(),
             fullName: user?.fullName,
             email: user?.email,
             isPresent: true,
