@@ -28,7 +28,7 @@ function MarkAttendance() {
   const [course, setCourse] = useState<ActiveCourse | null>(null);
 
   const today =  useMemo(() => new Date(), []);
-  const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
+  const dayName = today.toLocaleString("en-US", { weekday: "long" });
 
   useEffect(() => {
     if (!courseId) return;
