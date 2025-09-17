@@ -161,7 +161,7 @@ function LecturerOnboarding() {
 
       if (response.ok) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        toast.success("Lecturer Registration Completed!");
+        toast.success("Registration Completed!");
 
         // ✅ Fetch updated user details
         const userResponse = await fetch(
@@ -174,7 +174,7 @@ function LecturerOnboarding() {
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          login(userData, token);
+          login(userData.user, token);
         }
 
         navigate("/lecturer/dashboard");

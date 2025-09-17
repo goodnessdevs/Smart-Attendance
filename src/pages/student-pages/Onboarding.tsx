@@ -140,7 +140,7 @@ function Onboarding() {
             const userData = await userResponse.json();
 
             // ✅ Update AuthContext with complete user data
-            login(userData, token);
+            login(userData.user, token);
 
             // Navigate to main dashboard
             navigate("/dashboard");

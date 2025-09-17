@@ -30,6 +30,11 @@ export const venues: Venue[] = [
     lat: 8.0352,
     long: 6.3783,
   },
+  {
+    venueName: "Taiwo's 2",
+    lat: 6.593243,
+    long: 3.265121,
+  },
 ];
 
 // lat: 6.4474,
