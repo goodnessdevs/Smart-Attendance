@@ -23,7 +23,7 @@ export default function LecturerLayout() {
       <SidebarProvider>
         {!shouldHide && <LecturerSidebar />}
 
-        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900">
+        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900 pb-10">
           {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
           {!shouldHide && <LecturerMobileNavbar />}
           <Separator className="md:hidden" />
