@@ -82,7 +82,7 @@ const Login = () => {
         toast.success(
           `Welcome back, ${userData.user?.fullName || "Lecturer"}!`
         );
-        navigate("/lecturer/");
+        navigate("/lecturer/onboarding");
       } catch (err) {
         console.error("Lecturer authentication error:", err);
 
