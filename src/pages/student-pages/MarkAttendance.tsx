@@ -99,6 +99,31 @@ function MarkAttendance() {
 
     try {
       // Run geolocation + device info in parallel
+      // const [pos, deviceInfo] = await Promise.all([
+      //   GeolocationService.getCurrentPosition({
+      //     enableHighAccuracy: true,
+      //     timeout: 60000, // shorter timeout for responsiveness
+      //     maximumAge: 60000,
+      //   }),
+      //   getDeviceInfo(),
+      // ]);
+
+      // // --- Check geolocation ---
+      // const { isWithin, distance } = GeolocationService.isWithinRadius(
+      //   pos.coords.latitude,
+      //   pos.coords.longitude,
+      //   course.lat,
+      //   course.long,
+      //   30 // 30m radius check
+      // );
+
+      // if (!isWithin) {
+      //   toast.error(
+      //     `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
+      //   );
+      //   setLoading(false);
+      //   return;
+
       const [pos, deviceInfo] = await Promise.all([
         GeolocationService.getCurrentPosition({
           enableHighAccuracy: true,
