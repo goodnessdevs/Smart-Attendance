@@ -21,21 +21,24 @@ export default function Layout() {
   const { user } = useAuthContext();
 
   return (
-    <>
-      <SidebarProvider>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
         {!shouldHide && <AppSidebar />}
 
-        <main className="w-full afacad-flux bg-gradient-to-br from-white via-green-300 to-white dark:from-zinc-900 darK:via-green-900 dark:to-zinc-900 pb-20">
-          {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
-          {!shouldHide && <MobileNavbar />}
-          <Separator className="md:hidden" />
-          {!shouldHide && user && <UserAvatar />}
-          <Outlet />
-        </main>
+        <div className="flex flex-col flex-1 w-full">
+          <main className="flex-1 w-full afacad-flux bg-gradient-to-br from-white via-green-300 to-white dark:from-zinc-900 darK:via-green-900 dark:to-zinc-900 pb-20">
+            {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
+            {!shouldHide && <MobileNavbar />}
+            <Separator className="md:hidden" />
+            {!shouldHide && user && <UserAvatar />}
+            <Outlet />
+          </main>
 
-        <Toaster position="top-center" duration={1500} richColors />
-      </SidebarProvider>
-      {!shouldHide && <Footer />}
-    </>
+          {!shouldHide && <Footer />}
+        </div>
+      </div>
+      
+      <Toaster position="top-center" duration={1500} richColors />
+    </SidebarProvider>
   );
 }

@@ -8,6 +8,7 @@ import confetti from "canvas-confetti";
 import { getDeviceInfo } from "../../utils/deviceUtils";
 import { BookCheck, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
+import { useSEO } from "../../hooks/useSEO";
 
 type ActiveCourse = {
   courseTitle: string;
@@ -42,6 +43,14 @@ function MarkAttendance() {
 
   const dateKey = today.toLocaleDateString(); // stable key for the day
   const fullDateTime = today.toLocaleString(); // display with time
+
+  useSEO({
+      title: "Mark Attendance | Smartendance",
+      description:
+        "Access your Smartendance account. Sign in to track attendance, manage courses, and stay on top of your studies.",
+      url: "https://smartendance.vercel.app/course/:courseId",
+      type: "website",
+    });
 
   useEffect(() => {
     if (!courseId) return;
