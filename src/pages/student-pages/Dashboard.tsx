@@ -270,7 +270,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen">
       {/* --- Top Carousel Section --- */}
-      <div className="pb-20">
+      <div className="pb-20 mt-10">
         <div className="px-4 md:px-8 pt-8">
           <Carousel
             plugins={[
