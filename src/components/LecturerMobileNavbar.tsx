@@ -1,5 +1,218 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
+// import {
+//   LayoutDashboardIcon,
+//   User,
+//   Calendar,
+//   Inbox,
+//   LogOut,
+//   Contact,
+//   Loader2,
+//   LogIn,
+//   BookOpenCheck,
+//   Megaphone,
+// } from "lucide-react";
+
+// import {
+//   Sheet,
+//   SheetTrigger,
+//   SheetContent,
+//   SheetHeader,
+//   SheetTitle,
+//   SheetDescription,
+// } from "./ui/sheet";
+// import { Button } from "./ui/button";
+// import { Menu } from "lucide-react";
+// import { Link, useNavigate } from "react-router-dom";
+// import { ModeToggle } from "./ModeToggle";
+// import { Separator } from "./ui/separator";
+// import { useAuthContext } from "../hooks/use-auth";
+// import { motion } from "framer-motion";
+// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
+// // Menu items.
+// const items = [
+//   {
+//     title: "Dashboard",
+//     href: "/lecturer/dashboard",
+//     icon: LayoutDashboardIcon,
+//   },
+//   {
+//     title: "Register Courses",
+//     href: "/lecturer/register-courses",
+//     icon: BookOpenCheck,
+//   },
+//   {
+//     title: "Publish Attendance",
+//     href: "/lecturer/publish-attendance",
+//     icon: Megaphone,
+//   },
+//   {
+//     title: "Inbox",
+//     href: "/lecturer/inbox",
+//     icon: Inbox,
+//   },
+//   {
+//     title: "Session Calendar",
+//     href: "/lecturer/calendar",
+//     icon: Calendar,
+//   },
+//   {
+//     title: "Account",
+//     href: "/lecturer/account-profile",
+//     icon: User,
+//   },
+//   {
+//     title: "Contact us",
+//     href: "/lecturer/support",
+//     icon: Contact,
+//   },
+// ];
+
+// function SheetNavbar() {
+//   const [open, setOpen] = React.useState(false);
+//   const { logout, token, user } = useAuthContext();
+//   const navigate = useNavigate();
+//   const [loading, setLoading] = useState(false);
+
+//   // logout handler
+//   const handleLogout = async () => {
+//     setLoading(true);
+//     try {
+//       await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+//       logout();
+//       navigate("/lecturer");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleNavClick = () => {
+//     setOpen(false);
+//   };
+
+//   React.useEffect(() => {
+//     const media = window.matchMedia("(min-width: 768px)");
+//     const handler = () => {
+//       if (media.matches) setOpen(false);
+//     };
+//     media.addEventListener("change", handler);
+//     return () => media.removeEventListener("change", handler);
+//   }, []);
+
+//   const getAvatarFallback = () => {
+//     if (!user?.fullName) return "U";
+//     const names = user.fullName.split(" ");
+//     return names
+//       .map((n) => n[0]?.toUpperCase())
+//       .slice(0, 2)
+//       .join(" ");
+//   };
+
+//   const MotionAvatar = motion.create(Avatar);
+
+//   return (
+//     <div>
+//       {/* Trigger Button */}
+//       <Sheet open={open} onOpenChange={setOpen}>
+//         <SheetTrigger asChild>
+//           <Button variant="outline" className="md:hidden">
+//             <Menu className="h-5 w-5" />
+//           </Button>
+//         </SheetTrigger>
+
+//         <SheetContent
+//           side="left"
+//           className="w-[310px] sm:w-[300px] md:hidden bg-zinc-100 dark:bg-black afacad-flux"
+//         >
+//           <SheetHeader>
+//             <SheetTitle className="text-md flex items-center gap-x-2">
+//               <MotionAvatar
+//                 initial={{ scale: 1 }}
+//                 whileHover={{ scale: 1.25 }}
+//                 transition={{
+//                   ease: "easeOut",
+//                 }}
+//                 className="w-12 h-12"
+//               >
+//                 <AvatarImage src={user?.profilePic} alt="User Avatar" />
+//                 <AvatarFallback className="bg-accent">
+//                   {getAvatarFallback()}
+//                 </AvatarFallback>
+//               </MotionAvatar>
+//               <span className="font-semibold">{user?.fullName}</span>
+//             </SheetTitle>
+//             <SheetDescription>
+//               Access your students attendance list, check the session
+//               attendance, and view notifications.
+//             </SheetDescription>
+//             <Separator />
+//           </SheetHeader>
+
+//           <nav className="md:hidden flex flex-col gap-y-2 mx-4 gap-4">
+//             {items.map((item, index) => (
+//               <Link
+//                 key={index}
+//                 className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] darkhover:bg-[#145c269f] hover:text-white transition"
+//                 to={item.href}
+//                 onClick={handleNavClick}
+//               >
+//                 <item.icon size={14} />
+//                 {item.title}
+//               </Link>
+//             ))}
+
+//             <>
+//               {token ? (
+//                 <Button onClick={handleLogout} disabled={loading} asChild>
+//                   {loading ? (
+//                     <div className="flex items-center gap-x-2">
+//                       <Loader2 className="animate-spin w-4 h-4" />
+//                       <span>Logging out...</span>
+//                     </div>
+//                   ) : (
+//                     <div className="flex items-center gap-x-2">
+//                       <LogOut className="w-4 h-4" />
+//                       <span>Log out</span>
+//                     </div>
+//                   )}
+//                 </Button>
+//               ) : (
+//                 <Button asChild>
+//                   <Link to="/login">
+//                     <LogIn />
+//                     <span>Login</span>
+//                   </Link>
+//                 </Button>
+//               )}
+//             </>
+//           </nav>
+
+//           <div className="mx-4 mt-2">
+//             <ModeToggle />
+//           </div>
+//         </SheetContent>
+//       </Sheet>
+//     </div>
+//   );
+// }
+
+// export const LecturerMobileNavbar = () => {
+//   return (
+//     <div className="md:hidden flex justify-between items-center p-4">
+//       <div className="flex gap-x-2 items-center">
+//         <div className="w-10">
+//           <img src="/funaab.png" alt="funaab" className="object-cover w-full" />
+//         </div>
+//         <span className="text-2xs font-semibold">Smart Attendance</span>
+//       </div>
+//       <SheetNavbar />
+//     </div>
+//   );
+// };
+
+
+import { useState, useEffect } from "react";
 import {
   LayoutDashboardIcon,
   User,
@@ -11,8 +224,9 @@ import {
   LogIn,
   BookOpenCheck,
   Megaphone,
+  SheetIcon,
+  Menu,
 } from "lucide-react";
-
 import {
   Sheet,
   SheetTrigger,
@@ -22,7 +236,6 @@ import {
   SheetDescription,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 import { Separator } from "./ui/separator";
@@ -30,7 +243,7 @@ import { useAuthContext } from "../hooks/use-auth";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-// Menu items.
+// Static menu items
 const items = [
   {
     title: "Dashboard",
@@ -63,23 +276,54 @@ const items = [
     icon: User,
   },
   {
-    title: "Students Support",
+    title: "Support",
     href: "/lecturer/support",
     icon: Contact,
   },
 ];
 
+type Course = {
+  id: string;
+  courseId: string;
+  courseTitle: string;
+  courseName?: string;
+  venueName?: string;
+};
+
+
 function SheetNavbar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
   const { logout, token, user } = useAuthContext();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
-  // logout handler
+  // Fetch lecturer's active courses
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/lecturer-active-courses`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setCourses(data.courses || []);
+        }
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    if (token) fetchCourses();
+  }, [token]);
+
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+      await new Promise((r) => setTimeout(r, 1000));
       logout();
       navigate("/lecturer");
     } finally {
@@ -87,126 +331,114 @@ function SheetNavbar() {
     }
   };
 
-  const handleNavClick = () => {
-    setOpen(false);
-  };
-
-  React.useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const handler = () => {
-      if (media.matches) setOpen(false);
-    };
-    media.addEventListener("change", handler);
-    return () => media.removeEventListener("change", handler);
-  }, []);
+  const handleNavClick = () => setOpen(false);
 
   const getAvatarFallback = () => {
     if (!user?.fullName) return "U";
     const names = user.fullName.split(" ");
-    return names
-      .map((n) => n[0]?.toUpperCase())
-      .slice(0, 2)
-      .join(" ");
+    return names.map((n) => n[0]?.toUpperCase()).slice(0, 2).join(" ");
   };
 
   const MotionAvatar = motion.create(Avatar);
 
   return (
-    <div>
-      {/* Trigger Button */}
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="outline" className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
-        </SheetTrigger>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="outline" className="md:hidden">
+          <Menu className="h-5 w-5" />
+        </Button>
+      </SheetTrigger>
 
-        <SheetContent
-          side="left"
-          className="w-[310px] sm:w-[300px] md:hidden bg-zinc-100 dark:bg-black afacad-flux"
-        >
-          <SheetHeader>
-            <SheetTitle className="text-md flex items-center gap-x-2">
-              <MotionAvatar
-                initial={{ scale: 1 }}
-                whileHover={{ scale: 1.25 }}
-                transition={{
-                  ease: "easeOut",
-                }}
-                className="w-12 h-12"
-              >
-                <AvatarImage src={user?.profilePic} alt="User Avatar" />
-                <AvatarFallback className="bg-accent">
-                  {getAvatarFallback()}
-                </AvatarFallback>
-              </MotionAvatar>
-              <span className="font-semibold">{user?.fullName}</span>
-            </SheetTitle>
-            <SheetDescription>
-              Access your students attendance list, check the session
-              attendance, and view notifications.
-            </SheetDescription>
-            <Separator />
-          </SheetHeader>
+      <SheetContent
+        side="left"
+        className="w-[310px] sm:w-[300px] md:hidden bg-zinc-100 dark:bg-black afacad-flux"
+      >
+        <SheetHeader>
+          <SheetTitle className="text-md flex items-center gap-x-2">
+            <MotionAvatar
+              initial={{ scale: 1 }}
+              whileHover={{ scale: 1.25 }}
+              className="w-12 h-12"
+            >
+              <AvatarImage src={user?.profilePic} alt="User Avatar" />
+              <AvatarFallback className="bg-accent">
+                {getAvatarFallback()}
+              </AvatarFallback>
+            </MotionAvatar>
+            <span className="font-semibold">{user?.fullName}</span>
+          </SheetTitle>
+          <SheetDescription>
+            Access your students’ attendance list, check sessions, and more.
+          </SheetDescription>
+          <Separator />
+        </SheetHeader>
 
-          <nav className="md:hidden flex flex-col gap-y-2 mx-4 gap-4">
-            {items.map((item, index) => (
-              <Link
-                key={index}
-                className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] darkhover:bg-[#145c269f] hover:text-white transition"
-                to={item.href}
-                onClick={handleNavClick}
-              >
-                <item.icon size={14} />
-                {item.title}
-              </Link>
-            ))}
+        <nav className="md:hidden flex flex-col gap-y-2 mx-4 gap-4">
+          {items.map((item, i) => (
+            <Link
+              key={i}
+              to={item.href}
+              onClick={handleNavClick}
+              className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] dark:hover:bg-[#145c269f] hover:text-white transition"
+            >
+              <item.icon size={14} />
+              {item.title}
+            </Link>
+          ))}
 
-            <>
-              {token ? (
-                <Button onClick={handleLogout} disabled={loading} asChild>
-                  {loading ? (
-                    <div className="flex items-center gap-x-2">
-                      <Loader2 className="animate-spin w-4 h-4" />
-                      <span>Logging out...</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-x-2">
-                      <LogOut className="w-4 h-4" />
-                      <span>Log out</span>
-                    </div>
-                  )}
-                </Button>
+          {/* 🔹 Dynamic Attendance Sheet links */}
+          {courses.map((course) => (
+            <Link
+              key={course.id}
+              to={`/lecturer/attendance/${course.courseId}`}
+              onClick={handleNavClick}
+              className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] dark:hover:bg-[#145c269f] hover:text-white transition"
+            >
+              <SheetIcon size={14} />
+              Attendance Sheet – {course.courseTitle}
+            </Link>
+          ))}
+
+          {token ? (
+            <Button onClick={handleLogout} disabled={loading} asChild>
+              {loading ? (
+                <div className="flex items-center gap-x-2">
+                  <Loader2 className="animate-spin w-4 h-4" />
+                  <span>Logging out...</span>
+                </div>
               ) : (
-                <Button asChild>
-                  <Link to="/login">
-                    <LogIn />
-                    <span>Login</span>
-                  </Link>
-                </Button>
+                <div className="flex items-center gap-x-2">
+                  <LogOut className="w-4 h-4" />
+                  <span>Log out</span>
+                </div>
               )}
-            </>
-          </nav>
+            </Button>
+          ) : (
+            <Button asChild>
+              <Link to="/login">
+                <LogIn />
+                <span>Login</span>
+              </Link>
+            </Button>
+          )}
+        </nav>
 
-          <div className="mx-4 mt-2">
-            <ModeToggle />
-          </div>
-        </SheetContent>
-      </Sheet>
-    </div>
+        <div className="mx-4 mt-2">
+          <ModeToggle />
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
-export const LecturerMobileNavbar = () => {
-  return (
-    <div className="md:hidden flex justify-between items-center p-4">
-      <div className="flex gap-x-2 items-center">
-        <div className="w-10">
-          <img src="/funaab.png" alt="funaab" className="object-cover w-full" />
-        </div>
-        <span className="text-2xs font-semibold">Smart Attendance</span>
+export const LecturerMobileNavbar = () => (
+  <div className="md:hidden flex justify-between items-center p-4">
+    <div className="flex gap-x-2 items-center">
+      <div className="w-10">
+        <img src="/funaab.png" alt="funaab" className="object-cover w-full" />
       </div>
-      <SheetNavbar />
+      <span className="text-2xs font-semibold">Smart Attendance</span>
     </div>
-  );
-};
+    <SheetNavbar />
+  </div>
+);

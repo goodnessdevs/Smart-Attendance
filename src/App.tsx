@@ -60,9 +60,9 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            // <RouteProtection requiredRole="student">
+            <RouteProtection requiredRole="student">
               <Dashboard />
-            // </RouteProtection>
+            </RouteProtection>
           }
         />
         <Route

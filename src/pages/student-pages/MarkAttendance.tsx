@@ -45,12 +45,12 @@ function MarkAttendance() {
   const fullDateTime = today.toLocaleString(); // display with time
 
   useSEO({
-      title: "Mark Attendance | Smartendance",
-      description:
-        "Access your Smartendance account. Sign in to track attendance, manage courses, and stay on top of your studies.",
-      url: "https://smartendance.vercel.app/course/:courseId",
-      type: "website",
-    });
+    title: "Mark Attendance | Smartendance",
+    description:
+      "Access your Smartendance account. Sign in to track attendance, manage courses, and stay on top of your studies.",
+    url: "https://smartendance.vercel.app/course/:courseId",
+    type: "website",
+  });
 
   useEffect(() => {
     if (!courseId) return;
@@ -107,32 +107,6 @@ function MarkAttendance() {
     setLoading(true);
 
     try {
-      // Run geolocation + device info in parallel
-      // const [pos, deviceInfo] = await Promise.all([
-      //   GeolocationService.getCurrentPosition({
-      //     enableHighAccuracy: true,
-      //     timeout: 60000, // shorter timeout for responsiveness
-      //     maximumAge: 60000,
-      //   }),
-      //   getDeviceInfo(),
-      // ]);
-
-      // // --- Check geolocation ---
-      // const { isWithin, distance } = GeolocationService.isWithinRadius(
-      //   pos.coords.latitude,
-      //   pos.coords.longitude,
-      //   course.lat,
-      //   course.long,
-      //   30 // 30m radius check
-      // );
-
-      // if (!isWithin) {
-      //   toast.error(
-      //     `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
-      //   );
-      //   setLoading(false);
-      //   return;
-
       const [pos, deviceInfo] = await Promise.all([
         GeolocationService.getCurrentPosition({
           enableHighAccuracy: true,
@@ -241,63 +215,91 @@ function MarkAttendance() {
 
   return (
     <div className="flex flex-col items-center px-4 py-10">
-      {/* Animated Card */}
+      {/* Attendance Info Section */}
       <motion.div
-        className="w-full max-w-2xl bg-gradient-to-br from-white via-gray-50 to-gray-100 
-                   dark:from-zinc-950 dark:via-zinc-800 dark:to-zinc-950 
-                   rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 space-y-6"
+        className="w-full max-w-2xl space-y-8 text-center"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white tracking-tight">
-          <BookCheck /> Attendance Details
+        {/* Title */}
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex justify-center items-center gap-2">
+          <BookCheck className="w-6 h-6 text-green-600 dark:text-green-400" />
+          Attendance Details
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
+        {/* Attendance Info */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm sm:text-base text-gray-700 dark:text-gray-300">
           <p>
-            <span className="font-medium">Course Title:</span>{" "}
+            <span className="font-medium text-gray-900 dark:text-white">
+              Course Title:
+            </span>{" "}
             {course?.courseTitle}
           </p>
           <p>
-            <span className="font-medium">Course Code:</span>{" "}
+            <span className="font-medium text-gray-900 dark:text-white">
+              Course Code:
+            </span>{" "}
             {course?.courseName}
           </p>
           <p>
-            <span className="font-medium">Day:</span> {dayOfTheWeek}
+            <span className="font-medium text-gray-900 dark:text-white">
+              Venue:
+            </span>{" "}
+            {course?.venueName || "N/A"}
           </p>
           <p>
-            <span className="font-medium">Status:</span>{" "}
+            <span className="font-medium text-gray-900 dark:text-white">
+              Day:
+            </span>{" "}
+            {dayOfTheWeek}
+          </p>
+          <p className="sm:col-span-2">
+            <span className="font-medium text-gray-900 dark:text-white">
+              Status:
+            </span>{" "}
             {attendanceMarked ? (
-              <span className="text-green-600 font-bold">Marked</span>
+              <span className="text-green-600 font-semibold">Marked</span>
             ) : (
               <span className="text-yellow-600 font-medium">Pending</span>
             )}
           </p>
         </div>
 
-        {/* Mark Attendance Button */}
-        {!attendanceMarked && (
-          <Button
-            onClick={handleMarkAttendance}
-            disabled={loading || attendanceMarked}
-            size="lg"
-            className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200 disabled:opacity-50"
-          >
-            {loading ? (
-              <span className="flex justify-center items-center gap-x-2">
-                <Loader2 className="animate-spin w-4 h-4" /> Verifying...
-              </span>
-            ) : (
-              "Mark My Attendance"
-            )}
-          </Button>
-        )}
+        {/* Buttons Section */}
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+          {!attendanceMarked && (
+            <Button
+              onClick={handleMarkAttendance}
+              disabled={loading || attendanceMarked}
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200 disabled:opacity-50 w-full sm:w-auto"
+            >
+              {loading ? (
+                <span className="flex justify-center items-center gap-x-2">
+                  <Loader2 className="animate-spin w-4 h-4" /> Verifying...
+                </span>
+              ) : (
+                "Mark My Attendance"
+              )}
+            </Button>
+          )}
+
+          <Link to={`/attendance/${courseId}`} className="w-full sm:w-auto">
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 w-full"
+            >
+              View Your Attendance
+            </Button>
+          </Link>
+        </div>
 
         {/* Success Animation */}
         {attendanceMarked && (
           <motion.div
-            className="flex flex-col items-center mt-6 text-green-700 dark:text-green-400 font-semibold"
+            className="flex flex-col items-center mt-8 text-green-700 dark:text-green-400 font-semibold"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
@@ -307,20 +309,89 @@ function MarkAttendance() {
           </motion.div>
         )}
       </motion.div>
-
-      {/* View Attendance Button */}
-      <div className="mt-10">
-        <Link to={`/attendance/${courseId}`}>
-          <Button
-            size="lg"
-            variant="outline"
-            className="rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900"
-          >
-            View Your Attendance
-          </Button>
-        </Link>
-      </div>
     </div>
+
+    // <div className="flex flex-col items-center px-4 py-10">
+    //   {/* Animated Card */}
+    //   <motion.div
+    //     className="w-full max-w-2xl bg-gradient-to-br from-white via-gray-50 to-gray-100
+    //                dark:from-zinc-950 dark:via-zinc-800 dark:to-zinc-950
+    //                rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 space-y-6"
+    //     initial={{ opacity: 0, y: 40 }}
+    //     animate={{ opacity: 1, y: 0 }}
+    //     transition={{ duration: 0.5 }}
+    //   >
+    //     <h2 className="text-xl font-bold text-gray-800 dark:text-white tracking-tight">
+    //       <BookCheck /> Attendance Details
+    //     </h2>
+
+    //     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
+    //       <p>
+    //         <span className="font-medium">Course Title:</span>{" "}
+    //         {course?.courseTitle}
+    //       </p>
+    //       <p>
+    //         <span className="font-medium">Course Code:</span>{" "}
+    //         {course?.courseName}
+    //       </p>
+    //       <p>
+    //         <span className="font-medium">Day:</span> {dayOfTheWeek}
+    //       </p>
+    //       <p>
+    //         <span className="font-medium">Status:</span>{" "}
+    //         {attendanceMarked ? (
+    //           <span className="text-green-600 font-bold">Marked</span>
+    //         ) : (
+    //           <span className="text-yellow-600 font-medium">Pending</span>
+    //         )}
+    //       </p>
+    //     </div>
+
+    //     {/* Mark Attendance Button */}
+    //     {!attendanceMarked && (
+    //       <Button
+    //         onClick={handleMarkAttendance}
+    //         disabled={loading || attendanceMarked}
+    //         size="lg"
+    //         className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200 disabled:opacity-50"
+    //       >
+    //         {loading ? (
+    //           <span className="flex justify-center items-center gap-x-2">
+    //             <Loader2 className="animate-spin w-4 h-4" /> Verifying...
+    //           </span>
+    //         ) : (
+    //           "Mark My Attendance"
+    //         )}
+    //       </Button>
+    //     )}
+
+    //     {/* Success Animation */}
+    //     {attendanceMarked && (
+    //       <motion.div
+    //         className="flex flex-col items-center mt-6 text-green-700 dark:text-green-400 font-semibold"
+    //         initial={{ opacity: 0, scale: 0.8 }}
+    //         animate={{ opacity: 1, scale: 1 }}
+    //         transition={{ duration: 0.4 }}
+    //       >
+    //         <CheckCircle2 className="w-12 h-12 mb-2" />
+    //         Your attendance has been marked successfully!
+    //       </motion.div>
+    //     )}
+    //   </motion.div>
+
+    //   {/* View Attendance Button */}
+    //   <div className="mt-10">
+    //     <Link to={`/attendance/${courseId}`}>
+    //       <Button
+    //         size="lg"
+    //         variant="outline"
+    //         className="rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900"
+    //       >
+    //         View Your Attendance
+    //       </Button>
+    //     </Link>
+    //   </div>
+    // </div>
   );
 }
 

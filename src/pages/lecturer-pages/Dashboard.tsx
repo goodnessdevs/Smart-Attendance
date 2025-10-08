@@ -80,13 +80,10 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
 } from "../../components/ui/card";
 import { motion, type Variants } from "framer-motion";
 import { useAuthContext } from "../../hooks/use-auth";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "../../components/ui/button";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -147,7 +144,7 @@ export default function LecturerDashboard() {
     return (
       <div className="flex items-center justify-center h-screen gap-x-3">
         <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
-        <p className="text-lg font-semibold">Loading dashboard...</p>
+        <p className="text-lg font-semibold">Loading...</p>
       </div>
     );
   }
@@ -196,11 +193,6 @@ export default function LecturerDashboard() {
                   {attendance.venueName}
                 </p>
               </CardContent>
-              <CardFooter>
-                <Link to={`/lecturer/attendance/${attendance.courseId}`}>
-                  <Button>View</Button>
-                </Link>
-              </CardFooter>
             </MotionCard>
           ))
         ) : (
