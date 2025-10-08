@@ -218,7 +218,7 @@ export default function Dashboard() {
   // --- Stats ---
   const totalCourses = activeCourses.length;
   const attendancesMarked = activeCourses.filter((c) => !c.isActive).length;
-  const missedClasses = activeCourses.filter((c) => c.isActive).length;
+  // const missedClasses = activeCourses.filter((c) => c.isActive).length;
 
   // --- SEO ---
   useSEO({
@@ -261,7 +261,7 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center h-screen gap-x-3">
         <Loader2 className="animate-spin w-6 h-6 text-cyan-600" />
-        <p className="text-lg font-semibold">Loading dashboard...</p>
+        <p className="text-lg font-semibold">Loading...</p>
       </div>
     );
   }
@@ -273,6 +273,9 @@ export default function Dashboard() {
       <div className="pb-20 mt-10">
         <div className="px-4 md:px-8 pt-8">
           <Carousel
+            opts={{
+              loop: true,
+            }}
             plugins={[
               Autoplay({
                 delay: 3000,
@@ -291,7 +294,7 @@ export default function Dashboard() {
                         {user ? user.matricNumber : "Student"}!
                       </span>
                     </h1>
-                    <p className="text-center text-muted-foreground mt-3">
+                    <p className="text-center text-accent-foreground mt-3">
                       {new Date().toLocaleDateString("en-US", {
                         weekday: "long",
                         year: "numeric",
@@ -315,13 +318,13 @@ export default function Dashboard() {
                         Your course attendance summary for today
                       </p>
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-4 rounded-lg bg-cyan-50 dark:bg-cyan-950/30">
                         <p className="text-3xl font-bold text-cyan-600 dark:text-cyan-400">
                           {totalCourses}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          Total Courses
+                          Active Courses
                         </p>
                       </div>
                       <div className="text-center p-4 rounded-lg bg-green-50 dark:bg-green-950/30">
@@ -332,14 +335,14 @@ export default function Dashboard() {
                           Attended
                         </p>
                       </div>
-                      <div className="text-center p-4 rounded-lg bg-orange-50 dark:bg-orange-950/30">
+                      {/* <div className="text-center p-4 rounded-lg bg-orange-50 dark:bg-orange-950/30">
                         <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
                           {missedClasses}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
                           Missed
                         </p>
-                      </div>
+                      </div> */}
                     </div>
                   </CardContent>
                 </Card>
