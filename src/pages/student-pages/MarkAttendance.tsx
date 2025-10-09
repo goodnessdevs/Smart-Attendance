@@ -229,7 +229,7 @@ function MarkAttendance() {
         </h2>
 
         {/* Attendance Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm sm:text-base text-gray-700 dark:text-gray-500">
           <p>
             <span className="font-medium text-gray-900 dark:text-white">
               Course Title:

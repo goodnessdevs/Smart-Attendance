@@ -26,7 +26,7 @@ export default function Layout() {
         {!shouldHide && <AppSidebar />}
 
         <div className="flex flex-col flex-1 w-full">
-          <main className="flex-1 w-full afacad-flux bg-gradient-to-br from-white via-green-300 to-white dark:from-zinc-900 darK:via-green-900 dark:to-zinc-900 pb-20">
+          <main className="flex-1 w-full afacad-flux bg-gradient-to-br from-white via-green-300 to-white dark:from-zinc-900 darK:via-green-950 dark:to-zinc-900 pb-20">
             {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
             {!shouldHide && <MobileNavbar />}
             <Separator className="md:hidden" />
