@@ -9,7 +9,6 @@ import { getDeviceInfo } from "../../utils/deviceUtils";
 import { BookCheck, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useSEO } from "../../hooks/useSEO";
-import Loader from "../../components/Loader";
 
 type ActiveCourse = {
   courseTitle: string;
@@ -217,9 +216,6 @@ function MarkAttendance() {
   return (
     <div className="flex flex-col items-center px-4 py-10">
       {/* Attendance Info Section */}
-      {loading ? (
-        <Loader />
-      ) : (
         <motion.div
           className="w-full max-w-2xl space-y-8 text-center"
           initial={{ opacity: 0, y: 40 }}
@@ -313,7 +309,6 @@ function MarkAttendance() {
             </motion.div>
           )}
         </motion.div>
-      )}
     </div>
 
     // <div className="flex flex-col items-center px-4 py-10">
