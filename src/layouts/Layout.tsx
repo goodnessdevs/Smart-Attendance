@@ -18,7 +18,7 @@ export default function Layout() {
   ];
   const shouldHide = hideNavAndFooterRoutes.includes(location.pathname);
 
-  const { user } = useAuthContext();
+  const { user, isInitializing } = useAuthContext();
 
   return (
     <SidebarProvider>
@@ -30,7 +30,7 @@ export default function Layout() {
             {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
             {!shouldHide && <MobileNavbar />}
             <Separator className="md:hidden" />
-            {!shouldHide && user && <UserAvatar />}
+            {!shouldHide && !isInitializing && user && <UserAvatar />}
             <Outlet />
           </main>
 
