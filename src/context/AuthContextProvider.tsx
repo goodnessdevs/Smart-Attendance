@@ -7,9 +7,9 @@ import {
   type State,
   type User,
 } from "./AuthContext";
-import { Loader2 } from "lucide-react";
 import { getOrCreateFingerprint } from "../utils/indexedDB";
 import { getOrCreateUUID } from "../utils/browserfingerprint";
+import Loader from "../components/Loader";
 
 const authReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -126,17 +126,16 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-  try {
-    // ❌ don’t clear device DB
-    // await clearDeviceData(); 
+    try {
+      // ❌ don’t clear device DB
+      // await clearDeviceData();
 
-    localStorage.removeItem("jwt_token");
-    dispatch({ type: "LOGOUT" });
-  } catch (error) {
-    console.error("Logout error:", error);
-  }
-};
-
+      localStorage.removeItem("jwt_token");
+      dispatch({ type: "LOGOUT" });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   const contextValue = {
     ...state,
@@ -148,13 +147,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={contextValue}>
-      {isInitializing ? (
-        <div className="flex items-center justify-center h-screen">
-          <Loader2 className="w-8 h-8 animate-spin text-green-700 dark:text-white" />
-        </div>
-      ) : (
-        children
-      )}
+      {isInitializing ? <Loader /> : children}
     </AuthContext.Provider>
   );
 };
