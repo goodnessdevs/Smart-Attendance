@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+// import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import RouteProtection from "./components/RouteProtection";
 
@@ -8,10 +8,10 @@ import LecturerLayout from "./layouts/LecturerLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
 // Student pages
-// import Dashboard from "./pages/student-pages/Dashboard";
+import Dashboard from "./pages/student-pages/Dashboard";
 import Account from "./pages/student-pages/Account";
-// import Login from "./pages/student-pages/Login";
-// import Onboarding from "./pages/student-pages/Onboarding";
+import Login from "./pages/student-pages/Login";
+import Onboarding from "./pages/student-pages/Onboarding";
 import MarkAttendance from "./pages/student-pages/MarkAttendance";
 import CalendarPage from "./pages/student-pages/Calendar";
 import InboxPage from "./pages/student-pages/Inbox";
@@ -26,7 +26,7 @@ import LecturerInbox from "./pages/lecturer-pages/Inbox";
 import LecturerAuth from "./pages/lecturer-pages/PasswordAuth";
 import AttendanceDashboard from "./pages/lecturer-pages/Dashboard";
 import LecturerAccount from "./pages/lecturer-pages/Account";
-// import LecturerLogin from "./pages/lecturer-pages/Login";
+import LecturerLogin from "./pages/lecturer-pages/Login";
 import StudentSupportPage from "./pages/lecturer-pages/StudentSupportPage";
 import LecturerOnboarding from "./pages/lecturer-pages/Onboarding";
 import LecturerCourseRegistration from "./pages/lecturer-pages/LecturerCourseRegistration";
@@ -42,17 +42,17 @@ import AdminSupportPage from "./pages/admin/Support";
 import SignedOutDashboard from "./components/SignedOutDashboard";
 import AttendanceList from "./pages/lecturer-pages/AttendanceList";
 import ViewAttendance from "./pages/student-pages/ViewAttendance";
-import { Loader2 } from "lucide-react";
+// import { Loader2 } from "lucide-react";
 
 // Lazy load the login pages
-const Login = lazy(() => import("./pages/student-pages/Login"));
-const LecturerLogin = lazy(() => import("./pages/lecturer-pages/Login"));
-const Dashboard = lazy(() => import("./pages/student-pages/Dashboard"));
-const Onboarding = lazy(() => import("./pages/student-pages/Onboarding"));
+// const Login = lazy(() => import("./pages/student-pages/Login"));
+// const LecturerLogin = lazy(() => import("./pages/lecturer-pages/Login"));
+// const Dashboard = lazy(() => import("./pages/student-pages/Dashboard"));
+// const Onboarding = lazy(() => import("./pages/student-pages/Onboarding"));
 
 function App() {
   return (
-    <Suspense fallback={<Loader2 className="animate-spin w-6 h-6" />}>
+    // <Suspense fallback={<Loader2 className="animate-spin w-6 h-6" />}>
       <Routes>
         {/* ---------------- Signed-out landing pages ---------------- */}
         <Route path="/" element={<SignedOutDashboard />} />
@@ -270,7 +270,7 @@ function App() {
           />
         </Route>
       </Routes>
-    </Suspense>
+    // </Suspense>
   );
 }
 
