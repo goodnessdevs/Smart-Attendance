@@ -11,122 +11,104 @@ import {
 import { Loader2, UserLock } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSEO } from "../../hooks/useSEO";
 
 const MotionCard = motion.create(Card);
 
 const Login = () => {
-  const { login } = useAuthContext();
+  const { login, logout } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleLecturerAuthentication = useCallback(
-    async (token: string) => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Step 1: Check if user has admin privileges
-        const statusResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/check-status`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!statusResponse.ok) {
-          throw new Error("Failed to verify user status");
-        }
-
-        const statusData = await statusResponse.json();
-        console.log("User status:", statusData);
-
-        // Step 2: Verify admin access
-        if (!statusData.isLecturer) {
-          // User is not an admin
-          localStorage.removeItem("jwt_token");
-          setError("Access denied. Lecturer privileges required.");
-          toast.error("You don't have lecturer access to this system");
-          return;
-        }
-
-        // Step 3: Get user details for admin user
-        const userResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/user-details`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!userResponse.ok) {
-          throw new Error("Failed to fetch lecturer user details");
-        }
-
-        const userData = await userResponse.json();
-        console.log("Lecturer user data:", userData);
-
-        // Step 4: Store token and login admin user
-        localStorage.setItem("jwt_token", token);
-        login(userData.user, token);
-
-        // Step 5: Success - navigate to admin dashboard
-        toast.success(
-          `Welcome back, ${userData.user?.fullName || "Lecturer"}!`
-        );
-        navigate("/lecturer/onboarding");
-      } catch (err) {
-        console.error("Lecturer authentication error:", err);
-
-        // Clean up on error
-        localStorage.removeItem("jwt_token");
-
-        const errorMessage =
-          err instanceof Error
-            ? err.message
-            : "Authentication failed. Please try again.";
-
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [login, navigate]
-  );
+  useSEO({
+    title: "Lecturer Login | Smartendance",
+    description:
+      "Access your Smartendance account. Sign in to publish attendances, manage courses, and view student attendances",
+    url: "https://smartendance.vercel.app/lecturer/login",
+    type: "website",
+  });
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      // Verify origin for security
+      // Accept messages from your backend domain
       if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
 
-      const { token, error: authError } = event.data as {
-        token?: string;
-        error?: string;
-      };
+      const { token } = event.data as { token?: string };
 
-      if (authError) {
-        setError("Authentication failed. Please try again.");
-        setLoading(false);
-        return;
-      }
-
+      // Handle authentication success
       if (token) {
-        await handleLecturerAuthentication(token);
+        localStorage.setItem("jwt_token", token);
+        setLoading(true);
+
+        try {
+          // Check dashboard for onboarding status
+          const dashboardResponse = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/dashboard`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!dashboardResponse.ok) {
+            throw new Error("Invalid token");
+          }
+
+          const dashboardData = await dashboardResponse.json();
+
+          // Check if user is a lecturer
+          if (!dashboardData.isLecturer) {
+            toast.error("You don't have lecturer access to this system");
+            logout();
+            return;
+          }
+
+          // If lecturer is onboarded, fetch full details and go to dashboard
+          if (dashboardData.onboarded) {
+            const userResponse = await fetch(
+              `${import.meta.env.VITE_BACKEND_URL}/user-details`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (!userResponse.ok) {
+              throw new Error("Failed to fetch user details");
+            }
+
+            const userData = await userResponse.json();
+
+            // Use context login method (it handles localStorage)
+            login(userData.user, token);
+            toast.success(
+              `Welcome back, ${userData.user?.fullName || "Lecturer"}!`
+            );
+            navigate("/lecturer/dashboard");
+          } else {
+            // Lecturer not onboarded - go to onboarding
+            toast.success("Please complete your setup");
+            navigate("/lecturer/onboarding");
+          }
+        } catch (error) {
+          console.error("Authentication failed:", error);
+          toast.error("Authentication failed. Please try again.");
+          logout()
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [handleLecturerAuthentication]);
+  }, [login, navigate, logout]);
 
   const handleGoogleAuth = () => {
     if (loading) return; // Prevent multiple clicks
@@ -141,7 +123,7 @@ const Login = () => {
 
     window.open(
       import.meta.env.VITE_GOOGLE_AUTH_URL,
-      "Google Admin Login",
+      "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
   };
@@ -150,9 +132,6 @@ const Login = () => {
     setError(null);
     handleGoogleAuth();
   };
-
-  const d = new Date();
-  const year = d.getFullYear();
 
   return (
     <div className="min-h-screen min-w-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-800 to-gray-900 px-4">
@@ -256,7 +235,7 @@ const Login = () => {
         transition={{ duration: 1.5, ease: "linear" }}
         className="text-center text-white mt-4"
       >
-        &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        &copy; 2025, Federal University of Agriculture, Abeokuta. All rights
         reserved.
       </motion.p>
     </div>

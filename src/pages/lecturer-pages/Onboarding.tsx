@@ -10,14 +10,6 @@ import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Separator } from "../../components/ui/separator";
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-  CommandInput,
-  CommandEmpty,
-} from "../../components/ui/command"; // ✅ Command import
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -34,89 +26,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/ui/popover";
 import { getDeviceInfo } from "../../utils/deviceUtils";
 
 const MotionCard = motion.create(Card);
 
-interface CourseFormData {
-  courseName: string;
-  courseTitle: string;
-  courseDescription: string;
-  unit: string;
-  lecturers: string[];
-  venues: string[];
-  days: string[];
-  isActive: boolean;
-}
-
 function LecturerOnboarding() {
   const navigate = useNavigate();
   const { login } = useAuthContext();
-
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     lecturerName: "",
     phoneNumber: "",
     college: "",
-    coursesOffered: [] as string[],
+    device_uuid: "",
+    fingerprint: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [allCourses, setAllCourses] = useState<CourseFormData[]>([]);
-  const [search, setSearch] = useState("");
-
-  const d = new Date();
-  const year = d.getFullYear();
-
-  // ✅ Fetch available courses
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const token = localStorage.getItem("jwt_token");
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/all-courses`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (!res.ok) throw new Error("Failed to fetch courses");
-
-        const data = await res.json();
-
-        // assuming API returns { courses: [...] }
-        setAllCourses(Array.isArray(data) ? data : data.courses || []);
-      } catch (err) {
-        console.error("Error fetching courses:", err);
-        setAllCourses([]); // fallback to empty array
-      }
-    };
-
-    fetchCourses();
-  }, []);
 
   // ✅ Initialize device data on component mount
-    useEffect(() => {
-      async function initDevice() {
-        try {
-          const { device_uuid, fingerprint } = await getDeviceInfo();
-  
-          setFormData((prev) => ({
-            ...prev,
-            device_uuid,
-            fingerprint,
-          }));
-        } catch (error) {
-          console.error("Failed to initialize device data:", error);
-          toast.error("Failed to initialize device data");
-        }
+  useEffect(() => {
+    async function initDevice() {
+      try {
+        const { device_uuid, fingerprint } = await getDeviceInfo();
+
+        setFormData((prev) => ({
+          ...prev,
+          device_uuid,
+          fingerprint,
+        }));
+      } catch (error) {
+        console.error("Failed to initialize device data:", error);
+        toast.error("Failed to initialize device data");
       }
-  
-      initDevice();
-    }, []);
+    }
+
+    initDevice();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -125,12 +69,7 @@ function LecturerOnboarding() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !formData.lecturerName ||
-      !formData.phoneNumber ||
-      !formData.college ||
-      formData.coursesOffered.length === 0
-    ) {
+    if (!formData.lecturerName || !formData.phoneNumber || !formData.college) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -140,7 +79,7 @@ function LecturerOnboarding() {
 
     if (!token) {
       toast.error("No authentication token found. Please sign in again.");
-      navigate("/login");
+      navigate("/lecturer/login");
       return;
     }
 
@@ -163,43 +102,51 @@ function LecturerOnboarding() {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         toast.success("Registration Completed!");
 
-        // ✅ Fetch updated user details
-        const userResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/user-details`,
-          {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
+        try {
+          const userResponse = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/user-details`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+
+            // ✅ Update AuthContext with complete user data
+            login(userData.user, token);
+
+            // Navigate to main dashboard
+            navigate("/lecturer/dashboard");
+          } else {
+            console.error(
+              "Failed to fetch updated user details. Please reload the page."
+            );
+            // Still navigate but user might need to refresh
+            navigate("/lecturer/dashboard");
           }
-        );
-
-        if (userResponse.ok) {
-          const userData = await userResponse.json();
-          login(userData.user, token);
+        } catch (userError) {
+          console.error("Error fetching user details:", userError);
+          // Still navigate, the context initialization will handle it
+          navigate("/lecturer/dashboard");
         }
-
-        navigate("/lecturer/dashboard");
       } else {
         toast.error(data.message || "Registration Failed");
+        console.error("Onboarding failed:", data);
       }
     } catch (error) {
       toast.error("An error occurred, please try again");
-      console.error("Lecturer Onboarding error:", error);
+      console.error("Onboarding error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ Filter courses by search input
-  const filteredCourses = Array.isArray(allCourses)
-    ? allCourses.filter(
-        (c) =>
-          c.courseName.toLowerCase().includes(search.toLowerCase()) ||
-          c.courseTitle.toLowerCase().includes(search.toLowerCase())
-      )
-    : [];
-
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#91d9a0] px-4">
       <div className="flex items-center gap-x-4">
         <div className="w-20 h-20 mb-4">
           <img
@@ -285,81 +232,6 @@ function LecturerOnboarding() {
               </Select>
             </div>
 
-            {/* COURSES OFFERED COMMAND MULTI-SELECT */}
-            <div className="space-y-1">
-              <Label htmlFor="coursesOffered">Courses Offered</Label>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button className="w-full border border-black text-left">
-                    {formData.coursesOffered.length > 0
-                      ? `${formData.coursesOffered.length} course(s) selected`
-                      : "Select courses"}
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent className="w-full p-0">
-                  <Command className="bg-white text-black">
-                    <CommandInput
-                      placeholder="Search courses..."
-                      value={search}
-                      onValueChange={setSearch}
-                    />
-                    <CommandList className="max-h-60 overflow-y-auto">
-                      <CommandEmpty>No courses found.</CommandEmpty>
-                      <CommandGroup heading="Courses">
-                        {filteredCourses.slice(0, 10).map((course, idx) => (
-                          <CommandItem
-                            key={idx}
-                            value={course.courseName}
-                            onSelect={(value) => {
-                              if (!formData.coursesOffered.includes(value)) {
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  coursesOffered: [
-                                    ...prev.coursesOffered,
-                                    value,
-                                  ],
-                                }));
-                              }
-                            }}
-                          >
-                            {course.courseName} - {course.courseTitle}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-
-              {/* Display selected courses */}
-              <div className="flex flex-wrap gap-2 mt-2">
-                {formData.coursesOffered.map((course, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-1 bg-gray-200 text-sm rounded-md flex items-center gap-1"
-                  >
-                    {course}
-                    <button
-                      type="button"
-                      className="text-red-600"
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          coursesOffered: prev.coursesOffered.filter(
-                            (c) => c !== course
-                          ),
-                        }))
-                      }
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-
             <Separator />
 
             <Button
@@ -381,8 +253,8 @@ function LecturerOnboarding() {
       </MotionCard>
 
       <div className="mt-3">
-        <p className="text-center text-sm font-semibold">
-          &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        <p className="text-center text-black text-sm font-semibold">
+          &copy; 2025, Federal University of Agriculture, Abeokuta. All rights
           reserved.
         </p>
       </div>

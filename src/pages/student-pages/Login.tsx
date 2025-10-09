@@ -18,10 +18,7 @@ const MotionCard = motion.create(Card);
 
 function Login() {
   const navigate = useNavigate();
-  const d = new Date();
-  const year = d.getFullYear();
-
-  const { login } = useAuthContext();
+  const { login, logout } = useAuthContext();
   const [loading, setLoading] = useState(false);
 
   useSEO({
@@ -92,7 +89,7 @@ function Login() {
         } catch (error) {
           console.error("Authentication failed:", error);
           toast.error("Authentication failed. Please try again.");
-          localStorage.removeItem("jwt_token");
+          logout()
         } finally {
           setLoading(false);
         }
@@ -101,7 +98,7 @@ function Login() {
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [navigate, login]);
+  }, [navigate, login, logout]);
 
   const handleGoogleAuth = () => {
     const width = 500;
@@ -202,7 +199,7 @@ function Login() {
         transition={{ duration: 1.5, ease: "linear" }}
         className="text-center text-white mt-4"
       >
-        &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        &copy; 2025, Federal University of Agriculture, Abeokuta. All rights
         reserved.
       </motion.p>
     </div>

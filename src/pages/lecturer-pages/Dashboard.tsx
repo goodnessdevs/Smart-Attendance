@@ -84,6 +84,7 @@ import {
 import { motion, type Variants } from "framer-motion";
 import { useAuthContext } from "../../hooks/use-auth";
 import { useEffect, useState } from "react";
+import { useSEO } from "../../hooks/useSEO";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -113,6 +114,14 @@ export default function LecturerDashboard() {
   const { isInitializing, token, user } = useAuthContext();
   const [attendances, setAttendances] = useState<Attendance[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useSEO({
+    title: "Lecturer Dashboard | Smartendance",
+    description:
+      "Access your Smartendance account. Sign in to publish attendances, manage courses, and view student attendances",
+    url: "https://smartendance.vercel.app/lecturer/dashboard",
+    type: "website",
+  });
 
   useEffect(() => {
     const fetchAttendances = async () => {

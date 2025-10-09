@@ -33,7 +33,7 @@ const MotionCard = motion.create(Card);
 function Onboarding() {
   const navigate = useNavigate();
   const { login } = useAuthContext(); // ✅ Use the hook consistently
-
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     matricNumber: "",
     department: "",
@@ -43,10 +43,6 @@ function Onboarding() {
     device_uuid: "",
     fingerprint: "",
   });
-  const [loading, setLoading] = useState(false);
-
-  const d = new Date();
-  const year = d.getFullYear();
 
   // ✅ Initialize device data on component mount
   useEffect(() => {
@@ -172,7 +168,7 @@ function Onboarding() {
   );
 
   return (
-    <div className="min-h-screen w-full max-w-full flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#e0ffe7] px-4">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-tr from-white to-[#91d9a0] px-4">
       <div className="flex items-center gap-x-4">
         <div className="w-20 h-20 mb-4">
           <img
@@ -346,8 +342,8 @@ function Onboarding() {
       </MotionCard>
 
       <div className="mt-3">
-        <p className="text-center text-sm font-semibold">
-          &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        <p className="text-center text-black text-sm font-semibold">
+          &copy; 2025, Federal University of Agriculture, Abeokuta. All rights
           reserved.
         </p>
       </div>

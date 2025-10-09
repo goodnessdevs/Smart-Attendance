@@ -307,6 +307,7 @@ import {
 import { Loader2, Upload, MoreVertical, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
+import { useSEO } from "../../hooks/useSEO";
 
 interface Course {
   _id: string;
@@ -333,6 +334,14 @@ const LecturerPublishCourses = () => {
     null
   );
   const { token } = useAuthContext();
+
+  useSEO({
+      title: "Publish Attendance | Smartendance",
+      description:
+        "Access your Smartendance account. Sign in to publish attendances, manage courses, and view student attendances",
+      url: "https://smartendance.vercel.app/lecturer/publish-attendance",
+      type: "website",
+    });
 
   // Fetch courses registered by the lecturer
   useEffect(() => {
