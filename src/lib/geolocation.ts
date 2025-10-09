@@ -3,10 +3,11 @@ import { distance, point } from '@turf/turf';
 
 export class GeolocationService {
   static calculateDistance(
-    lat1: number,
     lng1: number,
+    lat1: number,
+    lng2: number,
     lat2: number,
-    lng2: number
+
   ): number {
     const from = point([lng1, lat1]);
     const to = point([lng2, lat2]);
@@ -33,17 +34,18 @@ export class GeolocationService {
   }
 
   static isWithinRadius(
-    userLat: number,
     userLng: number,
-    targetLat: number,
+    userLat: number,
     targetLng: number,
+    targetLat: number,
     radius: number
   ) {
     const distanceMeters = this.calculateDistance(
-      userLat,
       userLng,
+      userLat,
+      targetLng,
       targetLat,
-      targetLng
+
     );
     return { isWithin: distanceMeters <= radius, distance: distanceMeters };
   }

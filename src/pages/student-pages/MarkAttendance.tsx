@@ -119,11 +119,11 @@ function MarkAttendance() {
 
       // --- Check geolocation ---
       const { isWithin, distance } = GeolocationService.isWithinRadius(
-        pos.coords.latitude,
         pos.coords.longitude,
-        course.lat,
+        pos.coords.latitude,
         course.long,
-        30 // 30m radius check
+        course.lat,
+        50 // 50m radius check
       );
 
       if (!isWithin) {
