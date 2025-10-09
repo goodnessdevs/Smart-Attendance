@@ -149,9 +149,6 @@ const AdminLogin = () => {
     handleGoogleAuth();
   };
 
-  const d = new Date();
-  const year = d.getFullYear();
-
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center mx-auto bg-gradient-to-br from-cyan-700 to-gray-900 px-4">
       <motion.div
@@ -264,7 +261,7 @@ const AdminLogin = () => {
         transition={{ duration: 1.5, ease: "linear" }}
         className="text-center text-white mt-4"
       >
-        &copy; {year}, Federal University of Agriculture, Abeokuta. All rights
+        &copy; 2025, Federal University of Agriculture, Abeokuta. All rights
         reserved.
       </motion.p>
     </div>

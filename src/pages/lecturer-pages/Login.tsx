@@ -58,13 +58,13 @@ const Login = () => {
         // Step 2: Verify admin access
         if (!statusData.isLecturer) {
           // User is not an admin
-          logout();
+          logout()
           setError("Access denied. Lecturer privileges required.");
-          toast.error("You don't have lecturer access to this system");
+          toast.error("You don't have access to this system");
           return;
         }
 
-        // Step 3: Get user details for lecturer
+        // Step 3: Get user details for admin user
         const userResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/user-details`,
           {
@@ -77,20 +77,17 @@ const Login = () => {
         );
 
         if (!userResponse.ok) {
-          throw new Error("Failed to fetch lecturer user details");
+          throw new Error("Failed to fetch user details");
         }
 
         const userData = await userResponse.json();
-        console.log("Lecturer user data:", userData);
 
         // Step 4: Store token and login admin user
         login(userData.user, token);
 
         // Step 5: Success - navigate to admin dashboard
-        toast.success(
-          `Welcome back, ${userData.user?.fullName || "Lecturer"}!`
-        );
-        navigate("/lecturer/onboarding");
+        toast.success(`Welcome back, ${userData.user?.fullName || "Lecturer"}!`);
+        navigate("/lecturer/dashboard");
       } catch (err) {
         console.error("Lecturer authentication error:", err);
 
@@ -160,7 +157,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen min-w-screen flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-800 to-gray-900 px-4">
+    <div className="fixed inset-0 flex flex-col items-center justify-center mx-auto bg-gradient-to-tl from-green-800 to-gray-900 px-4">
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}

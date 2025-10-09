@@ -11,30 +11,36 @@ import { useAuthContext } from "../hooks/use-auth";
 
 export default function LecturerLayout() {
   const location = useLocation();
-  const hideNavAndFooterRoutes = ["/lecturer/auth", "/lecturer/login", "/lecturer/onboarding"];
+  const hideNavAndFooterRoutes = [
+    "/lecturer/auth",
+    "/lecturer/login",
+    "/lecturer/onboarding",
+  ];
   const shouldHide = hideNavAndFooterRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
 
-  const { user } = useAuthContext();
+  const { user, isInitializing } = useAuthContext();
 
   return (
-    <>
-      <SidebarProvider>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
         {!shouldHide && <LecturerSidebar />}
 
-        <main className="w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900 pb-20">
-          {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
-          {!shouldHide && <LecturerMobileNavbar />}
-          <Separator className="md:hidden" />
-          {!shouldHide && user && <UserAvatar />}
-          <Outlet />
-        </main>
+        <div className="flex flex-col flex-1 w-full">
+          <main className="flex-1 w-full afacad-flux bg-gradient-to-br from-white to-green-300 dark:from-green-900 dark:to-gray-900 pb-20">
+            {!shouldHide && <SidebarTrigger className="m-2 hidden md:flex" />}
+            {!shouldHide && <LecturerMobileNavbar />}
+            <Separator className="md:hidden" />
+            {!shouldHide && !isInitializing && user && <UserAvatar />}
+            <Outlet />
+          </main>
 
-        <Toaster position="top-center" richColors duration={1500} />
-      </SidebarProvider>
+          {!shouldHide && <Footer />}
+        </div>
+      </div>
 
-      {!shouldHide && <Footer />}
-    </>
+      <Toaster position="top-center" duration={1500} richColors />
+    </SidebarProvider>
   );
 }

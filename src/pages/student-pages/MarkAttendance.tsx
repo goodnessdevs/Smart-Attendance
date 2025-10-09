@@ -9,6 +9,7 @@ import { getDeviceInfo } from "../../utils/deviceUtils";
 import { BookCheck, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useSEO } from "../../hooks/useSEO";
+import Loader from "../../components/Loader";
 
 type ActiveCourse = {
   courseTitle: string;
@@ -216,99 +217,103 @@ function MarkAttendance() {
   return (
     <div className="flex flex-col items-center px-4 py-10">
       {/* Attendance Info Section */}
-      <motion.div
-        className="w-full max-w-2xl space-y-8 text-center"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {/* Title */}
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex justify-center items-center gap-2">
-          <BookCheck className="w-6 h-6 text-green-600 dark:text-green-400" />
-          Attendance Details
-        </h2>
+      {loading ? (
+        <Loader />
+      ) : (
+        <motion.div
+          className="w-full max-w-2xl space-y-8 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Title */}
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex justify-center items-center gap-2">
+            <BookCheck className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Attendance Details
+          </h2>
 
-        {/* Attendance Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm sm:text-base text-gray-700 dark:text-gray-500">
-          <p>
-            <span className="font-medium text-gray-900 dark:text-white">
-              Course Title:
-            </span>{" "}
-            {course?.courseTitle}
-          </p>
-          <p>
-            <span className="font-medium text-gray-900 dark:text-white">
-              Course Code:
-            </span>{" "}
-            {course?.courseName}
-          </p>
-          <p>
-            <span className="font-medium text-gray-900 dark:text-white">
-              Venue:
-            </span>{" "}
-            {course?.venueName || "N/A"}
-          </p>
-          <p>
-            <span className="font-medium text-gray-900 dark:text-white">
-              Day:
-            </span>{" "}
-            {dayOfTheWeek}
-          </p>
-          <p className="sm:col-span-2">
-            <span className="font-medium text-gray-900 dark:text-white">
-              Status:
-            </span>{" "}
-            {attendanceMarked ? (
-              <span className="text-green-600 font-semibold">Marked</span>
-            ) : (
-              <span className="text-yellow-600 font-medium">Pending</span>
-            )}
-          </p>
-        </div>
-
-        {/* Buttons Section */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-          {!attendanceMarked && (
-            <Button
-              onClick={handleMarkAttendance}
-              disabled={loading || attendanceMarked}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200 disabled:opacity-50 w-full sm:w-auto"
-            >
-              {loading ? (
-                <span className="flex justify-center items-center gap-x-2">
-                  <Loader2 className="animate-spin w-4 h-4" /> Verifying...
-                </span>
+          {/* Attendance Info */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm sm:text-base text-gray-800 dark:text-black">
+            <p>
+              <span className="font-medium text-gray-900 dark:text-white">
+                Course Title:
+              </span>{" "}
+              {course?.courseTitle}
+            </p>
+            <p>
+              <span className="font-medium text-gray-900 dark:text-white">
+                Course Code:
+              </span>{" "}
+              {course?.courseName}
+            </p>
+            <p>
+              <span className="font-medium text-gray-900 dark:text-white">
+                Venue:
+              </span>{" "}
+              {course?.venueName || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-900 dark:text-white">
+                Day:
+              </span>{" "}
+              {dayOfTheWeek}
+            </p>
+            <p className="sm:col-span-2">
+              <span className="font-medium text-gray-900 dark:text-white">
+                Status:
+              </span>{" "}
+              {attendanceMarked ? (
+                <span className="text-green-600 font-semibold">Marked</span>
               ) : (
-                "Mark My Attendance"
+                <span className="text-yellow-600 font-medium">Pending</span>
               )}
-            </Button>
-          )}
+            </p>
+          </div>
 
-          <Link to={`/attendance/${courseId}`} className="w-full sm:w-auto">
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 w-full"
+          {/* Buttons Section */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+            {!attendanceMarked && (
+              <Button
+                onClick={handleMarkAttendance}
+                disabled={loading || attendanceMarked}
+                size="lg"
+                className="bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200 disabled:opacity-50 w-full sm:w-auto"
+              >
+                {loading ? (
+                  <span className="flex justify-center items-center gap-x-2">
+                    <Loader2 className="animate-spin w-4 h-4" /> Verifying...
+                  </span>
+                ) : (
+                  "Mark My Attendance"
+                )}
+              </Button>
+            )}
+
+            <Link to={`/attendance/${courseId}`} className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 w-full"
+              >
+                View Your Attendance
+              </Button>
+            </Link>
+          </div>
+
+          {/* Success Animation */}
+          {attendanceMarked && (
+            <motion.div
+              className="flex flex-col items-center mt-8 text-green-700 dark:text-green-400 font-semibold"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
             >
-              View Your Attendance
-            </Button>
-          </Link>
-        </div>
-
-        {/* Success Animation */}
-        {attendanceMarked && (
-          <motion.div
-            className="flex flex-col items-center mt-8 text-green-700 dark:text-green-400 font-semibold"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-          >
-            <CheckCircle2 className="w-12 h-12 mb-2" />
-            Your attendance has been marked successfully!
-          </motion.div>
-        )}
-      </motion.div>
+              <CheckCircle2 className="w-12 h-12 mb-2" />
+              Your attendance has been marked successfully!
+            </motion.div>
+          )}
+        </motion.div>
+      )}
     </div>
 
     // <div className="flex flex-col items-center px-4 py-10">

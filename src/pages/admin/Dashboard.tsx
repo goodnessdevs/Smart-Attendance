@@ -226,13 +226,13 @@ export default function AdminDashboard() {
           animate={{ y: 0, opacity: 1 }}
         >
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">
-            Hello,
+            Hello,{" "}
             <span className="bg-gradient-to-r from-cyan-600 to-blue-500 dark:from-cyan-300 dark:to-blue-400 bg-clip-text text-transparent">
               Admin!
             </span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg">
-            Manage courses, instructors, and academic content
+            Create, edit, and delete academic courses
           </p>
         </motion.div>
 
