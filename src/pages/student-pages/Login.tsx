@@ -78,6 +78,7 @@ function Login() {
             const userData = await userResponse.json();
 
             // Use context login method (it handles localStorage)
+            localStorage.setItem("jwt_token", token)
             login(userData.user, token);
             toast.success("Welcome back!");
             navigate("/dashboard");
