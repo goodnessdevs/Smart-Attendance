@@ -290,7 +290,6 @@ type Course = {
   venueName?: string;
 };
 
-
 function SheetNavbar() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);

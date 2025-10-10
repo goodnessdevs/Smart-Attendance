@@ -9,6 +9,7 @@ import {
   Loader2,
   BookOpenCheck,
   Megaphone,
+  SheetIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -25,7 +26,7 @@ import {
 import { ModeToggle } from "./ModeToggle";
 import { Separator } from "./ui/separator";
 import { useAuthContext } from "../hooks/use-auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Menu items.
 const items = [
@@ -66,10 +67,41 @@ const items = [
   },
 ];
 
+type Course = {
+  id: string;
+  courseId: string;
+  courseTitle: string;
+  courseName?: string;
+  venueName?: string;
+};
+
 export function LecturerSidebar() {
   const { logout, token } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  // Fetch lecturer's active courses
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/lecturer-active-courses`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setCourses(data.courses || []);
+        }
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    if (token) fetchCourses();
+  }, [token]);
 
   // logout handler
   const handleLogout = async () => {
@@ -82,7 +114,7 @@ export function LecturerSidebar() {
       setLoading(false);
     }
   };
-  
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-sidebar afacad-flux flex flex-col h-full justify-between">
@@ -110,6 +142,20 @@ export function LecturerSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              <SidebarMenuItem>
+                {/* 🔹 Dynamic Attendance Sheet links */}
+                {courses.map((course) => (
+                  <Link
+                    key={course.id}
+                    to={`/lecturer/attendance/${course.courseId}`}
+                    className="text-base p-1.5 flex gap-x-4 items-center rounded font-semibold hover:bg-[#034320cb] dark:hover:bg-[#145c269f] hover:text-white transition"
+                  >
+                    <SheetIcon size={14} />
+                    Attendance Sheet – {course.courseTitle}
+                  </Link>
+                ))}
+              </SidebarMenuItem>
 
               <SidebarMenuItem>
                 {token ? (
