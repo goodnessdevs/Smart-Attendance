@@ -7,7 +7,7 @@ import { Badge } from "../components/ui/badge";
 export type Attendance = {
   fullName: string;
   email: string;
-  matricNumber: string;
+  matricNo: string;
   isPresent: boolean;
   date: string;
 };
