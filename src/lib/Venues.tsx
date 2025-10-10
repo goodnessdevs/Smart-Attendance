@@ -56,5 +56,3 @@ export const venues: Venue[] = [
     long: 3.434903,
   },
 ];
-// lat: 6.4474,
-// long: 3.3903,

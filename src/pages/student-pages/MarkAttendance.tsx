@@ -122,7 +122,7 @@ function MarkAttendance() {
         pos.coords.latitude,
         course.long,
         course.lat,
-        50 // 50m radius check
+        500 // 500m radius check
       );
 
       if (!isWithin) {
@@ -137,14 +137,14 @@ function MarkAttendance() {
       console.log("Client:", deviceInfo.device_uuid, deviceInfo.fingerprint);
 
       // --- Check device identity ---
-      // if (
-      //   user?.device_uuid !== deviceInfo.device_uuid || // replace with value from backend
-      //   user?.fingerprint !== deviceInfo.fingerprint
-      // ) {
-      //   toast.error("Device authentication failed.");
-      //   setLoading(false);
-      //   return;
-      // }
+      if (
+        user?.device_uuid !== deviceInfo.device_uuid || // replace with value from backend
+        user?.fingerprint !== deviceInfo.fingerprint
+      ) {
+        toast.error("Device authentication failed.");
+        setLoading(false);
+        return;
+      }
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/mark-attendance`,
