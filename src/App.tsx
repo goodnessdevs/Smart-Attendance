@@ -44,7 +44,6 @@ import ViewAttendance from "./pages/student-pages/ViewAttendance";
 
 function App() {
   return (
-    // <Suspense fallback={<Loader2 className="animate-spin w-6 h-6" />}>
       <Routes>
         {/* ---------------- Signed-out landing pages ---------------- */}
         <Route path="/" element={<SignedOutDashboard />} />
@@ -61,73 +60,73 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <Dashboard />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/register-courses"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <CourseRegistration />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/calendar"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <CalendarPage />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/inbox"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <InboxPage />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/account-profile"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <Account />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/support"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <Support />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/course/:courseId"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <MarkAttendance />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/attendance/:courseId"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <ViewAttendance />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
           <Route
             path="/all-courses"
             element={
-              <RouteProtection requiredRole="student">
+              // <RouteProtection requiredRole="student">
                 <AllCourses />
-              </RouteProtection>
+              // </RouteProtection>
             }
           />
         </Route>
