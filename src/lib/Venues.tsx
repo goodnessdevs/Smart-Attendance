@@ -50,6 +50,11 @@ export const venues: Venue[] = [
     lat: 7.231893,
     long: 3.4446635,
   },
+  {
+    venueName: "new test mp",
+    lat: 6.51,
+    long: 3.39,
+  },
 ];
 // lat: 6.4474,
 // long: 3.3903,
