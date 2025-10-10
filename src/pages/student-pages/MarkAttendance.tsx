@@ -15,8 +15,8 @@ type ActiveCourse = {
   courseName: string;
   courseId: string;
   venueName: string;
-  lat: number;
   long: number;
+  lat: number;
   isActive: boolean;
 };
 

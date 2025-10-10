@@ -49,8 +49,8 @@ interface CourseFormData {
   unit: string;
   lecturers: string[];
   venueName: string;
-  lat: number;
   long: number;
+  lat: number;
   courseDays: string[];
   isActive: boolean;
 }
@@ -67,8 +67,8 @@ export default function AdminDashboard() {
     unit: "",
     lecturers: [""],
     venueName: "",
-    lat: 0,
     long: 0,
+    lat: 0,
     courseDays: [],
     isActive: true,
   });
@@ -162,8 +162,8 @@ export default function AdminDashboard() {
           unit: "",
           lecturers: [""],
           venueName: "",
-          lat: 0,
           long: 0,
+          lat: 0,
           courseDays: [],
           isActive: true,
         });
@@ -191,8 +191,8 @@ export default function AdminDashboard() {
       unit: "",
       lecturers: [""],
       venueName: "",
-      lat: 0,
       long: 0,
+      lat: 0,
       courseDays: [],
       isActive: true,
     });
@@ -437,8 +437,8 @@ export default function AdminDashboard() {
                                 setFormData((prev) => ({
                                   ...prev,
                                   venueName: venue.venueName,
-                                  lat: venue.lat,
                                   long: venue.long,
+                                  lat: venue.lat,
                                 }));
                               }}
                             >
