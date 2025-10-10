@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
 // import { GeolocationService } from "../../lib/geolocation";
 import confetti from "canvas-confetti";
-import { getDeviceInfo } from "../../utils/deviceUtils";
+// import { getDeviceInfo } from "../../utils/deviceUtils";
 import { BookCheck, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useSEO } from "../../hooks/useSEO";
@@ -116,7 +116,7 @@ function MarkAttendance() {
       //   getDeviceInfo(),
       // ]);
 
-      const deviceInfo = await getDeviceInfo()
+      // const deviceInfo = await getDeviceInfo()
 
       // --- Check geolocation ---
       // const { isWithin, distance } = GeolocationService.isWithinRadius(
@@ -139,14 +139,14 @@ function MarkAttendance() {
       // console.log("Client:", deviceInfo.device_uuid, deviceInfo.fingerprint);
 
       // --- Check device identity ---
-      if (
-        user?.device_uuid !== deviceInfo.device_uuid || // replace with value from backend
-        user?.fingerprint !== deviceInfo.fingerprint
-      ) {
-        toast.error("Device authentication failed.");
-        setLoading(false);
-        return;
-      }
+      // if (
+      //   user?.device_uuid !== deviceInfo.device_uuid || // replace with value from backend
+      //   user?.fingerprint !== deviceInfo.fingerprint
+      // ) {
+      //   toast.error("Device authentication failed.");
+      //   setLoading(false);
+      //   return;
+      // }
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/mark-attendance`,
