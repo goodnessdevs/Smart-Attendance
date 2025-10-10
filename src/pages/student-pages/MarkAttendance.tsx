@@ -166,6 +166,7 @@ function MarkAttendance() {
             fullName: user?.fullName,
             email: user?.email,
             isPresent: true,
+            matricNo: user?.matricNumber
           }),
         }
       );
