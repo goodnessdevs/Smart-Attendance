@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAuthContext } from "../../hooks/use-auth";
-import { GeolocationService } from "../../lib/geolocation";
+// import { GeolocationService } from "../../lib/geolocation";
 import confetti from "canvas-confetti";
 import { getDeviceInfo } from "../../utils/deviceUtils";
 import { BookCheck, CheckCircle2, Loader2 } from "lucide-react";
@@ -107,34 +107,36 @@ function MarkAttendance() {
     setLoading(true);
 
     try {
-      const [pos, deviceInfo] = await Promise.all([
-        GeolocationService.getCurrentPosition({
-          enableHighAccuracy: true,
-          timeout: 60000, // shorter timeout for responsiveness
-          maximumAge: 60000,
-        }),
-        getDeviceInfo(),
-      ]);
+      // const [pos, deviceInfo] = await Promise.all([
+      //   GeolocationService.getCurrentPosition({
+      //     enableHighAccuracy: true,
+      //     timeout: 60000, // shorter timeout for responsiveness
+      //     maximumAge: 60000,
+      //   }),
+      //   getDeviceInfo(),
+      // ]);
+
+      const deviceInfo = await getDeviceInfo()
 
       // --- Check geolocation ---
-      const { isWithin, distance } = GeolocationService.isWithinRadius(
-        pos.coords.longitude,
-        pos.coords.latitude,
-        course.long,
-        course.lat,
-        500 // 500m radius check
-      );
+      // const { isWithin, distance } = GeolocationService.isWithinRadius(
+      //   pos.coords.longitude,
+      //   pos.coords.latitude,
+      //   course.long,
+      //   course.lat,
+      //   500 // 500m radius check
+      // );
 
-      if (!isWithin) {
-        toast.error(
-          `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
-        );
-        setLoading(false);
-        return;
-      }
+      // if (!isWithin) {
+      //   toast.error(
+      //     `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
+      //   );
+      //   setLoading(false);
+      //   return;
+      // }
 
-      console.log("Backend:", user?.device_uuid, user?.fingerprint);
-      console.log("Client:", deviceInfo.device_uuid, deviceInfo.fingerprint);
+      // console.log("Backend:", user?.device_uuid, user?.fingerprint);
+      // console.log("Client:", deviceInfo.device_uuid, deviceInfo.fingerprint);
 
       // --- Check device identity ---
       if (
