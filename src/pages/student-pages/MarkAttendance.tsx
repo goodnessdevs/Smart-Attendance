@@ -124,7 +124,7 @@ function MarkAttendance() {
         pos.coords.latitude,
         course.long,
         course.lat,
-        500 // 500m radius check
+        100 // 100m radius check
       );
 
       if (!isWithin) {
