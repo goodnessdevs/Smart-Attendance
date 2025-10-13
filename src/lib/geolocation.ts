@@ -71,6 +71,8 @@ export class GeolocationService {
           latitude: data.location.lat,
           longitude: data.location.lng,
         },
+        // accuracy: data.accuracy,
+        // source: "google",
       };
     } catch (error) {
       console.error("Google Geolocation API error:", error);

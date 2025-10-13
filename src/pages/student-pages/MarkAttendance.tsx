@@ -108,11 +108,7 @@ function MarkAttendance() {
 
     try {
       const [pos, deviceInfo] = await Promise.all([
-        GeolocationService.getCurrentPosition({
-          enableHighAccuracy: true,
-          timeout: 60000, // shorter timeout for responsiveness
-          maximumAge: 60000,
-        }),
+        GeolocationService.getPositionFromGoogle(),
         getDeviceInfo(),
       ]);
 
