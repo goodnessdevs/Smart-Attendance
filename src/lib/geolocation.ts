@@ -1,4 +1,8 @@
 // src/lib/geolocation.ts
+
+const GOOGLE_GEOLOCATION_API_KEY = import.meta.env.VITE_GOOGLE_GEOLOCATION_API_KEY
+
+
 import { distance, point } from '@turf/turf';
 
 export class GeolocationService {
@@ -7,7 +11,6 @@ export class GeolocationService {
     lat1: number,
     lng2: number,
     lat2: number,
-
   ): number {
     const from = point([lng1, lat1]);
     const to = point([lng2, lat2]);
@@ -17,20 +20,62 @@ export class GeolocationService {
 
   static getCurrentPosition(
     options?: PositionOptions
-  ): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) {
-        reject(new Error("Geolocation is not supported by this browser."));
-        return;
+  ): Promise<GeolocationPosition | { coords: { latitude: number; longitude: number } }> {
+    try {
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          reject(new Error("Geolocation not supported by browser."));
+          return;
+        }
+
+        const defaultOptions: PositionOptions = {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 60000,
+          ...options,
+        };
+
+        console.log("📍 Using HTML5 Geolocation");
+        navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
+      });
+    } catch (err) {
+      console.warn("⚠️ HTML5 Geolocation failed, falling back to Google API:", err);
+      return this.getPositionFromGoogle();
+    }
+  }
+
+  // ✅ Fallback: use Google Cloud Geolocation API (network/cell tower based)
+  static async getPositionFromGoogle(): Promise<{ coords: { latitude: number; longitude: number } }> {
+    if (!GOOGLE_GEOLOCATION_API_KEY) {
+      throw new Error("Google Geolocation API key not found. Please set VITE_GOOGLE_GEOLOCATION_API_KEY in your .env file.");
+    }
+
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/geolocation/v1/geolocate?key=${GOOGLE_GEOLOCATION_API_KEY}`,
+        { method: "POST" }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch location from Google Geolocation API");
       }
-      const defaultOptions: PositionOptions = {
-        enableHighAccuracy: true,
-        timeout: 60000,
-        maximumAge: 60000,
-        ...options,
+
+      const data = await response.json();
+      console.log("📡 Using Google Cloud Geolocation API fallback");
+      if (!data.location) {
+        throw new Error("Invalid location data from Google API");
+      }
+
+      return {
+        coords: {
+          latitude: data.location.lat,
+          longitude: data.location.lng,
+        },
       };
-      navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
-    });
+    } catch (error) {
+      console.error("Google Geolocation API error:", error);
+      throw new Error("Unable to determine your location. Please enable GPS.");
+    }
   }
 
   static isWithinRadius(
