@@ -103,14 +103,14 @@ export class GeolocationService {
   private static readonly EARTH_RADIUS_METERS = 6371000;
 
   static calculateDistance(
+    long1: number,
     lat1: number,
-    lng1: number,
-    lat2: number,
-    lng2: number
+    long2: number,
+    lat2: number
   ): number {
     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
     const dLat = toRadians(lat2 - lat1);
-    const dLng = toRadians(lng2 - lng1);
+    const dLng = toRadians(long2 - long1);
     const a =
       Math.sin(dLat / 2) ** 2 +
       Math.cos(toRadians(lat1)) *
@@ -139,17 +139,17 @@ export class GeolocationService {
   }
 
   static isWithinRadius(
+    userLong: number,
     userLat: number,
-    userLng: number,
+    targetLong: number,
     targetLat: number,
-    targetLng: number,
     radius: number
   ) {
     const distance = this.calculateDistance(
+      userLong,
       userLat,
-      userLng,
-      targetLat,
-      targetLng
+      targetLong,
+      targetLat
     );
     return { isWithin: distance <= radius, distance };
   }
