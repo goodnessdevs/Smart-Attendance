@@ -96,61 +96,112 @@
 //   }
 // }
 
-
 // src/lib/geolocation.ts
 
-export class GeolocationService {
-  private static readonly EARTH_RADIUS_METERS = 6371000;
+import { distance, point } from '@turf/turf';
 
+export class GeolocationService {
   static calculateDistance(
-    long1: number,
+    lng1: number,
     lat1: number,
-    long2: number,
-    lat2: number
+    lng2: number,
+    lat2: number,
   ): number {
-    const toRadians = (degrees: number) => degrees * (Math.PI / 180);
-    const dLat = toRadians(lat2 - lat1);
-    const dLng = toRadians(long2 - long1);
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLng / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return this.EARTH_RADIUS_METERS * c;
+    const from = point([lng1, lat1]);
+    const to = point([lng2, lat2]);
+    // Turf returns distance in kilometers by default, convert to meters
+    return distance(from, to, { units: 'meters' });
   }
 
-  static getCurrentPosition(
+  static async getCurrentPosition(
     options?: PositionOptions
   ): Promise<GeolocationPosition> {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      throw new Error("Geolocation not supported by this environment.");
+    }
+
+    const defaultOptions: PositionOptions = {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 60000,
+      ...options,
+    };
+
     return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) {
-        reject(new Error("Geolocation is not supported by this browser."));
-        return;
-      }
-      const defaultOptions: PositionOptions = {
-        enableHighAccuracy: true,
-        timeout: 60000,
-        maximumAge: 60000,
-        ...options,
-      };
       navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
     });
   }
 
   static isWithinRadius(
-    userLong: number,
+    userLng: number,
     userLat: number,
-    targetLong: number,
+    targetLng: number,
     targetLat: number,
     radius: number
   ) {
-    const distance = this.calculateDistance(
-      userLong,
+    const distanceMeters = this.calculateDistance(
+      userLng,
       userLat,
-      targetLong,
-      targetLat
+      targetLng,
+      targetLat,
     );
-    return { isWithin: distance <= radius, distance };
+    return { isWithin: distanceMeters <= radius, distance: distanceMeters };
   }
 }
+
+// // src/lib/geolocation.ts
+// export class GeolocationService {
+//   private static readonly EARTH_RADIUS_METERS = 6371000;
+
+//   static calculateDistance(
+//     long1: number,
+//     lat1: number,
+//     long2: number,
+//     lat2: number
+//   ): number {
+//     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
+//     const dLat = toRadians(lat2 - lat1);
+//     const dLng = toRadians(long2 - long1);
+//     const a =
+//       Math.sin(dLat / 2) ** 2 +
+//       Math.cos(toRadians(lat1)) *
+//         Math.cos(toRadians(lat2)) *
+//         Math.sin(dLng / 2) ** 2;
+//     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//     return this.EARTH_RADIUS_METERS * c;
+//   }
+
+//   static getCurrentPosition(
+//     options?: PositionOptions
+//   ): Promise<GeolocationPosition> {
+//     return new Promise((resolve, reject) => {
+//       if (!navigator.geolocation) {
+//         reject(new Error("Geolocation is not supported by this browser."));
+//         return;
+//       }
+//       const defaultOptions: PositionOptions = {
+//         enableHighAccuracy: true,
+//         timeout: 60000,
+//         maximumAge: 60000,
+//         ...options,
+//       };
+//       navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
+//     });
+//   }
+
+//   static isWithinRadius(
+//     userLong: number,
+//     userLat: number,
+//     targetLong: number,
+//     targetLat: number,
+//     radius: number
+//   ) {
+//     const distance = this.calculateDistance(
+//       userLong,
+//       userLat,
+//       targetLong,
+//       targetLat
+//     );
+//     return { isWithin: distance <= radius, distance };
+//   }
+// }
