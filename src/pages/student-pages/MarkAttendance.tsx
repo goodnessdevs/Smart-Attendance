@@ -23,7 +23,6 @@ type ActiveCourse = {
 function MarkAttendance() {
   const { courseId } = useParams<{ courseId: string }>();
   const { token, user } = useAuthContext();
-  const [liveDistance, setLiveDistance] = useState<number | null>(null);
 
   const [attendanceMarked, setAttendanceMarked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -98,47 +97,6 @@ function MarkAttendance() {
     fetchVenue();
   }, [courseId, token]);
 
-  useEffect(() => {
-    if (!course || attendanceMarked) return;
-
-    let watchId: number | null = null;
-
-    const startWatching = () => {
-      try {
-        watchId = GeolocationService.watchPosition(
-          (position) => {
-            const result = GeolocationService.isWithinRadius(
-              position.coords.longitude,
-              position.coords.latitude,
-              course.long,
-              course.lat,
-              100
-            );
-            setLiveDistance(result.distance);
-          },
-          (error) => {
-            console.error("Watch position error:", error);
-            setLiveDistance(null);
-          },
-          {
-            enableHighAccuracy: false, // Use low accuracy for live tracking to save battery
-            maximumAge: 10000,
-          }
-        );
-      } catch (error) {
-        console.error("Failed to start watching position:", error);
-      }
-    };
-
-    startWatching();
-
-    return () => {
-      if (watchId !== null) {
-        GeolocationService.clearWatch(watchId);
-      }
-    };
-  }, [course, attendanceMarked]);
-
   // Mark attendance handler
   const handleMarkAttendance = async () => {
     if (!course) {
@@ -154,90 +112,22 @@ function MarkAttendance() {
         getDeviceInfo(),
       ]);
 
-      // Validate coordinates before calculation
-      if (
-        !GeolocationService.isValidCoordinates(
-          pos.coords.longitude,
-          pos.coords.latitude
-        )
-      ) {
-        toast.error("Invalid location data received. Please try again.");
-        setLoading(false);
-        return;
-      }
-
-      if (!GeolocationService.isValidCoordinates(course.long, course.lat)) {
-        toast.error("Invalid venue coordinates. Please contact support.");
-        setLoading(false);
-        return;
-      }
-
-      // ✅ Using Turf.js with [longitude, latitude] order
-      const result = GeolocationService.isWithinRadius(
-        pos.coords.longitude, // User longitude
-        pos.coords.latitude, // User latitude
-        course.long, // Venue longitude
-        course.lat, // Venue latitude
-        100, // 100m radius
-        pos.coords.accuracy // GPS accuracy for buffer
+      // --- Check geolocation ---
+      const { isWithin, distance } = GeolocationService.isWithinRadius(
+        pos.coords.longitude,
+        pos.coords.latitude,
+        course.long,
+        course.lat,
+        100 // 100m radius check
       );
 
-      // Show accuracy warning if GPS is inaccurate
-      if (pos.coords.accuracy && pos.coords.accuracy > 50) {
-        toast.warning(
-          `GPS accuracy is low (±${Math.round(pos.coords.accuracy)}m). Distance might be approximate.`,
-          { duration: 5000 }
-        );
-      }
-
-      // Get direction to venue if user is too far
-      if (!result.isWithin) {
-        const bearing = GeolocationService.getBearing(
-          pos.coords.longitude,
-          pos.coords.latitude,
-          course.long,
-          course.lat
-        );
-        const direction = GeolocationService.getCompassDirection(bearing);
-
+      if (!isWithin) {
         toast.error(
-          `You are too far from the venue.\nDistance: ${GeolocationService.formatDistance(result.distance)}\nDirection: ${direction}`,
-          { duration: 6000 }
+          `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
         );
         setLoading(false);
         return;
       }
-
-      // Optional: Log for debugging
-      console.log("Location check passed:", {
-        distance: result.distance,
-        accuracy: result.accuracy,
-        userLocation: {
-          lon: pos.coords.longitude,
-          lat: pos.coords.latitude,
-        },
-        venueLocation: {
-          lon: course.long,
-          lat: course.lat,
-        },
-      });
-
-      // --- Check geolocation ---
-      // const { isWithin, distance } = GeolocationService.isWithinRadius(
-      //   pos.coords.longitude,
-      //   pos.coords.latitude,
-      //   course.long,
-      //   course.lat,
-      //   100 // 100m radius check
-      // );
-
-      // if (!isWithin) {
-      //   toast.error(
-      //     `You are too far from the venue. Distance: ${distance.toFixed(1)}m`
-      //   );
-      //   setLoading(false);
-      //   return;
-      // }
 
       console.log("Backend:", user?.device_uuid, user?.fingerprint);
       console.log("Client:", deviceInfo.device_uuid, deviceInfo.fingerprint);
