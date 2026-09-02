@@ -1,10 +1,12 @@
+"use client";
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority"
 import type { VariantProps } from "class-variance-authority"
 import { AlignLeftIcon } from "lucide-react"
 
-import { useIsMobile } from "../../hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "../../lib/utils"
 import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input"
@@ -605,10 +607,17 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean
 }) {
-  // Random width between 50 to 90%.
+  // Width between 50% and 90%, derived from the element id rather than
+  // Math.random(): random during render is impure and makes the server and
+  // client disagree, which React flags as a hydration mismatch.
+  const skeletonId = React.useId()
   const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`
-  }, [])
+    let hash = 0
+    for (let i = 0; i < skeletonId.length; i += 1) {
+      hash = (hash * 31 + skeletonId.charCodeAt(i)) | 0
+    }
+    return `${(Math.abs(hash) % 40) + 50}%`
+  }, [skeletonId])
 
   return (
     <div

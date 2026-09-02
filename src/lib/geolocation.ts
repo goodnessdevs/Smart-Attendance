@@ -1,134 +1,39 @@
-// // src/lib/geolocation.ts
+import { distance, point } from "@turf/turf";
 
-// const GOOGLE_GEOLOCATION_API_KEY = import.meta.env.VITE_GOOGLE_GEOLOCATION_API_KEY
-
-
-// import { distance, point } from '@turf/turf';
-
-// export class GeolocationService {
-//   static calculateDistance(
-//     lng1: number,
-//     lat1: number,
-//     lng2: number,
-//     lat2: number,
-//   ): number {
-//     const from = point([lng1, lat1]);
-//     const to = point([lng2, lat2]);
-//     // Turf returns distance in kilometers by default, convert to meters
-//     return distance(from, to, { units: 'meters' });
-//   }
-
-//   static getCurrentPosition(
-//     options?: PositionOptions
-//   ): Promise<GeolocationPosition | { coords: { latitude: number; longitude: number } }> {
-//     try {
-//       return new Promise((resolve, reject) => {
-//         if (!navigator.geolocation) {
-//           reject(new Error("Geolocation not supported by browser."));
-//           return;
-//         }
-
-//         const defaultOptions: PositionOptions = {
-//           enableHighAccuracy: true,
-//           timeout: 15000,
-//           maximumAge: 60000,
-//           ...options,
-//         };
-
-//         console.log("📍 Using HTML5 Geolocation");
-//         navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
-//       });
-//     } catch (err) {
-//       console.warn("⚠️ HTML5 Geolocation failed, falling back to Google API:", err);
-//       return this.getPositionFromGoogle();
-//     }
-//   }
-
-//   // ✅ Fallback: use Google Cloud Geolocation API (network/cell tower based)
-//   static async getPositionFromGoogle(): Promise<{ coords: { latitude: number; longitude: number } }> {
-//     if (!GOOGLE_GEOLOCATION_API_KEY) {
-//       throw new Error("Google Geolocation API key not found. Please set VITE_GOOGLE_GEOLOCATION_API_KEY in your .env file.");
-//     }
-
-//     try {
-//       const response = await fetch(
-//         `https://www.googleapis.com/geolocation/v1/geolocate?key=${GOOGLE_GEOLOCATION_API_KEY}`,
-//         { method: "POST" }
-//       );
-
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch location from Google Geolocation API");
-//       }
-
-//       const data = await response.json();
-//       console.log("📡 Using Google Cloud Geolocation API fallback");
-//       if (!data.location) {
-//         throw new Error("Invalid location data from Google API");
-//       }
-
-//       return {
-//         coords: {
-//           latitude: data.location.lat,
-//           longitude: data.location.lng,
-//         },
-//       };
-//     } catch (error) {
-//       console.error("Google Geolocation API error:", error);
-//       throw new Error("Unable to determine your location. Please enable GPS.");
-//     }
-//   }
-
-//   static isWithinRadius(
-//     userLng: number,
-//     userLat: number,
-//     targetLng: number,
-//     targetLat: number,
-//     radius: number
-//   ) {
-//     const distanceMeters = this.calculateDistance(
-//       userLng,
-//       userLat,
-//       targetLng,
-//       targetLat,
-
-//     );
-//     return { isWithin: distanceMeters <= radius, distance: distanceMeters };
-//   }
-// }
-
-// src/lib/geolocation.ts
-
-import { distance, point } from '@turf/turf';
-
+/**
+ * Distance helpers for the attendance geofence.
+ *
+ * IMPORTANT: this is a user-experience aid, not a security control. It runs in
+ * the browser, so it can be bypassed with devtools location spoofing. The
+ * server has to verify the coordinates it receives before trusting them.
+ */
 export class GeolocationService {
+  /** Metres between two lng/lat pairs. */
   static calculateDistance(
     lng1: number,
     lat1: number,
     lng2: number,
-    lat2: number,
+    lat2: number
   ): number {
-    const from = point([lng1, lat1]);
-    const to = point([lng2, lat2]);
-    // Turf returns distance in kilometers by default, convert to meters
-    return distance(from, to, { units: 'meters' });
+    return distance(point([lng1, lat1]), point([lng2, lat2]), {
+      units: "meters",
+    });
   }
 
   static async getCurrentPosition(
     options?: PositionOptions
   ): Promise<GeolocationPosition> {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
-      throw new Error("Geolocation not supported by this environment.");
+      throw new Error("Geolocation is not supported by this browser.");
     }
 
-    const defaultOptions: PositionOptions = {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 60000,
-      ...options,
-    };
-
     return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 15_000,
+        maximumAge: 60_000,
+        ...options,
+      });
     });
   }
 
@@ -143,65 +48,24 @@ export class GeolocationService {
       userLng,
       userLat,
       targetLng,
-      targetLat,
+      targetLat
     );
     return { isWithin: distanceMeters <= radius, distance: distanceMeters };
   }
 }
 
-// // src/lib/geolocation.ts
-// export class GeolocationService {
-//   private static readonly EARTH_RADIUS_METERS = 6371000;
+/** Turns a GeolocationPositionError into something worth showing a user. */
+export function geolocationErrorMessage(error: unknown): string | null {
+  if (!error || typeof error !== "object" || !("code" in error)) return null;
 
-//   static calculateDistance(
-//     long1: number,
-//     lat1: number,
-//     long2: number,
-//     lat2: number
-//   ): number {
-//     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
-//     const dLat = toRadians(lat2 - lat1);
-//     const dLng = toRadians(long2 - long1);
-//     const a =
-//       Math.sin(dLat / 2) ** 2 +
-//       Math.cos(toRadians(lat1)) *
-//         Math.cos(toRadians(lat2)) *
-//         Math.sin(dLng / 2) ** 2;
-//     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//     return this.EARTH_RADIUS_METERS * c;
-//   }
-
-//   static getCurrentPosition(
-//     options?: PositionOptions
-//   ): Promise<GeolocationPosition> {
-//     return new Promise((resolve, reject) => {
-//       if (!navigator.geolocation) {
-//         reject(new Error("Geolocation is not supported by this browser."));
-//         return;
-//       }
-//       const defaultOptions: PositionOptions = {
-//         enableHighAccuracy: true,
-//         timeout: 60000,
-//         maximumAge: 60000,
-//         ...options,
-//       };
-//       navigator.geolocation.getCurrentPosition(resolve, reject, defaultOptions);
-//     });
-//   }
-
-//   static isWithinRadius(
-//     userLong: number,
-//     userLat: number,
-//     targetLong: number,
-//     targetLat: number,
-//     radius: number
-//   ) {
-//     const distance = this.calculateDistance(
-//       userLong,
-//       userLat,
-//       targetLong,
-//       targetLat
-//     );
-//     return { isWithin: distance <= radius, distance };
-//   }
-// }
+  switch ((error as GeolocationPositionError).code) {
+    case 1:
+      return "Location permission denied. Enable location access and try again.";
+    case 2:
+      return "Your position is unavailable right now. Try again in a moment.";
+    case 3:
+      return "Getting your location timed out. Move somewhere with a clearer signal and retry.";
+    default:
+      return null;
+  }
+}

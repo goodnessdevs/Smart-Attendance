@@ -1,94 +1,90 @@
- # Smart Attendance
+# Smart Attendance
 
- Smart Attendance is a modern web application designed to streamline and digitize the process of tracking student attendance in academic institutions. Built with React, TypeScript, and Vite, it provides a seamless experience for both students and lecturers, supporting features like course selection, attendance marking, admin management, and responsive design for all devices.
+Attendance tracking for the Federal University of Agriculture, Abeokuta.
+Next.js App Router frontend for the Smartendance API.
 
- ## Features
+## Requirements
 
- - 📋 **Student Attendance Tracking**: Students can view their attendance records, see summaries, and mark attendance for their courses.
- - 🧑‍🏫 **Lecturer/Admin Dashboard**: Admins can log in securely, select and manage courses, and track attendance for each course.
- - 🔍 **Course Search & Selection**: Easily search and select courses to manage or mark attendance.
- - ✅ **Mark Attendance**: Mark attendance with a single click, with visual feedback and confetti animation for success.
- - 📅 **Academic Calendar**: View the academic session calendar with important dates and activities.
- - 📱 **Mobile-First & Responsive**: Fully responsive UI for mobile, tablet, and desktop users.
- - 🔒 **Secure Admin Access**: Admin authentication with password protection (for demo; use a secure backend in production).
- - 🌐 **Location Access**: Optionally require location access for marking attendance (for added verification).
+- Node 20+
+- pnpm 10+
 
- ## Tech Stack
+## Getting started
 
- - **Frontend**: React, TypeScript, Vite
- - **Styling**: Tailwind CSS
- - **State Management**: React Hooks
- - **UI Components**: Custom and reusable components (Card, Table, Badge, Checkbox, etc.)
- - **Animation**: Framer Motion, Canvas Confetti
- - **Notifications**: Sonner
+```bash
+pnpm install
+cp .env.example .env.local   # then fill in the values
+pnpm dev
+```
 
- ## Getting Started
+The app runs at http://localhost:3000.
 
- ### Prerequisites
- - Node.js (v18 or later recommended)
- - pnpm (or npm/yarn)
+## Scripts
 
- ### Installation
+| Command | Does |
+| --- | --- |
+| `pnpm dev` | Development server |
+| `pnpm build` | Production build |
+| `pnpm start` | Serve a production build |
+| `pnpm lint` | ESLint |
+| `pnpm typecheck` | `tsc --noEmit` |
 
- ```bash
- # Clone the repository
- git clone https://github.com/goodnessdevs/Smart-Attendance.git
- cd attendance-app
+## Environment
 
- # Install dependencies
- pnpm install
- # or
- yarn install
- # or
- npm install
- ```
+See `.env.example`. `BACKEND_URL` and `GOOGLE_AUTH_URL` are server-only and
+never reach the browser; `NEXT_PUBLIC_BACKEND_ORIGIN` is public and used only
+to validate OAuth popup messages.
 
- ### Running the App
+## How auth works
 
- ```bash
- pnpm dev
- # or
- yarn dev
- # or
- npm run dev
- ```
+The session JWT lives in an **httpOnly cookie**, so client JavaScript cannot
+read it and an XSS bug cannot exfiltrate it.
 
- The app will be available at `http://localhost:5173` (or the port shown in your terminal).
+1. The sign-in button opens `/api/auth/login`, which redirects to Google.
+2. The backend returns a token to the opener window.
+3. The client posts it to `/api/auth/session`, which verifies it against the
+   backend and sets the cookie. The token is never persisted client-side.
+4. All data requests go to same-origin `/api/backend/*`. That route reads the
+   cookie and attaches `Authorization: Bearer <token>` server-side.
 
- ## Project Structure
+`/api/auth/callback` implements a stronger variant: point the backend's OAuth
+redirect at it and the token goes straight into the cookie without ever
+touching client JavaScript. `NEXT_PUBLIC_BACKEND_ORIGIN` can then be removed.
 
- ```
- attendance-app/
- ├── public/                # Static assets
- ├── src/
- │   ├── assets/            # Images and icons
- │   ├── components/        # Reusable UI components
- │   ├── hooks/             # Custom React hooks
- │   ├── lib/               # Utility functions
- │   ├── pages/             # Main app pages (Dashboard, Account, Calendar, etc.)
- │   └── types/             # TypeScript type definitions
- ├── package.json
- ├── tsconfig.json
- ├── vite.config.ts
- └── ...
- ```
+### Route protection
 
- ## Usage
+`src/proxy.ts` (Next 16's name for middleware) checks the cookie is present,
+and each area's layout calls `requireRole()`, which verifies the role against
+the backend before rendering.
+Neither is a security boundary — **the API must re-check every request.**
 
- - **Students**: Log in, view your attendance, and mark attendance for your courses.
- - **Lecturers/Admins**: Log in via the admin portal, select courses, and manage attendance records.
- - **Mobile Users**: Enjoy a fully responsive experience on your phone or tablet.
+## Structure
 
- ## Customization
- - Update course lists, authentication, and attendance logic as needed for your institution.
- - For production, connect to a secure backend and database for persistent data.
+```
+src/
+├── app/            routes only, kept thin
+│   └── api/        BFF: session routes + the backend proxy
+├── features/       one folder per domain (auth, courses, attendance, ...)
+│                   each with api/ components/ schema.ts types.ts
+├── components/
+│   ├── ui/         shadcn primitives
+│   ├── common/     PageHeader, DataTable, StatCard, states
+│   └── layout/     AppShell, AppSidebar, footer
+├── lib/            axios instance, query client, geolocation, device,
+│                   server/{auth,session,backend}
+└── config/         env, colleges, venues, navigation
+```
 
- ## Contributing
- Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+Conventions: TanStack Query for all server state, one Axios instance, Zustand
+for client state, React Hook Form + Zod for forms, shadcn/ui + Tailwind v4.
 
- ## License
- [MIT](LICENSE)
+## Adding a backend endpoint
 
- ---
+New endpoints must be added to the allow-list in
+`src/app/api/backend/[...path]/route.ts`, otherwise the proxy returns 404. This
+is deliberate — without it the route would relay any path on the upstream API.
 
- > Made with ❤️ by GoodnessDevs
+## Deploying to Vercel
+
+- **Root Directory**: `web` (if this lives in a monorepo alongside the old app)
+- Add every variable from `.env.example` under Project Settings
+- Framework preset: Next.js (auto-detected)
