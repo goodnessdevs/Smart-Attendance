@@ -31,7 +31,6 @@ export function getBrowserFingerprint(): string {
 export async function getOrCreateUUID(): Promise<string> {
   const existing = await getUUID();
   if (existing) return existing;
-
   const uuid = uuidv4();
   await saveUUID(uuid);
   return uuid;
